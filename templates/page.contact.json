@@ -6,7 +6,7 @@
         "kicker": {
           "type": "kicker",
           "settings": {
-            "text": "Customer Care · Anantapur, Andhra Pradesh",
+            "text": "Visit or Write to Us · Anantapur, Andhra Pradesh",
             "color": "#E5D4AE",
             "size": 12,
             "letter_spacing": 2
@@ -15,7 +15,7 @@
         "heading": {
           "type": "heading",
           "settings": {
-            "text": "We’d Love to Hear From You",
+            "text": "We’d Love to Welcome You",
             "color": "#FAF2E3",
             "size_desktop": 46,
             "size_mobile": 32,
@@ -25,7 +25,7 @@
         "subheading": {
           "type": "subheading",
           "settings": {
-            "text": "Questions about a saree weave, fabric drape, festive gifting or an order? Reach out to our team directly.",
+            "text": "Visit our physical store in Anantapur to experience our sarees in person, or send us a message below.",
             "color": "#F2E9D8",
             "size_desktop": 16,
             "size_mobile": 15
@@ -48,45 +48,12 @@
     },
     "main": {
       "type": "main-contact",
-      "blocks": {
-        "q1": {
-          "type": "faq_item",
-          "settings": {
-            "category": "Saree Details",
-            "question": "Where can I check fabric, length and blouse piece details?",
-            "answer": "<p>Every saree lists its verified specifications directly on the product page. Because weaves and textiles vary, we list details per saree rather than assuming one universal specification.</p>"
-          }
-        },
-        "q2": {
-          "type": "faq_item",
-          "settings": {
-            "category": "Fabric Care",
-            "question": "How should I care for Cotton, Silk, Chiffon and Georgette sarees?",
-            "answer": "<p>Care depends on the fabric, weave and border finish. Please follow the care note on each saree page, and store silk or zari sarees wrapped in breathable cotton cloth away from direct sunlight.</p>"
-          }
-        },
-        "q3": {
-          "type": "faq_item",
-          "settings": {
-            "category": "Shipping",
-            "question": "How are shipping rates and delivery options calculated?",
-            "answer": "<p>Shipping charges and available delivery options for your address are calculated transparently at checkout before you pay.</p>",
-            "policy_link": "shipping"
-          }
-        },
-        "q4": {
-          "type": "faq_item",
-          "settings": {
-            "category": "Returns",
-            "question": "What is your returns and exchange policy?",
-            "answer": "<p>Please review our published Returns &amp; Refund Policy for full details on eligibility and how to contact us for support.</p>",
-            "policy_link": "refund"
-          }
-        }
-      },
-      "block_order": ["q1", "q2", "q3", "q4"],
       "settings": {
         "show_header": false,
+        "show_map": true,
+        "map_layout": "sidebar",
+        "map_zoom": 15,
+        "map_height": 320,
         "card_radius": 12,
         "padding_top": 40,
         "padding_bottom": 72
