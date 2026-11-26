@@ -3,8 +3,13 @@
   if target_blog == blank
     assign target_blog = blogs.journal
   endif
+  assign has_articles = false
+  if target_blog != blank and target_blog.articles_count > 0
+    assign has_articles = true
+  endif
 -%}
 
+{% unless section.settings.hide_when_empty and has_articles == false %}
 {% style %}
   #shopify-section-{{ section.id }} .vv-blog-sec {
     {% if section.settings.bg_color != blank and section.settings.bg_color != 'rgba(0,0,0,0)' %}
@@ -30,8 +35,13 @@
     font-size: {{ section.settings.article_title_size }}px;
   }
   @media (max-width: 900px) {
+    #shopify-section-{{ section.id }} .vv-blog-sec {
+      padding-top: 44px;
+      padding-bottom: 44px;
+    }
     #shopify-section-{{ section.id }} .vv-grid {
       grid-template-columns: repeat({{ section.settings.columns_mobile }}, minmax(0, 1fr));
+      gap: 14px;
     }
   }
 {% endstyle %}
@@ -55,7 +65,7 @@
     {% endif %}
 
     <div class="vv-grid">
-      {% if target_blog != blank and target_blog.articles_count > 0 %}
+      {% if has_articles %}
         {% for article in target_blog.articles limit: section.settings.articles_limit %}
           <a class="blog-card" href="{{ article.url }}">
             {% if section.settings.show_image %}
@@ -86,7 +96,7 @@
                 <p class="blog-card-excerpt">{{ article.excerpt_or_content | strip_html | truncate: 115 }}</p>
               {% endif %}
               {% if section.settings.read_more_label != blank %}
-                <span class="link-cta">{{ section.settings.read_more_label }} →</span>
+                <span class="link-cta"><span>{{ section.settings.read_more_label }}</span>{% render 'icons', icon: 'arrow-right' %}</span>
               {% endif %}
             </div>
           </a>
@@ -100,10 +110,10 @@
               </div>
             {% endif %}
             <div class="blog-card-body">
-              <div class="blog-card-meta">Journal · Style Note</div>
+              <div class="blog-card-meta">Journal · Care &amp; Weave Notes</div>
               <h3 class="blog-card-title">Saree Care, Draping &amp; Fabric Notes</h3>
               {% if section.settings.show_excerpt %}
-                <p class="blog-card-excerpt">Publish articles under your 'Journal' blog in Shopify Admin to showcase stories here.</p>
+                <p class="blog-card-excerpt">Publish stories under your 'Journal' blog in Shopify Admin to showcase them here.</p>
               {% endif %}
             </div>
           </article>
@@ -113,246 +123,70 @@
 
     {% if section.settings.show_view_all and target_blog != blank %}
       <div style="margin-top: 32px; text-align: {{ section.settings.heading_align }};">
-        <a class="btn outline" href="{{ target_blog.url }}">{{ section.settings.view_all_label | default: 'Read the Journal' }}</a>
+        <a class="btn outline" href="{{ target_blog.url }}">{{ section.settings.view_all_label | default: 'Explore Journal' }}</a>
       </div>
     {% endif %}
   </div>
 </section>
+{% endunless %}
 
 {% schema %}
 {
   "name": "Blog Preview",
   "settings": [
-    {
-      "type": "blog",
-      "id": "blog",
-      "label": "Blog (defaults to 'journal')"
-    },
-    {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Eyebrow",
-      "default": "The Journal"
-    },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Stories & Style Notes"
-    },
-    {
-      "type": "textarea",
-      "id": "subheading",
-      "label": "Subheading (optional)"
-    },
-    {
-      "type": "text_alignment",
-      "id": "heading_align",
-      "label": "Header alignment",
-      "default": "center"
-    },
-    {
-      "type": "range",
-      "id": "heading_size",
-      "label": "Heading size",
-      "min": 20,
-      "max": 60,
-      "step": 2,
-      "unit": "px",
-      "default": 34
-    },
-    {
-      "type": "color",
-      "id": "heading_color",
-      "label": "Heading color",
-      "default": "#1C1C1C"
-    },
-    {
-      "type": "header",
-      "content": "Grid & Cards"
-    },
-    {
-      "type": "range",
-      "id": "articles_limit",
-      "label": "Articles to show",
-      "min": 1,
-      "max": 6,
-      "step": 1,
-      "default": 3
-    },
-    {
-      "type": "range",
-      "id": "columns_desktop",
-      "label": "Columns (desktop)",
-      "min": 1,
-      "max": 4,
-      "step": 1,
-      "default": 3
-    },
+    { "type": "blog", "id": "blog", "label": "Blog (defaults to 'journal')" },
+    { "type": "checkbox", "id": "hide_when_empty", "label": "Hide section when blog has no articles", "default": false },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The Journal" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Stories & Care Notes" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading (optional)" },
+    { "type": "text_alignment", "id": "heading_align", "label": "Header alignment", "default": "center" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 24, "max": 48, "step": 2, "unit": "px", "default": 36 },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#202521" },
+    { "type": "header", "content": "Grid & Cards" },
+    { "type": "range", "id": "articles_limit", "label": "Articles to show", "min": 1, "max": 6, "step": 1, "default": 3 },
+    { "type": "range", "id": "columns_desktop", "label": "Columns (desktop)", "min": 1, "max": 4, "step": 1, "default": 3 },
     {
       "type": "select",
       "id": "columns_mobile",
       "label": "Columns (mobile)",
       "options": [
-        {
-          "value": "1",
-          "label": "1 column"
-        },
-        {
-          "value": "2",
-          "label": "2 columns"
-        }
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
       ],
       "default": "1"
     },
-    {
-      "type": "range",
-      "id": "grid_gap",
-      "label": "Grid gap",
-      "min": 8,
-      "max": 40,
-      "step": 2,
-      "unit": "px",
-      "default": 20
-    },
-    {
-      "type": "checkbox",
-      "id": "show_image",
-      "label": "Show featured image",
-      "default": true
-    },
+    { "type": "range", "id": "grid_gap", "label": "Grid gap (desktop)", "min": 12, "max": 36, "step": 4, "unit": "px", "default": 24 },
+    { "type": "checkbox", "id": "show_image", "label": "Show featured image", "default": true },
     {
       "type": "select",
       "id": "image_ratio",
       "label": "Image aspect ratio",
       "options": [
-        {
-          "value": "4 / 3",
-          "label": "Landscape (4:3)"
-        },
-        {
-          "value": "16 / 10",
-          "label": "Wide (16:10)"
-        },
-        {
-          "value": "1 / 1",
-          "label": "Square (1:1)"
-        },
-        {
-          "value": "3 / 4",
-          "label": "Portrait (3:4)"
-        }
+        { "value": "4 / 3", "label": "Landscape (4:3)" },
+        { "value": "16 / 10", "label": "Wide (16:10)" },
+        { "value": "1 / 1", "label": "Square (1:1)" },
+        { "value": "3 / 4", "label": "Portrait (3:4)" }
       ],
       "default": "4 / 3"
     },
-    {
-      "type": "checkbox",
-      "id": "show_date",
-      "label": "Show publish date",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_author",
-      "label": "Show author",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "show_excerpt",
-      "label": "Show excerpt",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "read_more_label",
-      "label": "Read more label",
-      "default": "Read Story"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_view_all",
-      "label": "Show 'View All' button",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "view_all_label",
-      "label": "View all button label",
-      "default": "Explore Journal"
-    },
-    {
-      "type": "range",
-      "id": "article_title_size",
-      "label": "Article title size",
-      "min": 16,
-      "max": 32,
-      "step": 1,
-      "unit": "px",
-      "default": 21
-    },
-    {
-      "type": "text_alignment",
-      "id": "card_align",
-      "label": "Card alignment",
-      "default": "left"
-    },
-    {
-      "type": "range",
-      "id": "card_radius",
-      "label": "Card corner radius",
-      "min": 0,
-      "max": 32,
-      "step": 2,
-      "unit": "px",
-      "default": 10
-    },
-    {
-      "type": "color",
-      "id": "card_bg",
-      "label": "Card background",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "card_text",
-      "label": "Card text color",
-      "default": "#1C1C1C"
-    },
-    {
-      "type": "header",
-      "content": "Section Spacing"
-    },
-    {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Section background (optional)"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "label": "Top padding",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "default": 56
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "label": "Bottom padding",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "default": 56
-    }
+    { "type": "checkbox", "id": "show_date", "label": "Show publish date", "default": true },
+    { "type": "checkbox", "id": "show_author", "label": "Show author", "default": false },
+    { "type": "checkbox", "id": "show_excerpt", "label": "Show excerpt", "default": true },
+    { "type": "text", "id": "read_more_label", "label": "Read more label", "default": "Read Story" },
+    { "type": "checkbox", "id": "show_view_all", "label": "Show 'View All' button", "default": true },
+    { "type": "text", "id": "view_all_label", "label": "View all button label", "default": "Explore Journal" },
+    { "type": "range", "id": "article_title_size", "label": "Article title size", "min": 16, "max": 28, "step": 1, "unit": "px", "default": 20 },
+    { "type": "text_alignment", "id": "card_align", "label": "Card alignment", "default": "left" },
+    { "type": "range", "id": "card_radius", "label": "Card corner radius", "min": 0, "max": 12, "step": 2, "unit": "px", "default": 4 },
+    { "type": "color", "id": "card_bg", "label": "Card background", "default": "#FFFFFF" },
+    { "type": "color", "id": "card_text", "label": "Card text color", "default": "#202521" },
+    { "type": "header", "content": "Section Spacing" },
+    { "type": "color", "id": "bg_color", "label": "Section background (optional)" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 32, "max": 96, "step": 8, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 32, "max": 96, "step": 8, "unit": "px", "default": 72 }
   ],
   "presets": [
-    {
-      "name": "Blog Preview"
-    }
+    { "name": "Blog Preview" }
   ]
 }
 {% endschema %}

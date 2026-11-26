@@ -1,18 +1,37 @@
-<section style="padding: {{ section.settings.padding_y }}px 0;">
-  <div class="wrap" style="max-width: 880px;">
-    <p><a href="{{ routes.account_url }}">← Back to Account</a></p>
-    <h1>Order {{ order.name }}</h1>
-    <p style="color: var(--text-muted); margin-bottom: 24px;">Placed on {{ order.created_at | date: '%B %d, %Y' }}</p>
+<section class="account-sec">
+  <div class="wrap account-wide">
+    <div class="account-top-bar">
+      <div>
+        <span class="eyebrow">Order Summary</span>
+        <h1>Order {{ order.name }}</h1>
+        <p class="account-sub" style="margin: 6px 0 0;">Placed on {{ order.created_at | date: '%b %d, %Y' }}</p>
+      </div>
+      <a href="{{ routes.account_url }}" class="btn outline">Back to Account</a>
+    </div>
 
-    <div style="background: var(--surface); border-radius: var(--radius); padding: 28px; border: 1px solid var(--border-color);">
-      {% for item in order.line_items %}
-        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color);">
-          <div>{{ item.title }} × {{ item.quantity }}</div>
-          <strong>{{ item.final_line_price | money }}</strong>
-        </div>
-      {% endfor %}
-      <div style="display: flex; justify-content: space-between; padding-top: 18px; font-size: 18px;">
-        <span>Total</span>
+    <div class="account-card">
+      <div class="account-table-wrap">
+        <table class="account-table">
+          <thead>
+            <tr>
+              <th>Saree / Item</th>
+              <th>Quantity</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for line_item in order.line_items %}
+              <tr>
+                <td>{{ line_item.title }}</td>
+                <td>{{ line_item.quantity }}</td>
+                <td>{{ line_item.final_line_price | money }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="order-total-row">
+        <span>Order Total</span>
         <strong>{{ order.total_price | money }}</strong>
       </div>
     </div>
@@ -21,9 +40,7 @@
 
 {% schema %}
 {
-  "name": "Main Order",
-  "settings": [
-    { "type": "range", "id": "padding_y", "label": "Vertical padding", "min": 24, "max": 100, "step": 4, "unit": "px", "default": 56 }
-  ]
+  "name": "Customer Order",
+  "settings": []
 }
 {% endschema %}

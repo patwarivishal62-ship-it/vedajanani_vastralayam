@@ -7,50 +7,64 @@
           "type": "kicker",
           "settings": {
             "text": "Vedajanani Vastralayam · Anantapur",
-            "color": "#E2CFA8"
+            "color": "#E5D4AE",
+            "size": 12,
+            "letter_spacing": 2
           }
         },
         "heading": {
           "type": "heading",
           "settings": {
-            "text": "Drape the story you carry.",
-            "color": "#FAF2E3"
+            "text": "Woven with Grace, Worn with Pride.",
+            "color": "#FAF2E3",
+            "size_desktop": 56,
+            "size_mobile": 36,
+            "line_height": 110
           }
         },
         "subheading": {
           "type": "subheading",
           "settings": {
-            "text": "Cotton, Silk, Chiffon & Georgette sarees curated for everyday comfort and timeless celebrations.",
-            "color": "#EFE5D2"
+            "text": "Curated Cotton, Silk, Chiffon & Georgette sarees for everyday elegance and quiet celebrations.",
+            "color": "#F2E9D8",
+            "size_desktop": 16,
+            "size_mobile": 15
           }
         },
         "buttons": {
           "type": "buttons",
           "settings": {
-            "cta_label": "Explore New Arrivals",
+            "cta_label": "Shop Sarees",
             "cta_style": "solid",
             "cta_color": "#FFFFFF",
-            "cta_bg": "#A8492D",
-            "cta2_label": "Shop All Sarees",
+            "cta_bg": "#244737",
+            "cta2_label": "New Arrivals",
             "cta2_style": "outline",
-            "cta2_color": "#FAF2E3"
+            "cta2_color": "#FAF2E3",
+            "font_size": 13,
+            "letter_spacing": 1
           }
         }
       },
-      "block_order": [
-        "kicker",
-        "heading",
-        "subheading",
-        "buttons"
-      ],
+      "block_order": ["kicker", "heading", "subheading", "buttons"],
       "settings": {
-        "fallback_bg": "linear-gradient(145deg, #173125 0%, #244737 58%, #4A2B20 100%)"
+        "banner_width": "full",
+        "height_mode": "ratio",
+        "fallback_bg": "#1C382B",
+        "overlay_color": "#111A14",
+        "overlay_opacity": 55,
+        "align_vertical": "flex-end",
+        "align_horizontal": "flex-start",
+        "text_align": "left",
+        "content_max_width": 620,
+        "content_pad_y": 56,
+        "content_pad_x": 48
       }
     },
     "collections": {
       "type": "featured-collections",
       "blocks": {
-        "col_cotton": {
+        "cotton": {
           "type": "collection_card",
           "settings": {
             "title": "Cotton",
@@ -58,7 +72,7 @@
             "fallback_path": "/collections/cotton"
           }
         },
-        "col_silk": {
+        "silk": {
           "type": "collection_card",
           "settings": {
             "title": "Silk",
@@ -66,7 +80,7 @@
             "fallback_path": "/collections/silk"
           }
         },
-        "col_chiffon": {
+        "chiffon": {
           "type": "collection_card",
           "settings": {
             "title": "Chiffon",
@@ -74,7 +88,7 @@
             "fallback_path": "/collections/chiffon"
           }
         },
-        "col_georgette": {
+        "georgette": {
           "type": "collection_card",
           "settings": {
             "title": "Georgette",
@@ -83,70 +97,73 @@
           }
         }
       },
-      "block_order": [
-        "col_cotton",
-        "col_silk",
-        "col_chiffon",
-        "col_georgette"
-      ],
+      "block_order": ["cotton", "silk", "chiffon", "georgette"],
       "settings": {
         "eyebrow": "By Fabric",
-        "heading": "Shop by Fabric"
+        "heading": "Shop by Fabric",
+        "card_style": "below",
+        "image_ratio": "4 / 5",
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "grid_gap": 24,
+        "card_radius": 4,
+        "card_align": "left",
+        "padding_top": 72,
+        "padding_bottom": 56
       }
     },
     "new": {
       "type": "featured-products",
       "settings": {
+        "collection": "new-arrivals",
+        "hide_when_empty": false,
         "eyebrow": "Just Arrived",
         "heading": "New Arrivals",
-        "collection": "new-arrivals",
-        "view_all_label": "View New Arrivals"
+        "products_limit": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "grid_gap": 24,
+        "image_ratio": "3 / 4",
+        "card_align": "left",
+        "show_quick_add": false,
+        "show_view_all": true,
+        "view_all_label": "View All New Arrivals",
+        "view_all_style": "outline",
+        "padding_top": 56,
+        "padding_bottom": 56
       }
     },
-    "campaigns": {
-      "type": "campaign-blocks",
-      "blocks": {
-        "festive": {
-          "type": "campaign",
-          "settings": {
-            "bg_gradient": "linear-gradient(155deg, #A8492D 0%, #6F2E1B 100%)",
-            "kicker": "Celebration Curations",
-            "heading": "The Festive Edit",
-            "description": "Zari cottons, luminous silks and graceful Bandhani drapes.",
-            "cta_label": "Shop Festive",
-            "fallback_path": "/collections/festive"
-          }
-        },
-        "wedding": {
-          "type": "campaign",
-          "settings": {
-            "bg_gradient": "linear-gradient(155deg, #244737 0%, #13281F 100%)",
-            "kicker": "Timeless Occasions",
-            "heading": "The Wedding Edit",
-            "description": "Statement weaves curated for brides, family and guests.",
-            "cta_label": "Shop Wedding",
-            "fallback_path": "/collections/wedding"
-          }
-        }
-      },
-      "block_order": [
-        "festive",
-        "wedding"
-      ],
-      "settings": {}
+    "signature": {
+      "type": "editorial-feature",
+      "settings": {
+        "image_position": "left",
+        "image_ratio": "4 / 3",
+        "show_woven_accent": true,
+        "eyebrow": "Signature Curation",
+        "heading": "The Festive & Wedding Edit",
+        "body": "<p>Thoughtfully selected silks, zari-bordered cottons and celebratory drapes chosen for their graceful fall, rich colour and lasting comfort across family gatherings and ceremonies.</p>",
+        "cta_label": "Explore Festive Edit",
+        "fallback_path": "/collections/festive",
+        "cta_style": "solid",
+        "bg_color": "#F2E7D3",
+        "panel_bg": "#FFFFFF",
+        "radius": 4,
+        "padding_top": 72,
+        "padding_bottom": 72
+      }
     },
     "occasion": {
       "type": "shop-by-occasion",
       "blocks": {
-        "o_daily": {
+        "daily": {
           "type": "occasion",
           "settings": {
-            "title": "Daily Use",
+            "title": "Everyday",
             "subtitle": "Breathable cottons & light prints",
             "fallback_path": "/collections/daily-use"
           }
         },
-        "o_office": {
+        "office": {
           "type": "occasion",
           "settings": {
             "title": "Office",
@@ -154,7 +171,7 @@
             "fallback_path": "/collections/office"
           }
         },
-        "o_festive": {
+        "festive": {
           "type": "occasion",
           "settings": {
             "title": "Festive",
@@ -162,117 +179,137 @@
             "fallback_path": "/collections/festive"
           }
         },
-        "o_wedding": {
+        "wedding": {
           "type": "occasion",
           "settings": {
-            "title": "Wedding Edit",
+            "title": "Wedding",
             "subtitle": "Brides, family & ceremony guests",
             "fallback_path": "/collections/wedding"
           }
         }
       },
-      "block_order": [
-        "o_daily",
-        "o_office",
-        "o_festive",
-        "o_wedding"
-      ],
+      "block_order": ["daily", "office", "festive", "wedding"],
       "settings": {
         "eyebrow": "By Occasion",
-        "heading": "Where Will You Wear It?"
+        "heading": "Shop by Occasion",
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "grid_gap": 24,
+        "card_radius": 4,
+        "card_align": "left",
+        "padding_top": 72,
+        "padding_bottom": 56
       }
     },
     "price": {
       "type": "shop-by-price",
       "blocks": {
-        "p_aff": {
+        "affordable": {
           "type": "tier",
           "settings": {
             "eyebrow": "Affordable",
             "price_range": "₹500 – ₹1,499",
             "subtitle": "Everyday cottons, chiffons & light prints",
+            "cta_label": "Shop Range",
             "fallback_path": "/collections/affordable"
           }
         },
-        "p_mid": {
+        "mid": {
           "type": "tier",
           "settings": {
             "eyebrow": "Mid Range",
             "price_range": "₹1,500 – ₹2,999",
             "subtitle": "Festive weaves, silk blends & zari borders",
+            "cta_label": "Shop Range",
             "fallback_path": "/collections/mid-range"
           }
         },
-        "p_pre": {
+        "premium": {
           "type": "tier",
           "settings": {
             "eyebrow": "Premium",
             "price_range": "₹3,000 & Above",
             "subtitle": "Statement occasion & wedding drapes",
+            "cta_label": "Shop Range",
             "fallback_path": "/collections/premium"
           }
         }
       },
-      "block_order": [
-        "p_aff",
-        "p_mid",
-        "p_pre"
-      ],
+      "block_order": ["affordable", "mid", "premium"],
       "settings": {
         "eyebrow": "By Price",
-        "heading": "Shop Every Budget"
+        "heading": "Shop by Price",
+        "columns_desktop": 3,
+        "columns_mobile": "1",
+        "grid_gap": 24,
+        "card_radius": 4,
+        "card_align": "left",
+        "bg_color": "#F2E7D3",
+        "padding_top": 64,
+        "padding_bottom": 64
       }
     },
     "lookbook": {
       "type": "lookbook-grid",
       "blocks": {
-        "look_1": {
+        "look1": {
           "type": "photo",
           "settings": {
-            "caption": "Cotton Weaves",
-            "subcaption": "Everyday Grace"
+            "caption": "Silk Occasion Drapes",
+            "subcaption": "Festive & Wedding Edit",
+            "cta_label": "Shop the Look",
+            "url": "/collections/silk"
           }
         },
-        "look_2": {
+        "look2": {
           "type": "photo",
           "settings": {
-            "caption": "Silk Drapes",
-            "subcaption": "Heirloom Craft"
+            "caption": "Everyday Cotton Weaves",
+            "subcaption": "Breathable Comfort",
+            "cta_label": "Shop the Look",
+            "url": "/collections/cotton"
           }
         },
-        "look_3": {
+        "look3": {
           "type": "photo",
           "settings": {
-            "caption": "Festive Chiffon",
-            "subcaption": "Light & Luminous"
-          }
-        },
-        "look_4": {
-          "type": "photo",
-          "settings": {
-            "caption": "Wedding Edit",
-            "subcaption": "Ceremony Statements"
+            "caption": "Chiffon & Georgette",
+            "subcaption": "Light & Luminous",
+            "cta_label": "Shop the Look",
+            "url": "/collections/chiffon"
           }
         }
       },
-      "block_order": [
-        "look_1",
-        "look_2",
-        "look_3",
-        "look_4"
-      ],
+      "block_order": ["look1", "look2", "look3"],
       "settings": {
         "eyebrow": "Lookbook",
-        "heading": "Draped in Grace"
+        "heading": "Draped in Grace",
+        "layout_style": "editorial",
+        "grid_gap": 20,
+        "card_radius": 4,
+        "padding_top": 72,
+        "padding_bottom": 56
       }
     },
     "bestsellers": {
       "type": "featured-products",
       "settings": {
+        "collection": "best-sellers",
+        "hide_when_empty": false,
         "eyebrow": "Most Loved",
         "heading": "Best Sellers",
-        "collection": "best-sellers",
-        "view_all_label": "View Best Sellers"
+        "products_limit": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "grid_gap": 24,
+        "image_ratio": "3 / 4",
+        "card_align": "left",
+        "show_quick_add": false,
+        "show_view_all": true,
+        "view_all_label": "View All Sarees",
+        "view_all_style": "outline",
+        "padding_top": 48,
+        "padding_bottom": 56
       }
     },
     "testimonials": {
@@ -291,7 +328,7 @@
           "type": "review",
           "settings": {
             "rating": 0,
-            "quote": "Replace this placeholder in Theme Editor with authentic feedback from your patrons.",
+            "quote": "Replace this placeholder in Theme Editor with authentic feedback from Vedajanani Vastralayam patrons.",
             "author": "Verified Patron",
             "meta": "Silk & Festive Edit"
           }
@@ -306,29 +343,39 @@
           }
         }
       },
-      "block_order": [
-        "r1",
-        "r2",
-        "r3"
-      ],
+      "block_order": ["r1", "r2", "r3"],
       "settings": {
+        "hide_when_empty": false,
         "eyebrow": "Customer Reflections",
         "heading": "Words From Our Patrons",
-        "show_stars": false
+        "show_stars": false,
+        "card_radius": 4,
+        "bg_color": "#F2E7D3",
+        "padding_top": 64,
+        "padding_bottom": 64
       }
     },
     "blog": {
       "type": "blog-preview",
       "settings": {
+        "hide_when_empty": false,
         "eyebrow": "The Journal",
-        "heading": "Stories & Style Notes"
+        "heading": "Stories & Care Notes",
+        "articles_limit": 3,
+        "card_radius": 4,
+        "padding_top": 64,
+        "padding_bottom": 48
       }
     },
     "newsletter": {
       "type": "newsletter",
       "settings": {
         "eyebrow": "The Vastralayam List",
-        "heading": "First Look at New Arrivals"
+        "heading": "First Look at New Arrivals",
+        "subheading": "Receive notes on new saree arrivals, festive curations and weave stories.",
+        "box_radius": 4,
+        "padding_top": 32,
+        "padding_bottom": 72
       }
     }
   },
@@ -336,7 +383,7 @@
     "hero",
     "collections",
     "new",
-    "campaigns",
+    "signature",
     "occasion",
     "price",
     "lookbook",

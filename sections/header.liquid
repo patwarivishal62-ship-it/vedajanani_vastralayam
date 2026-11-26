@@ -11,6 +11,22 @@
   if section.settings.menu != blank and section.settings.menu.links.size > 0
     assign use_shopify_menu = true
   endif
+  assign has_mega_image = false
+  if section.settings.mega_image != blank
+    assign has_mega_image = true
+  endif
+  assign mega_cols_count = mega_blocks.size | at_least: 1 | at_most: 3
+  if has_mega_image
+    assign mega_cols_count = mega_cols_count | plus: 1
+  endif
+  assign is_home_active = false
+  if request.page_type == 'index'
+    assign is_home_active = true
+  endif
+  assign is_shop_active = false
+  if request.page_type == 'collection' or request.page_type == 'product'
+    assign is_shop_active = true
+  endif
 -%}
 
 {% style %}
@@ -19,10 +35,6 @@
     color: {{ section.settings.text_color }};
     border-bottom-color: {{ section.settings.border_color }};
     --header-hover: {{ section.settings.hover_color }};
-  }
-  #shopify-section-{{ section.id }} .header-inner {
-    padding-top: {{ section.settings.padding_y }}px;
-    padding-bottom: {{ section.settings.padding_y }}px;
   }
   #shopify-section-{{ section.id }} .logo {
     color: {{ section.settings.text_color }};
@@ -33,14 +45,6 @@
   #shopify-section-{{ section.id }} .logo-name {
     font-size: {{ section.settings.logo_font_size }}px;
     letter-spacing: {{ section.settings.logo_letter_spacing }}px;
-  }
-  #shopify-section-{{ section.id }} .logo-sub {
-    font-size: {{ section.settings.subtext_font_size }}px;
-    letter-spacing: {{ section.settings.subtext_letter_spacing }}px;
-  }
-  #shopify-section-{{ section.id }} .icon-btn .vv-icon {
-    width: {{ section.settings.icon_size }}px;
-    height: {{ section.settings.icon_size }}px;
   }
   #shopify-section-{{ section.id }} .cart-count {
     background: {{ section.settings.badge_bg }};
@@ -55,26 +59,14 @@
     font-size: {{ section.settings.nav_font_size }}px;
     letter-spacing: {{ section.settings.nav_letter_spacing }}px;
     text-transform: {{ section.settings.nav_transform }};
-    padding: {{ section.settings.nav_pad_y }}px {{ section.settings.nav_pad_x }}px;
     color: {{ section.settings.text_color }};
-  }
-  #shopify-section-{{ section.id }} .desktop-menubar > a:hover,
-  #shopify-section-{{ section.id }} .desktop-menubar .shopall-wrap > a:hover {
-    color: {{ section.settings.hover_color }};
   }
   #shopify-section-{{ section.id }} .shopall-dropdown {
     background: {{ section.settings.dropdown_bg }};
-    border-radius: {{ section.settings.dropdown_radius }}px;
     min-width: {{ section.settings.dropdown_width }}px;
   }
   #shopify-section-{{ section.id }} .shopall-dropdown .dd-grid {
-    grid-template-columns: repeat({{ mega_blocks.size | at_least: 1 | at_most: 4 }}, minmax(0, 1fr));
-  }
-  #shopify-section-{{ section.id }} .shopall-dropdown h4 {
-    color: {{ section.settings.dropdown_heading_color }};
-  }
-  #shopify-section-{{ section.id }} .shopall-dropdown a:hover {
-    color: {{ section.settings.hover_color }};
+    grid-template-columns: repeat({{ mega_cols_count }}, minmax(0, 1fr));
   }
   @media (max-width: 1100px) {
     #shopify-section-{{ section.id }} .logo img {
@@ -131,14 +123,27 @@
   </div>
 
   <nav class="desktop-menubar" aria-label="Main menu">
+    {% if section.settings.show_home_link %}
+      <a href="{{ routes.root_url }}" class="{% if is_home_active %}is-active{% endif %}"{% if is_home_active %} aria-current="page"{% endif %}>Home</a>
+    {% endif %}
+
     {% if section.settings.show_shop_all %}
-      <span class="shopall-wrap">
-        <a href="{{ shop_all_href }}" aria-haspopup="true" aria-expanded="false">{{ section.settings.shop_all_label | default: 'Shop All' }} <span class="caret">{% render 'icons', icon: 'chevron-down' %}</span></a>
-        <span class="shopall-dropdown">
-          <span class="dd-grid">
+      <span class="shopall-wrap" data-mega-wrap>
+        <a
+          href="{{ shop_all_href }}"
+          class="{% if is_shop_active %}is-active{% endif %}"
+          data-mega-trigger
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <span>{{ section.settings.shop_all_label | default: 'Shop Sarees' }}</span>
+          <span class="caret">{% render 'icons', icon: 'chevron-down' %}</span>
+        </a>
+        <div class="shopall-dropdown" data-mega-panel role="region" aria-label="{{ section.settings.shop_all_label | default: 'Shop Sarees' }} menu">
+          <div class="dd-grid">
             {% if mega_blocks.size > 0 %}
               {% for block in mega_blocks %}
-                <span {{ block.shopify_attributes }}>
+                <div class="dd-col" {{ block.shopify_attributes }}>
                   <h4>{{ block.settings.heading }}</h4>
                   {% if block.settings.menu != blank and block.settings.menu.links.size > 0 %}
                     {% for link in block.settings.menu.links %}
@@ -156,50 +161,71 @@
                       {% endif %}
                     {% endfor %}
                   {% endif %}
-                </span>
+                </div>
               {% endfor %}
             {% else %}
-              <span>
+              <div class="dd-col">
                 <h4>By Fabric</h4>
                 <a href="{{ routes.collections_url }}/cotton">Cotton</a>
                 <a href="{{ routes.collections_url }}/silk">Silk</a>
                 <a href="{{ routes.collections_url }}/chiffon">Chiffon</a>
                 <a href="{{ routes.collections_url }}/georgette">Georgette</a>
-              </span>
-              <span>
+              </div>
+              <div class="dd-col">
                 <h4>By Occasion</h4>
-                <a href="{{ routes.collections_url }}/daily-use">Daily Use</a>
+                <a href="{{ routes.collections_url }}/daily-use">Everyday</a>
                 <a href="{{ routes.collections_url }}/office">Office</a>
                 <a href="{{ routes.collections_url }}/festive">Festive</a>
                 <a href="{{ routes.collections_url }}/wedding">Wedding</a>
-              </span>
-              <span>
+              </div>
+              <div class="dd-col">
                 <h4>By Price</h4>
                 <a href="{{ routes.collections_url }}/affordable">₹500–₹1,499</a>
                 <a href="{{ routes.collections_url }}/mid-range">₹1,500–₹2,999</a>
                 <a href="{{ routes.collections_url }}/premium">₹3,000 &amp; Above</a>
-              </span>
+              </div>
             {% endif %}
-          </span>
-        </span>
+
+            {% if has_mega_image %}
+              <a class="dd-editorial" href="{{ section.settings.mega_image_url | default: shop_all_href }}">
+                <img
+                  src="{{ section.settings.mega_image | image_url: width: 520 }}"
+                  alt="{{ section.settings.mega_image.alt | default: section.settings.mega_image_caption | default: 'Featured Sarees' | escape }}"
+                  width="260"
+                  height="325"
+                  loading="lazy"
+                >
+                {% if section.settings.mega_image_caption != blank %}
+                  <span>{{ section.settings.mega_image_caption }}</span>
+                {% endif %}
+              </a>
+            {% endif %}
+          </div>
+          <div class="dd-footer">
+            <a class="link-cta" href="{{ shop_all_href }}">View All Sarees {% render 'icons', icon: 'arrow-right' %}</a>
+          </div>
+        </div>
       </span>
     {% endif %}
 
     {% if use_shopify_menu %}
       {% for link in section.settings.menu.links %}
-        <a href="{{ link.url }}">{{ link.title }}</a>
+        <a href="{{ link.url }}" class="{% if link.active %}is-active{% endif %}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title }}</a>
       {% endfor %}
     {% elsif nav_blocks.size > 0 %}
       {% for block in nav_blocks %}
-        {% assign nav_href = block.settings.url | default: block.settings.fallback_path | default: routes.all_products_collection_url %}
-        <a href="{{ nav_href }}" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
+        {%- liquid
+          assign nav_href = block.settings.url | default: block.settings.fallback_path | default: routes.all_products_collection_url
+          assign is_nav_active = false
+          if request.path == nav_href
+            assign is_nav_active = true
+          endif
+        -%}
+        <a href="{{ nav_href }}" class="{% if is_nav_active %}is-active{% endif %}"{% if is_nav_active %} aria-current="page"{% endif %} {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
       {% endfor %}
     {% else %}
       <a href="{{ routes.collections_url }}/new-arrivals">New Arrivals</a>
-      <a href="{{ routes.collections_url }}/festive">Festive</a>
-      <a href="{{ routes.collections_url }}/wedding">Weddings</a>
-      <a href="/pages/about">About</a>
-      <a href="/blogs/journal">Journal</a>
+      <a href="/pages/about">Our Story</a>
     {% endif %}
   </nav>
 </header>
@@ -212,101 +238,143 @@
     <button id="menuDrawerClose" class="drawer-close-btn" type="button" aria-label="Close navigation menu">{% render 'icons', icon: 'close' %}</button>
   </div>
 
-  {% if section.settings.show_shop_all %}
-    <button type="button" class="mm-accordion-btn" id="mobileShopAllToggle" aria-expanded="true" aria-controls="mobileShopAllSub">
-      <span>{{ section.settings.shop_all_label | default: 'Shop All' }}</span>
-      <span>{% render 'icons', icon: 'chevron-down' %}</span>
-    </button>
-    <div class="mm-shopall-sub" id="mobileShopAllSub">
-      <a href="{{ shop_all_href }}"><strong>View All Sarees</strong></a>
-      {% if mega_blocks.size > 0 %}
-        {% for block in mega_blocks %}
-          <div class="mm-subhead">{{ block.settings.heading }}</div>
-          {% if block.settings.menu != blank and block.settings.menu.links.size > 0 %}
-            {% for link in block.settings.menu.links %}
-              <a href="{{ link.url }}">{{ link.title }}</a>
-            {% endfor %}
-          {% else %}
-            {% assign lines = block.settings.links_list | newline_to_br | split: '<br />' %}
-            {% for line in lines %}
-              {% assign clean_line = line | strip %}
-              {% if clean_line != blank %}
-                {% assign parts = clean_line | split: '|' %}
-                {% assign lbl = parts[0] | strip %}
-                {% assign href = parts[1] | strip | default: routes.all_products_collection_url %}
-                <a href="{{ href }}">{{ lbl }}</a>
-              {% endif %}
-            {% endfor %}
-          {% endif %}
+  <div class="mm-panels" data-mm-panels>
+    <div class="mm-panel is-active" data-mm-panel="root">
+      {% if section.settings.show_home_link %}
+        <a class="mm-link" href="{{ routes.root_url }}">Home</a>
+      {% endif %}
+
+      {% if section.settings.show_shop_all %}
+        <button type="button" class="mm-submenu-trigger" data-mm-open="shop-sarees" aria-expanded="false">
+          <span>{{ section.settings.shop_all_label | default: 'Shop Sarees' }}</span>
+          {% render 'icons', icon: 'chevron-right' %}
+        </button>
+      {% endif %}
+
+      {% if use_shopify_menu %}
+        {% for link in section.settings.menu.links %}
+          <a class="mm-link" href="{{ link.url }}">{{ link.title }}</a>
+        {% endfor %}
+      {% elsif nav_blocks.size > 0 %}
+        {% for block in nav_blocks %}
+          {% assign nav_href = block.settings.url | default: block.settings.fallback_path | default: routes.all_products_collection_url %}
+          <a class="mm-link" href="{{ nav_href }}">{{ block.settings.label }}</a>
         {% endfor %}
       {% else %}
-        <div class="mm-subhead">By Fabric</div>
-        <a href="{{ routes.collections_url }}/cotton">Cotton</a>
-        <a href="{{ routes.collections_url }}/silk">Silk</a>
-        <a href="{{ routes.collections_url }}/chiffon">Chiffon</a>
-        <a href="{{ routes.collections_url }}/georgette">Georgette</a>
-        <div class="mm-subhead">By Occasion</div>
-        <a href="{{ routes.collections_url }}/daily-use">Daily Use</a>
-        <a href="{{ routes.collections_url }}/office">Office</a>
-        <a href="{{ routes.collections_url }}/festive">Festive</a>
-        <a href="{{ routes.collections_url }}/wedding">Wedding</a>
-        <div class="mm-subhead">By Price</div>
-        <a href="{{ routes.collections_url }}/affordable">₹500–₹1,499</a>
-        <a href="{{ routes.collections_url }}/mid-range">₹1,500–₹2,999</a>
-        <a href="{{ routes.collections_url }}/premium">₹3,000 &amp; Above</a>
+        <a class="mm-link" href="{{ routes.collections_url }}/new-arrivals">New Arrivals</a>
+        <a class="mm-link" href="/pages/about">Our Story</a>
+      {% endif %}
+
+      <a class="mm-link" href="/pages/contact">Contact &amp; FAQ</a>
+      {% if section.settings.show_account %}
+        <a class="mm-link" href="{{ account_url }}">{% if customer %}My Account{% else %}Sign In / Account{% endif %}</a>
       {% endif %}
     </div>
-  {% endif %}
 
-  {% if use_shopify_menu %}
-    {% for link in section.settings.menu.links %}
-      <a href="{{ link.url }}">{{ link.title }}</a>
-    {% endfor %}
-  {% elsif nav_blocks.size > 0 %}
-    {% for block in nav_blocks %}
-      {% assign nav_href = block.settings.url | default: block.settings.fallback_path | default: routes.all_products_collection_url %}
-      <a href="{{ nav_href }}">{{ block.settings.label }}</a>
-    {% endfor %}
-  {% else %}
-    <a href="{{ routes.collections_url }}/new-arrivals">New Arrivals</a>
-    <a href="{{ routes.collections_url }}/festive">Festive</a>
-    <a href="{{ routes.collections_url }}/wedding">Weddings</a>
-    <a href="/pages/about">About</a>
-    <a href="/blogs/journal">Journal</a>
-  {% endif %}
+    {% if section.settings.show_shop_all %}
+      <div class="mm-panel" data-mm-panel="shop-sarees" hidden>
+        <button type="button" class="mm-back-btn" data-mm-back>
+          {% render 'icons', icon: 'arrow-left' %}
+          <span>Back to Menu</span>
+        </button>
+        <a class="mm-link mm-link--strong" href="{{ shop_all_href }}">View All Sarees</a>
 
-  <a href="/pages/contact">Contact</a>
-  {% if section.settings.show_account %}
-    <a href="{{ account_url }}">{% if customer %}My Account{% else %}Account / Sign In{% endif %}</a>
-  {% endif %}
+        {% if mega_blocks.size > 0 %}
+          {% for block in mega_blocks %}
+            <details class="mm-group" open>
+              <summary>
+                <span>{{ block.settings.heading }}</span>
+                {% render 'icons', icon: 'chevron-down' %}
+              </summary>
+              <div class="mm-group-links">
+                {% if block.settings.menu != blank and block.settings.menu.links.size > 0 %}
+                  {% for link in block.settings.menu.links %}
+                    <a href="{{ link.url }}">{{ link.title }}</a>
+                  {% endfor %}
+                {% else %}
+                  {% assign lines = block.settings.links_list | newline_to_br | split: '<br />' %}
+                  {% for line in lines %}
+                    {% assign clean_line = line | strip %}
+                    {% if clean_line != blank %}
+                      {% assign parts = clean_line | split: '|' %}
+                      {% assign lbl = parts[0] | strip %}
+                      {% assign href = parts[1] | strip | default: routes.all_products_collection_url %}
+                      <a href="{{ href }}">{{ lbl }}</a>
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+              </div>
+            </details>
+          {% endfor %}
+        {% else %}
+          <details class="mm-group" open>
+            <summary><span>By Fabric</span>{% render 'icons', icon: 'chevron-down' %}</summary>
+            <div class="mm-group-links">
+              <a href="{{ routes.collections_url }}/cotton">Cotton</a>
+              <a href="{{ routes.collections_url }}/silk">Silk</a>
+              <a href="{{ routes.collections_url }}/chiffon">Chiffon</a>
+              <a href="{{ routes.collections_url }}/georgette">Georgette</a>
+            </div>
+          </details>
+          <details class="mm-group" open>
+            <summary><span>By Occasion</span>{% render 'icons', icon: 'chevron-down' %}</summary>
+            <div class="mm-group-links">
+              <a href="{{ routes.collections_url }}/daily-use">Everyday</a>
+              <a href="{{ routes.collections_url }}/office">Office</a>
+              <a href="{{ routes.collections_url }}/festive">Festive</a>
+              <a href="{{ routes.collections_url }}/wedding">Wedding</a>
+            </div>
+          </details>
+          <details class="mm-group" open>
+            <summary><span>By Price</span>{% render 'icons', icon: 'chevron-down' %}</summary>
+            <div class="mm-group-links">
+              <a href="{{ routes.collections_url }}/affordable">₹500–₹1,499</a>
+              <a href="{{ routes.collections_url }}/mid-range">₹1,500–₹2,999</a>
+              <a href="{{ routes.collections_url }}/premium">₹3,000 &amp; Above</a>
+            </div>
+          </details>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
 </aside>
 
 {% if section.settings.show_search %}
   <div class="search-drawer" id="searchDrawer" role="dialog" aria-modal="true" aria-label="Search store" aria-hidden="true">
     <div class="wrap">
       <div class="drawer-head">
-        <span class="eyebrow">Search {{ section.settings.logo_text | default: shop.name }}</span>
+        <span class="eyebrow" style="margin: 0;">Search {{ section.settings.logo_text | default: shop.name }}</span>
         <button id="searchClose" class="drawer-close-btn" type="button" aria-label="Close search">{% render 'icons', icon: 'close' %}</button>
       </div>
       <form action="{{ routes.search_url }}" method="get" role="search" class="search-form" data-predictive-search-form>
         <input type="hidden" name="type" value="product">
-        <input
-          type="search"
-          name="q"
-          autocomplete="off"
-          data-predictive-search-input
-          placeholder="{{ section.settings.search_placeholder | default: "Try 'Cotton', 'Silk', 'Jamdani', 'Festive'…" }}"
-          aria-label="Search sarees"
-          aria-controls="predictiveSearchResults"
-          aria-autocomplete="list"
-        >
+        <div class="search-input-wrap">
+          <label for="HeaderSearchInput" class="visually-hidden">Search sarees</label>
+          <input
+            id="HeaderSearchInput"
+            type="search"
+            name="q"
+            autocomplete="off"
+            data-predictive-search-input
+            placeholder="{{ section.settings.search_placeholder | default: "Search by fabric, weave or occasion (e.g. Cotton, Silk, Jamdani)…" }}"
+            aria-controls="predictiveSearchResults"
+            aria-autocomplete="list"
+          >
+          <button type="button" class="search-clear-btn" data-search-clear aria-label="Clear search" hidden>
+            {% render 'icons', icon: 'close' %}
+          </button>
+        </div>
         <button type="submit" class="btn">Search</button>
       </form>
+      <div class="predictive-loading" id="predictiveSearchLoading" hidden>
+        <span class="vv-spinner" aria-hidden="true"></span>
+        <span>Searching sarees…</span>
+      </div>
       <div class="predictive-results" id="predictiveSearchResults" role="listbox" aria-live="polite" hidden></div>
       {% if section.settings.popular_searches != blank %}
         {% assign terms = section.settings.popular_searches | split: ',' %}
         <div class="search-hints">
-          <span>Popular:</span>
+          <span>Browse:</span>
           {% for term in terms %}
             {% assign clean_term = term | strip %}
             {% if clean_term != blank %}
@@ -325,71 +393,66 @@
   "settings": [
     { "type": "header", "content": "Logo" },
     { "type": "image_picker", "id": "logo_image", "label": "Logo image (overrides text logo)" },
-    { "type": "range", "id": "logo_width_desktop", "label": "Logo image width (desktop)", "min": 60, "max": 320, "step": 10, "unit": "px", "default": 160 },
-    { "type": "range", "id": "logo_width_mobile", "label": "Logo image width (mobile)", "min": 50, "max": 220, "step": 10, "unit": "px", "default": 120 },
+    { "type": "range", "id": "logo_width_desktop", "label": "Logo width (desktop)", "min": 120, "max": 260, "step": 10, "unit": "px", "default": 200 },
+    { "type": "range", "id": "logo_width_mobile", "label": "Logo width (mobile)", "min": 100, "max": 200, "step": 10, "unit": "px", "default": 140 },
     {
       "type": "select",
       "id": "logo_position",
       "label": "Desktop logo placement",
       "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" }
+        { "value": "center", "label": "Center" },
+        { "value": "left", "label": "Left" }
       ],
       "default": "center"
     },
     { "type": "text", "id": "logo_text", "label": "Logo text", "default": "VEDAJANANI" },
     { "type": "text", "id": "logo_subtext", "label": "Logo subtext", "default": "Vastralayam" },
-    { "type": "range", "id": "logo_font_size", "label": "Text logo size", "min": 14, "max": 40, "step": 1, "unit": "px", "default": 21 },
-    { "type": "range", "id": "logo_letter_spacing", "label": "Text logo letter spacing", "min": 0, "max": 10, "step": 0.5, "unit": "px", "default": 4 },
-    { "type": "range", "id": "subtext_font_size", "label": "Subtext size", "min": 7, "max": 16, "step": 1, "unit": "px", "default": 9 },
-    { "type": "range", "id": "subtext_letter_spacing", "label": "Subtext letter spacing", "min": 0, "max": 10, "step": 0.5, "unit": "px", "default": 5.5 },
-    { "type": "header", "content": "Navigation & Right-Corner Icons" },
+    { "type": "range", "id": "logo_font_size", "label": "Text logo size", "min": 18, "max": 36, "step": 1, "unit": "px", "default": 24 },
+    { "type": "range", "id": "logo_letter_spacing", "label": "Text logo letter spacing", "min": 0, "max": 6, "step": 0.5, "unit": "px", "default": 2.5 },
+    { "type": "header", "content": "Navigation & Actions" },
     { "type": "checkbox", "id": "sticky_header", "label": "Sticky header on scroll", "default": true },
-    { "type": "checkbox", "id": "show_shop_all", "label": "Show 'Shop All' mega-dropdown", "default": true },
-    { "type": "text", "id": "shop_all_label", "label": "'Shop All' label", "default": "Shop All" },
-    { "type": "url", "id": "shop_all_url", "label": "'Shop All' link" },
+    { "type": "checkbox", "id": "show_home_link", "label": "Show 'Home' link", "default": true },
+    { "type": "checkbox", "id": "show_shop_all", "label": "Show 'Shop Sarees' mega menu", "default": true },
+    { "type": "text", "id": "shop_all_label", "label": "Mega menu label", "default": "Shop Sarees" },
+    { "type": "url", "id": "shop_all_url", "label": "Mega menu primary link" },
+    { "type": "image_picker", "id": "mega_image", "label": "Mega menu editorial image (optional)" },
+    { "type": "text", "id": "mega_image_caption", "label": "Mega menu image caption", "default": "Explore Festive Edit" },
+    { "type": "url", "id": "mega_image_url", "label": "Mega menu image link" },
     { "type": "link_list", "id": "menu", "label": "Shopify Menu (optional — overrides Nav Link blocks)" },
     { "type": "checkbox", "id": "show_search", "label": "Show Search icon", "default": true },
     { "type": "checkbox", "id": "show_account", "label": "Show Account icon", "default": true },
     { "type": "checkbox", "id": "show_cart", "label": "Show Bag icon", "default": true },
-    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 16, "max": 30, "step": 1, "unit": "px", "default": 20 },
-    { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "Try 'Cotton', 'Silk', 'Jamdani', 'Festive'…" },
-    { "type": "text", "id": "popular_searches", "label": "Popular searches (comma-separated)", "default": "Silk, Cotton, Chiffon, Festive, Wedding" },
-    { "type": "header", "content": "Colors" },
+    { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "Search by fabric, weave or occasion (e.g. Cotton, Silk, Jamdani)…" },
+    { "type": "text", "id": "popular_searches", "label": "Suggested searches (comma-separated)", "default": "Cotton, Silk, Chiffon, Festive, Wedding" },
+    { "type": "header", "content": "Colors & Typography" },
     { "type": "color", "id": "bg_color", "label": "Header background", "default": "#FAF2E3" },
     { "type": "color", "id": "menubar_bg", "label": "Desktop menubar background", "default": "#FAF2E3" },
-    { "type": "color", "id": "text_color", "label": "Text, logo & icon color", "default": "#1C1C1C" },
-    { "type": "color", "id": "hover_color", "label": "Hover accent color", "default": "#244737" },
-    { "type": "color", "id": "border_color", "label": "Border color", "default": "#E3D8C5" },
-    { "type": "color", "id": "badge_bg", "label": "Cart badge background", "default": "#A8492D" },
-    { "type": "color", "id": "badge_text", "label": "Cart badge text", "default": "#FFFFFF" },
-    { "type": "color", "id": "dropdown_bg", "label": "Dropdown background", "default": "#FFFFFF" },
-    { "type": "color", "id": "dropdown_heading_color", "label": "Dropdown heading color", "default": "#A88A48" },
-    { "type": "header", "content": "Typography & Spacing" },
-    { "type": "range", "id": "padding_y", "label": "Header vertical padding", "min": 8, "max": 40, "step": 2, "unit": "px", "default": 16 },
-    { "type": "range", "id": "nav_font_size", "label": "Menubar font size", "min": 10, "max": 18, "step": 1, "unit": "px", "default": 12 },
-    { "type": "range", "id": "nav_letter_spacing", "label": "Menubar letter spacing", "min": 0, "max": 5, "step": 0.5, "unit": "px", "default": 2.5 },
+    { "type": "color", "id": "text_color", "label": "Text, logo & icon color", "default": "#202521" },
+    { "type": "color", "id": "hover_color", "label": "Hover & active accent color", "default": "#244737" },
+    { "type": "color", "id": "border_color", "label": "Divider border color", "default": "#E3D8C5" },
+    { "type": "color", "id": "badge_bg", "label": "Bag count badge background", "default": "#244737" },
+    { "type": "color", "id": "badge_text", "label": "Bag count badge text", "default": "#FFFFFF" },
+    { "type": "color", "id": "dropdown_bg", "label": "Mega menu background", "default": "#FFFFFF" },
+    { "type": "range", "id": "nav_font_size", "label": "Navigation font size", "min": 12, "max": 16, "step": 1, "unit": "px", "default": 14 },
+    { "type": "range", "id": "nav_letter_spacing", "label": "Navigation letter spacing", "min": 0, "max": 3, "step": 0.5, "unit": "px", "default": 0.5 },
     {
       "type": "select",
       "id": "nav_transform",
-      "label": "Menubar text case",
+      "label": "Navigation text case",
       "options": [
-        { "value": "uppercase", "label": "Uppercase" },
-        { "value": "capitalize", "label": "Capitalize" },
-        { "value": "none", "label": "Normal" }
+        { "value": "none", "label": "Sentence case" },
+        { "value": "capitalize", "label": "Title case" },
+        { "value": "uppercase", "label": "Uppercase" }
       ],
-      "default": "uppercase"
+      "default": "none"
     },
-    { "type": "range", "id": "nav_pad_y", "label": "Menubar vertical padding", "min": 8, "max": 28, "step": 2, "unit": "px", "default": 14 },
-    { "type": "range", "id": "nav_pad_x", "label": "Menubar link horizontal padding", "min": 8, "max": 40, "step": 2, "unit": "px", "default": 20 },
-    { "type": "range", "id": "dropdown_width", "label": "Shop All dropdown width", "min": 380, "max": 900, "step": 20, "unit": "px", "default": 580 },
-    { "type": "range", "id": "dropdown_radius", "label": "Dropdown corner radius", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 8 }
+    { "type": "range", "id": "dropdown_width", "label": "Mega menu width", "min": 520, "max": 920, "step": 40, "unit": "px", "default": 680 }
   ],
   "blocks": [
     {
       "type": "mega_column",
-      "name": "Shop All Column",
-      "limit": 4,
+      "name": "Mega Menu Column",
+      "limit": 3,
       "settings": [
         { "type": "text", "id": "heading", "label": "Column heading", "default": "By Fabric" },
         { "type": "link_list", "id": "menu", "label": "Shopify Menu (optional — overrides links below)" },
@@ -404,11 +467,11 @@
     {
       "type": "nav_link",
       "name": "Menubar Link",
-      "limit": 10,
+      "limit": 6,
       "settings": [
-        { "type": "text", "id": "label", "label": "Link label", "default": "Weddings" },
+        { "type": "text", "id": "label", "label": "Link label", "default": "New Arrivals" },
         { "type": "url", "id": "url", "label": "Link destination" },
-        { "type": "text", "id": "fallback_path", "label": "Fallback path (used if Link destination empty)", "default": "/collections/all" }
+        { "type": "text", "id": "fallback_path", "label": "Fallback path (used if Link destination empty)", "default": "/collections/new-arrivals" }
       ]
     }
   ],
@@ -425,7 +488,7 @@
         "type": "mega_column",
         "settings": {
           "heading": "By Occasion",
-          "links_list": "Daily Use | /collections/daily-use\nOffice | /collections/office\nFestive | /collections/festive\nWedding | /collections/wedding"
+          "links_list": "Everyday | /collections/daily-use\nOffice | /collections/office\nFestive | /collections/festive\nWedding | /collections/wedding"
         }
       },
       {
@@ -436,10 +499,7 @@
         }
       },
       { "type": "nav_link", "settings": { "label": "New Arrivals", "fallback_path": "/collections/new-arrivals" } },
-      { "type": "nav_link", "settings": { "label": "Festive", "fallback_path": "/collections/festive" } },
-      { "type": "nav_link", "settings": { "label": "Weddings", "fallback_path": "/collections/wedding" } },
-      { "type": "nav_link", "settings": { "label": "About", "fallback_path": "/pages/about" } },
-      { "type": "nav_link", "settings": { "label": "Journal", "fallback_path": "/blogs/journal" } }
+      { "type": "nav_link", "settings": { "label": "Our Story", "fallback_path": "/pages/about" } }
     ]
   }
 }

@@ -1,16 +1,100 @@
 {
   "sections": {
-    "main": {
-      "type": "main-page",
-      "settings": {}
+    "hero": {
+      "type": "hero-editorial",
+      "blocks": {
+        "kicker": {
+          "type": "kicker",
+          "settings": {
+            "text": "Our Story · Anantapur, Andhra Pradesh",
+            "color": "#E5D4AE",
+            "size": 12,
+            "letter_spacing": 2
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "text": "Woven with Grace, Worn with Pride.",
+            "color": "#FAF2E3",
+            "size_desktop": 48,
+            "size_mobile": 34,
+            "line_height": 110
+          }
+        },
+        "subheading": {
+          "type": "subheading",
+          "settings": {
+            "text": "Vedajanani Vastralayam curates honest Cotton, Silk, Chiffon & Georgette sarees rooted in South Indian heritage.",
+            "color": "#F2E9D8",
+            "size_desktop": 16,
+            "size_mobile": 15
+          }
+        }
+      },
+      "block_order": ["kicker", "heading", "subheading"],
+      "settings": {
+        "banner_width": "full",
+        "height_mode": "px",
+        "height_px_desktop": 420,
+        "height_px_mobile": 360,
+        "fallback_bg": "#1C382B",
+        "overlay_opacity": 45,
+        "align_vertical": "center",
+        "align_horizontal": "center",
+        "text_align": "center",
+        "content_max_width": 680
+      }
     },
-    "founder": {
+    "craft": {
+      "type": "editorial-feature",
+      "settings": {
+        "image_position": "left",
+        "image_ratio": "4 / 3",
+        "show_woven_accent": true,
+        "eyebrow": "Our Philosophy",
+        "heading": "Selected for Drape, Comfort & Longevity",
+        "body": "<p>A saree is meant to feel effortless from morning rituals to evening celebrations. We curate each collection across four essential fabrics — breathable Cottons, luminous Silks, featherlight Chiffons and fluid Georgettes — paying close attention to weave texture, border finish and honest colour.</p>",
+        "cta_label": "",
+        "panel_bg": "#FFFFFF",
+        "radius": 4,
+        "padding_top": 64,
+        "padding_bottom": 48
+      }
+    },
+    "letter": {
       "type": "founder-letter",
-      "settings": {}
+      "settings": {
+        "image_placement": "right",
+        "eyebrow": "From Anantapur",
+        "heading": "A Personal Note From Vedajanani Vastralayam",
+        "body": "<p>Vedajanani Vastralayam began in Anantapur, Andhra Pradesh with a clear purpose: to make thoughtfully curated sarees accessible without sacrificing fabric honesty or respectful service.</p><p>Whether you are choosing a crisp daily cotton for workdays or a celebratory silk for a family wedding, every piece in our store is inspected and packed with personal care.</p>",
+        "signature": "— Vedajanani Vastralayam, Anantapur",
+        "cta_label": "Shop Sarees",
+        "outer_bg": "#F2E7D3",
+        "card_radius": 4,
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "promise": {
+      "type": "editorial-feature",
+      "settings": {
+        "image_position": "right",
+        "image_ratio": "4 / 3",
+        "show_woven_accent": true,
+        "eyebrow": "Curated For Every Chapter",
+        "heading": "Everyday Grace to Heirloom Celebrations",
+        "body": "<p>Explore our collections by fabric, occasion or budget. Need closer photographs of a pallu or advice choosing a drape? Our team is always happy to help.</p>",
+        "cta_label": "Shop Sarees",
+        "fallback_path": "/collections/all",
+        "cta_style": "solid",
+        "panel_bg": "#FFFFFF",
+        "radius": 4,
+        "padding_top": 56,
+        "padding_bottom": 72
+      }
     }
   },
-  "order": [
-    "main",
-    "founder"
-  ]
+  "order": ["hero", "craft", "letter", "promise"]
 }

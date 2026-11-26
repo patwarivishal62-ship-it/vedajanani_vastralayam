@@ -14,6 +14,7 @@
     text-align: {{ section.settings.text_align }};
     max-width: {{ section.settings.max_width }}px;
     margin: 0 auto;
+    border-top: 2px solid var(--gold);
   }
   #shopify-section-{{ section.id }} .newsletter-box h2 {
     font-size: {{ section.settings.heading_size }}px;
@@ -27,6 +28,15 @@
     border-color: {{ section.settings.btn_bg }};
     color: {{ section.settings.btn_text }};
   }
+  @media (max-width: 900px) {
+    #shopify-section-{{ section.id }} .vv-news-sec {
+      padding-top: 44px;
+      padding-bottom: 52px;
+    }
+    #shopify-section-{{ section.id }} .newsletter-box {
+      padding: 36px 20px;
+    }
+  }
 {% endstyle %}
 
 <section class="vv-news-sec">
@@ -39,27 +49,31 @@
         <h2>{{ section.settings.heading }}</h2>
       {% endif %}
       {% if section.settings.subheading != blank %}
-        <p>{{ section.settings.subheading }}</p>
+        <p class="newsletter-sub">{{ section.settings.subheading }}</p>
       {% endif %}
 
       {% form 'customer', class: 'newsletter-form' %}
         <input type="hidden" name="contact[tags]" value="newsletter">
-        <label for="NewsletterEmail-{{ section.id }}" class="visually-hidden">Email address</label>
-        <input
-          id="NewsletterEmail-{{ section.id }}"
-          type="email"
-          name="contact[email]"
-          required
-          autocomplete="email"
-          placeholder="{{ section.settings.placeholder }}"
-          aria-describedby="NewsletterConsent-{{ section.id }}"
-        >
-        <button type="submit" class="btn">{{ section.settings.button_label }}</button>
+        <div class="newsletter-field">
+          <label for="NewsletterEmail-{{ section.id }}" class="newsletter-label">Email address</label>
+          <div class="newsletter-controls">
+            <input
+              id="NewsletterEmail-{{ section.id }}"
+              type="email"
+              name="contact[email]"
+              required
+              autocomplete="email"
+              placeholder="{{ section.settings.placeholder }}"
+              aria-describedby="NewsletterConsent-{{ section.id }}"
+            >
+            <button type="submit" class="btn">{{ section.settings.button_label }}</button>
+          </div>
+        </div>
         {% if form.posted_successfully? %}
-          <p class="newsletter-status" role="status" aria-live="polite" style="width: 100%; margin: 14px 0 0; font-size: 13px;">{{ section.settings.success_message }}</p>
+          <p class="newsletter-status" role="status" aria-live="polite">{{ section.settings.success_message }}</p>
         {% endif %}
         {% if form.errors %}
-          <p class="newsletter-status newsletter-status--error" role="alert" aria-live="assertive" style="width: 100%; margin: 14px 0 0; font-size: 13px;">{{ form.errors | default_errors }}</p>
+          <p class="newsletter-status newsletter-status--error" role="alert" aria-live="assertive">{{ form.errors | default_errors }}</p>
         {% endif %}
       {% endform %}
 
@@ -79,27 +93,27 @@
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The Vastralayam List" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "First Look at New Arrivals" },
     { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Receive notes on new saree arrivals, festive curations and weave stories." },
-    { "type": "text", "id": "placeholder", "label": "Input placeholder", "default": "Enter your email address" },
+    { "type": "text", "id": "placeholder", "label": "Input placeholder", "default": "you@example.com" },
     { "type": "text", "id": "button_label", "label": "Button label", "default": "Subscribe" },
     { "type": "text", "id": "success_message", "label": "Success message", "default": "Thank you for joining the Vedajanani Vastralayam list." },
     { "type": "text", "id": "consent_note", "label": "Privacy & consent note", "default": "By subscribing, you agree to receive email updates from Vedajanani Vastralayam. Unsubscribe anytime." },
     { "type": "header", "content": "Colors" },
     { "type": "color", "id": "outer_bg", "label": "Outer section background (optional)" },
     { "type": "color", "id": "box_bg", "label": "Box background", "default": "#244737" },
-    { "type": "color", "id": "eyebrow_color", "label": "Eyebrow color", "default": "#DFC896" },
+    { "type": "color", "id": "eyebrow_color", "label": "Eyebrow color", "default": "#E5D4AE" },
     { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#FAF2E3" },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#E8DFCE" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#EDE5D7" },
     { "type": "color", "id": "btn_bg", "label": "Button background", "default": "#A8492D" },
     { "type": "color", "id": "btn_text", "label": "Button text color", "default": "#FFFFFF" },
     { "type": "header", "content": "Layout & Typography" },
     { "type": "text_alignment", "id": "text_align", "label": "Text alignment", "default": "center" },
-    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 56, "step": 2, "unit": "px", "default": 34 },
-    { "type": "range", "id": "max_width", "label": "Box max width", "min": 600, "max": 1400, "step": 40, "unit": "px", "default": 1200 },
-    { "type": "range", "id": "box_pad_y", "label": "Box vertical padding", "min": 24, "max": 96, "step": 4, "unit": "px", "default": 56 },
-    { "type": "range", "id": "box_pad_x", "label": "Box horizontal padding", "min": 16, "max": 80, "step": 4, "unit": "px", "default": 32 },
-    { "type": "range", "id": "box_radius", "label": "Box corner radius", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 12 },
-    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
-    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 }
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 24, "max": 48, "step": 2, "unit": "px", "default": 36 },
+    { "type": "range", "id": "max_width", "label": "Box max width", "min": 680, "max": 1320, "step": 40, "unit": "px", "default": 1240 },
+    { "type": "range", "id": "box_pad_y", "label": "Box vertical padding", "min": 28, "max": 88, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "box_pad_x", "label": "Box horizontal padding", "min": 20, "max": 72, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "box_radius", "label": "Box corner radius", "min": 0, "max": 12, "step": 2, "unit": "px", "default": 4 },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 32, "max": 96, "step": 8, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 32, "max": 96, "step": 8, "unit": "px", "default": 72 }
   ],
   "presets": [
     { "name": "Newsletter" }

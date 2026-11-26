@@ -21,16 +21,24 @@
   #shopify-section-{{ section.id }} .vv-banner {
     background: {{ section.settings.fallback_bg }};
     border-radius: {{ section.settings.banner_radius }}px;
-    {% unless section.settings.height_mode == 'adapt' %}
+    {% if section.settings.height_mode == 'ratio' %}
+      aspect-ratio: 16 / 7;
+      min-height: 460px;
+      max-height: 760px;
+    {% elsif section.settings.height_mode != 'adapt' %}
       min-height: {{ banner_h_desktop }};
-    {% endunless %}
+    {% endif %}
   }
   #shopify-section-{{ section.id }} .vv-banner-media img {
     object-fit: {{ section.settings.image_fit }};
     object-position: {{ section.settings.image_position_desktop }};
   }
   #shopify-section-{{ section.id }} .vv-banner-overlay {
-    background: {{ section.settings.overlay_color }};
+    {% if section.settings.align_vertical == 'flex-end' %}
+      background: linear-gradient(180deg, rgba(16, 22, 18, 0.08) 0%, rgba(16, 22, 18, 0.35) 52%, {{ section.settings.overlay_color }} 100%);
+    {% else %}
+      background: {{ section.settings.overlay_color }};
+    {% endif %}
     opacity: {{ overlay_alpha }};
   }
   #shopify-section-{{ section.id }} .vv-banner-inner {
@@ -94,15 +102,19 @@
 
   @media (max-width: 900px) {
     #shopify-section-{{ section.id }} .vv-banner {
-      {% unless section.settings.height_mode == 'adapt' %}
+      {% if section.settings.height_mode == 'ratio' %}
+        aspect-ratio: 4 / 5;
+        min-height: 440px;
+        max-height: 620px;
+      {% elsif section.settings.height_mode != 'adapt' %}
         min-height: {{ banner_h_mobile }};
-      {% endunless %}
+      {% endif %}
     }
     #shopify-section-{{ section.id }} .vv-banner-media img {
       object-position: {{ section.settings.image_position_mobile }};
     }
     #shopify-section-{{ section.id }} .vv-banner-inner {
-      padding: {{ section.settings.content_pad_y | times: 0.6 | round }}px 20px;
+      padding: 36px 20px;
     }
   }
 {% endstyle %}
@@ -174,7 +186,7 @@
                     {{ block.shopify_attributes }}
                   >
                     {% if block.settings.cta_label != blank %}
-                      {%- assign cta_fallback = routes.collections_url | append: '/new-arrivals' -%}
+                      {%- assign cta_fallback = routes.all_products_collection_url -%}
                       <a
                         class="{% if block.settings.cta_style == 'underline' %}link-cta{% else %}btn{% endif %}"
                         href="{{ block.settings.cta_url | default: cta_fallback }}"
@@ -191,7 +203,8 @@
                           {% endif %}
                         "
                       >
-                        {{ block.settings.cta_label }}{% if block.settings.cta_style == 'underline' %} →{% endif %}
+                        <span>{{ block.settings.cta_label }}</span>
+                        {% if block.settings.cta_style == 'underline' %}{% render 'icons', icon: 'arrow-right' %}{% endif %}
                       </a>
                     {% endif %}
 
@@ -212,17 +225,18 @@
                           {% endif %}
                         "
                       >
-                        {{ block.settings.cta2_label }}{% if block.settings.cta2_style == 'underline' %} →{% endif %}
+                        <span>{{ block.settings.cta2_label }}</span>
+                        {% if block.settings.cta2_style == 'underline' %}{% render 'icons', icon: 'arrow-right' %}{% endif %}
                       </a>
                     {% endif %}
                   </div>
               {% endcase %}
             {% endfor %}
           {% else %}
-            <div class="kicker" style="color: #E2CFA8; margin-bottom: 14px;">Vedajanani Vastralayam</div>
-            <h1 style="color: #FAF2E3; font-size: 68px; line-height: 0.98; margin-bottom: 16px;">Drape the story you carry.</h1>
-            <p style="color: #EFE5D2; margin-bottom: 28px;">Cotton, Silk, Chiffon &amp; Georgette sarees thoughtfully curated for everyday grace and special occasions.</p>
-            <a class="link-cta" href="{{ routes.all_products_collection_url }}" style="color: #FAF2E3;">Explore Sarees →</a>
+            <div class="kicker" style="color: #E5D4AE; margin-bottom: 14px;">Vedajanani Vastralayam</div>
+            <h1 style="color: #FAF2E3; font-size: 56px; line-height: 1.08; margin-bottom: 16px;">Woven with Grace, Worn with Pride.</h1>
+            <p style="color: #EFE5D2; margin-bottom: 24px;">Curated Cotton, Silk, Chiffon &amp; Georgette sarees for everyday elegance and quiet celebrations.</p>
+            <a class="btn" href="{{ routes.all_products_collection_url }}" style="background: #FAF2E3; color: #202521; border-color: #FAF2E3;">Shop Sarees</a>
           {% endif %}
         </div>
       </div>
@@ -234,37 +248,17 @@
 {
   "name": "Hero Editorial",
   "settings": [
-    {
-      "type": "header",
-      "content": "Banner Images & Size"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_desktop",
-      "label": "Desktop banner image"
-    },
-    {
-      "type": "image_picker",
-      "id": "image_mobile",
-      "label": "Mobile banner image (optional)"
-    },
+    { "type": "header", "content": "Banner Images & Size" },
+    { "type": "image_picker", "id": "image_desktop", "label": "Desktop banner image" },
+    { "type": "image_picker", "id": "image_mobile", "label": "Mobile banner image (optional)" },
     {
       "type": "select",
       "id": "banner_width",
       "label": "Banner width",
       "options": [
-        {
-          "value": "full",
-          "label": "Full bleed (edge to edge)"
-        },
-        {
-          "value": "inset",
-          "label": "Full width with side inset"
-        },
-        {
-          "value": "contained",
-          "label": "Contained to page width"
-        }
+        { "value": "full", "label": "Full bleed (edge to edge)" },
+        { "value": "inset", "label": "Full width with side inset" },
+        { "value": "contained", "label": "Contained to page width" }
       ],
       "default": "full"
     },
@@ -273,74 +267,24 @@
       "id": "height_mode",
       "label": "Banner height mode",
       "options": [
-        {
-          "value": "vh",
-          "label": "Screen height (% of viewport)"
-        },
-        {
-          "value": "px",
-          "label": "Fixed height (pixels)"
-        },
-        {
-          "value": "adapt",
-          "label": "Adapt to uploaded image"
-        }
+        { "value": "ratio", "label": "Editorial ratio (16:7 desktop / 4:5 mobile)" },
+        { "value": "vh", "label": "Screen height (% of viewport)" },
+        { "value": "px", "label": "Fixed height (pixels)" },
+        { "value": "adapt", "label": "Adapt to uploaded image" }
       ],
-      "default": "vh"
+      "default": "ratio"
     },
-    {
-      "type": "range",
-      "id": "height_vh_desktop",
-      "label": "Desktop height (% of screen)",
-      "min": 30,
-      "max": 100,
-      "step": 2,
-      "unit": "vh",
-      "default": 88
-    },
-    {
-      "type": "range",
-      "id": "height_px_desktop",
-      "label": "Desktop fixed height (px mode)",
-      "min": 300,
-      "max": 1000,
-      "step": 20,
-      "unit": "px",
-      "default": 680
-    },
-    {
-      "type": "range",
-      "id": "height_vh_mobile",
-      "label": "Mobile height (% of screen)",
-      "min": 30,
-      "max": 100,
-      "step": 2,
-      "unit": "vh",
-      "default": 72
-    },
-    {
-      "type": "range",
-      "id": "height_px_mobile",
-      "label": "Mobile fixed height (px mode)",
-      "min": 240,
-      "max": 840,
-      "step": 20,
-      "unit": "px",
-      "default": 520
-    },
+    { "type": "range", "id": "height_vh_desktop", "label": "Desktop height (% of screen)", "min": 40, "max": 96, "step": 2, "unit": "vh", "default": 72 },
+    { "type": "range", "id": "height_px_desktop", "label": "Desktop fixed height (px mode)", "min": 360, "max": 860, "step": 20, "unit": "px", "default": 600 },
+    { "type": "range", "id": "height_vh_mobile", "label": "Mobile height (% of screen)", "min": 40, "max": 90, "step": 2, "unit": "vh", "default": 66 },
+    { "type": "range", "id": "height_px_mobile", "label": "Mobile fixed height (px mode)", "min": 320, "max": 720, "step": 20, "unit": "px", "default": 480 },
     {
       "type": "select",
       "id": "image_fit",
       "label": "Image fit",
       "options": [
-        {
-          "value": "cover",
-          "label": "Cover (fill banner)"
-        },
-        {
-          "value": "contain",
-          "label": "Contain (show full image)"
-        }
+        { "value": "cover", "label": "Cover (fill banner)" },
+        { "value": "contain", "label": "Contain (show full image)" }
       ],
       "default": "cover"
     },
@@ -349,122 +293,39 @@
       "id": "image_position_desktop",
       "label": "Image focal point (desktop)",
       "options": [
-        {
-          "value": "center center",
-          "label": "Center"
-        },
-        {
-          "value": "top center",
-          "label": "Top"
-        },
-        {
-          "value": "bottom center",
-          "label": "Bottom"
-        },
-        {
-          "value": "center left",
-          "label": "Left"
-        },
-        {
-          "value": "center right",
-          "label": "Right"
-        },
-        {
-          "value": "top left",
-          "label": "Top Left"
-        },
-        {
-          "value": "top right",
-          "label": "Top Right"
-        }
+        { "value": "center center", "label": "Center" },
+        { "value": "top center", "label": "Top" },
+        { "value": "bottom center", "label": "Bottom" },
+        { "value": "center left", "label": "Left" },
+        { "value": "center right", "label": "Right" }
       ],
-      "default": "center center"
+      "default": "top center"
     },
     {
       "type": "select",
       "id": "image_position_mobile",
       "label": "Image focal point (mobile)",
       "options": [
-        {
-          "value": "center center",
-          "label": "Center"
-        },
-        {
-          "value": "top center",
-          "label": "Top"
-        },
-        {
-          "value": "bottom center",
-          "label": "Bottom"
-        },
-        {
-          "value": "center left",
-          "label": "Left"
-        },
-        {
-          "value": "center right",
-          "label": "Right"
-        }
+        { "value": "center center", "label": "Center" },
+        { "value": "top center", "label": "Top" },
+        { "value": "bottom center", "label": "Bottom" }
       ],
-      "default": "center center"
+      "default": "top center"
     },
-    {
-      "type": "range",
-      "id": "banner_radius",
-      "label": "Banner corner radius",
-      "min": 0,
-      "max": 40,
-      "step": 2,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "header",
-      "content": "Background & Overlay"
-    },
-    {
-      "type": "color_background",
-      "id": "fallback_bg",
-      "label": "Background color / gradient (when no image)",
-      "default": "linear-gradient(145deg, #173125 0%, #244737 58%, #4A2B20 100%)"
-    },
-    {
-      "type": "color",
-      "id": "overlay_color",
-      "label": "Image overlay tint",
-      "default": "#000000"
-    },
-    {
-      "type": "range",
-      "id": "overlay_opacity",
-      "label": "Image overlay opacity",
-      "min": 0,
-      "max": 90,
-      "step": 5,
-      "unit": "%",
-      "default": 30
-    },
-    {
-      "type": "header",
-      "content": "Content Placement & Box"
-    },
+    { "type": "range", "id": "banner_radius", "label": "Banner corner radius", "min": 0, "max": 16, "step": 2, "unit": "px", "default": 0 },
+    { "type": "header", "content": "Background & Overlay" },
+    { "type": "color_background", "id": "fallback_bg", "label": "Fallback surface color", "default": "#1C382B" },
+    { "type": "color", "id": "overlay_color", "label": "Scrim overlay color", "default": "#111A14" },
+    { "type": "range", "id": "overlay_opacity", "label": "Scrim opacity", "min": 0, "max": 85, "step": 5, "unit": "%", "default": 55 },
+    { "type": "header", "content": "Content Placement & Box" },
     {
       "type": "select",
       "id": "align_vertical",
       "label": "Vertical placement",
       "options": [
-        {
-          "value": "flex-start",
-          "label": "Top"
-        },
-        {
-          "value": "center",
-          "label": "Middle"
-        },
-        {
-          "value": "flex-end",
-          "label": "Bottom"
-        }
+        { "value": "flex-start", "label": "Top" },
+        { "value": "center", "label": "Middle" },
+        { "value": "flex-end", "label": "Bottom" }
       ],
       "default": "flex-end"
     },
@@ -473,122 +334,24 @@
       "id": "align_horizontal",
       "label": "Horizontal placement",
       "options": [
-        {
-          "value": "flex-start",
-          "label": "Left"
-        },
-        {
-          "value": "center",
-          "label": "Center"
-        },
-        {
-          "value": "flex-end",
-          "label": "Right"
-        }
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
       ],
       "default": "flex-start"
     },
-    {
-      "type": "text_alignment",
-      "id": "text_align",
-      "label": "Text alignment",
-      "default": "left"
-    },
-    {
-      "type": "range",
-      "id": "content_max_width",
-      "label": "Content max width",
-      "min": 320,
-      "max": 1200,
-      "step": 20,
-      "unit": "px",
-      "default": 720
-    },
-    {
-      "type": "range",
-      "id": "content_pad_y",
-      "label": "Inner top/bottom padding",
-      "min": 16,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "default": 64
-    },
-    {
-      "type": "range",
-      "id": "content_pad_x",
-      "label": "Inner left/right padding",
-      "min": 16,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "default": 32
-    },
-    {
-      "type": "color",
-      "id": "content_bg_color",
-      "label": "Text box backdrop color (optional)",
-      "default": "#1C1C1C"
-    },
-    {
-      "type": "range",
-      "id": "content_bg_opacity",
-      "label": "Text box backdrop opacity",
-      "min": 0,
-      "max": 95,
-      "step": 5,
-      "unit": "%",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "content_box_pad",
-      "label": "Text box inner padding",
-      "min": 12,
-      "max": 56,
-      "step": 4,
-      "unit": "px",
-      "default": 28
-    },
-    {
-      "type": "range",
-      "id": "content_box_radius",
-      "label": "Text box corner radius",
-      "min": 0,
-      "max": 32,
-      "step": 2,
-      "unit": "px",
-      "default": 20
-    },
-    {
-      "type": "header",
-      "content": "Outer Section Spacing"
-    },
-    {
-      "type": "color",
-      "id": "outer_bg",
-      "label": "Outer background color (optional)"
-    },
-    {
-      "type": "range",
-      "id": "margin_top",
-      "label": "Top spacing",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "margin_bottom",
-      "label": "Bottom spacing",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "default": 0
-    }
+    { "type": "text_alignment", "id": "text_align", "label": "Text alignment", "default": "left" },
+    { "type": "range", "id": "content_max_width", "label": "Content max width", "min": 320, "max": 960, "step": 20, "unit": "px", "default": 620 },
+    { "type": "range", "id": "content_pad_y", "label": "Inner top/bottom padding", "min": 24, "max": 96, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "content_pad_x", "label": "Inner left/right padding", "min": 20, "max": 96, "step": 4, "unit": "px", "default": 48 },
+    { "type": "color", "id": "content_bg_color", "label": "Text box backdrop color (optional)", "default": "#16241D" },
+    { "type": "range", "id": "content_bg_opacity", "label": "Text box backdrop opacity", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 0 },
+    { "type": "range", "id": "content_box_pad", "label": "Text box inner padding", "min": 16, "max": 48, "step": 4, "unit": "px", "default": 28 },
+    { "type": "range", "id": "content_box_radius", "label": "Text box corner radius", "min": 0, "max": 12, "step": 2, "unit": "px", "default": 4 },
+    { "type": "header", "content": "Outer Section Spacing" },
+    { "type": "color", "id": "outer_bg", "label": "Outer background color (optional)" },
+    { "type": "range", "id": "margin_top", "label": "Top spacing", "min": 0, "max": 96, "step": 4, "unit": "px", "default": 0 },
+    { "type": "range", "id": "margin_bottom", "label": "Bottom spacing", "min": 0, "max": 96, "step": 4, "unit": "px", "default": 0 }
   ],
   "blocks": [
     {
@@ -596,48 +359,11 @@
       "name": "Kicker / Eyebrow",
       "limit": 2,
       "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Text",
-          "default": "Vedajanani Vastralayam · Anantapur"
-        },
-        {
-          "type": "color",
-          "id": "color",
-          "label": "Color",
-          "default": "#E2CFA8"
-        },
-        {
-          "type": "range",
-          "id": "size",
-          "label": "Font size",
-          "min": 9,
-          "max": 22,
-          "step": 1,
-          "unit": "px",
-          "default": 11
-        },
-        {
-          "type": "range",
-          "id": "letter_spacing",
-          "label": "Letter spacing",
-          "min": 0,
-          "max": 8,
-          "step": 0.5,
-          "unit": "px",
-          "default": 4
-        },
-        {
-          "type": "range",
-          "id": "gap_bottom",
-          "label": "Bottom spacing",
-          "min": 4,
-          "max": 44,
-          "step": 2,
-          "unit": "px",
-          "default": 14
-        }
+        { "type": "text", "id": "text", "label": "Text", "default": "Vedajanani Vastralayam · Anantapur" },
+        { "type": "color", "id": "color", "label": "Color", "default": "#E5D4AE" },
+        { "type": "range", "id": "size", "label": "Font size", "min": 12, "max": 18, "step": 1, "unit": "px", "default": 12 },
+        { "type": "range", "id": "letter_spacing", "label": "Letter spacing", "min": 0, "max": 4, "step": 0.5, "unit": "px", "default": 2 },
+        { "type": "range", "id": "gap_bottom", "label": "Bottom spacing", "min": 6, "max": 32, "step": 2, "unit": "px", "default": 12 }
       ]
     },
     {
@@ -645,108 +371,35 @@
       "name": "Heading",
       "limit": 2,
       "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Heading",
-          "default": "Drape the story you carry."
-        },
+        { "type": "text", "id": "text", "label": "Heading", "default": "Woven with Grace, Worn with Pride." },
         {
           "type": "select",
           "id": "font_family",
           "label": "Font family",
           "options": [
-            {
-              "value": "heading",
-              "label": "Theme Heading Font"
-            },
-            {
-              "value": "accent",
-              "label": "Theme Editorial / Product Font"
-            },
-            {
-              "value": "body",
-              "label": "Theme Body Font"
-            }
+            { "value": "heading", "label": "Theme Heading Font" },
+            { "value": "accent", "label": "Theme Editorial Font" },
+            { "value": "body", "label": "Theme Body Font" }
           ],
           "default": "heading"
         },
-        {
-          "type": "color",
-          "id": "color",
-          "label": "Color",
-          "default": "#FFFFFF"
-        },
-        {
-          "type": "range",
-          "id": "size_desktop",
-          "label": "Font size (desktop)",
-          "min": 28,
-          "max": 112,
-          "step": 2,
-          "unit": "px",
-          "default": 76
-        },
-        {
-          "type": "range",
-          "id": "size_mobile",
-          "label": "Font size (mobile)",
-          "min": 24,
-          "max": 64,
-          "step": 2,
-          "unit": "px",
-          "default": 44
-        },
-        {
-          "type": "range",
-          "id": "line_height",
-          "label": "Line height",
-          "min": 85,
-          "max": 150,
-          "step": 5,
-          "unit": "%",
-          "default": 95
-        },
-        {
-          "type": "range",
-          "id": "letter_spacing",
-          "label": "Letter spacing",
-          "min": -2,
-          "max": 8,
-          "step": 0.5,
-          "unit": "px",
-          "default": 0
-        },
+        { "type": "color", "id": "color", "label": "Color", "default": "#FAF2E3" },
+        { "type": "range", "id": "size_desktop", "label": "Font size (desktop)", "min": 36, "max": 76, "step": 2, "unit": "px", "default": 56 },
+        { "type": "range", "id": "size_mobile", "label": "Font size (mobile)", "min": 28, "max": 48, "step": 2, "unit": "px", "default": 36 },
+        { "type": "range", "id": "line_height", "label": "Line height", "min": 95, "max": 135, "step": 5, "unit": "%", "default": 110 },
+        { "type": "range", "id": "letter_spacing", "label": "Letter spacing", "min": -1, "max": 4, "step": 0.5, "unit": "px", "default": 0 },
         {
           "type": "select",
           "id": "transform",
           "label": "Text case",
           "options": [
-            {
-              "value": "none",
-              "label": "Normal"
-            },
-            {
-              "value": "uppercase",
-              "label": "Uppercase"
-            },
-            {
-              "value": "capitalize",
-              "label": "Capitalize"
-            }
+            { "value": "none", "label": "Normal" },
+            { "value": "capitalize", "label": "Title case" },
+            { "value": "uppercase", "label": "Uppercase" }
           ],
           "default": "none"
         },
-        {
-          "type": "range",
-          "id": "gap_bottom",
-          "label": "Bottom spacing",
-          "min": 4,
-          "max": 48,
-          "step": 2,
-          "unit": "px",
-          "default": 16
-        }
+        { "type": "range", "id": "gap_bottom", "label": "Bottom spacing", "min": 8, "max": 36, "step": 2, "unit": "px", "default": 14 }
       ]
     },
     {
@@ -754,58 +407,12 @@
       "name": "Subheading",
       "limit": 2,
       "settings": [
-        {
-          "type": "textarea",
-          "id": "text",
-          "label": "Text",
-          "default": "Cotton, Silk, Chiffon & Georgette sarees curated for everyday comfort and timeless celebrations."
-        },
-        {
-          "type": "color",
-          "id": "color",
-          "label": "Color",
-          "default": "#F3EDE3"
-        },
-        {
-          "type": "range",
-          "id": "size_desktop",
-          "label": "Font size (desktop)",
-          "min": 12,
-          "max": 28,
-          "step": 1,
-          "unit": "px",
-          "default": 16
-        },
-        {
-          "type": "range",
-          "id": "size_mobile",
-          "label": "Font size (mobile)",
-          "min": 12,
-          "max": 22,
-          "step": 1,
-          "unit": "px",
-          "default": 14
-        },
-        {
-          "type": "range",
-          "id": "line_height",
-          "label": "Line height",
-          "min": 120,
-          "max": 200,
-          "step": 5,
-          "unit": "%",
-          "default": 160
-        },
-        {
-          "type": "range",
-          "id": "gap_bottom",
-          "label": "Bottom spacing",
-          "min": 4,
-          "max": 56,
-          "step": 2,
-          "unit": "px",
-          "default": 28
-        }
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Cotton, Silk, Chiffon & Georgette sarees curated for everyday elegance and quiet celebrations." },
+        { "type": "color", "id": "color", "label": "Color", "default": "#F2E9D8" },
+        { "type": "range", "id": "size_desktop", "label": "Font size (desktop)", "min": 14, "max": 22, "step": 1, "unit": "px", "default": 16 },
+        { "type": "range", "id": "size_mobile", "label": "Font size (mobile)", "min": 14, "max": 18, "step": 1, "unit": "px", "default": 15 },
+        { "type": "range", "id": "line_height", "label": "Line height", "min": 135, "max": 180, "step": 5, "unit": "%", "default": 155 },
+        { "type": "range", "id": "gap_bottom", "label": "Bottom spacing", "min": 12, "max": 40, "step": 2, "unit": "px", "default": 24 }
       ]
     },
     {
@@ -813,131 +420,40 @@
       "name": "CTA Buttons",
       "limit": 2,
       "settings": [
-        {
-          "type": "text",
-          "id": "cta_label",
-          "label": "Primary CTA label",
-          "default": "Shop New Arrivals"
-        },
-        {
-          "type": "url",
-          "id": "cta_url",
-          "label": "Primary CTA link"
-        },
+        { "type": "text", "id": "cta_label", "label": "Primary CTA label", "default": "Shop Sarees" },
+        { "type": "url", "id": "cta_url", "label": "Primary CTA link" },
         {
           "type": "select",
           "id": "cta_style",
           "label": "Primary CTA style",
           "options": [
-            {
-              "value": "underline",
-              "label": "Editorial Underline"
-            },
-            {
-              "value": "solid",
-              "label": "Solid Button"
-            },
-            {
-              "value": "outline",
-              "label": "Outline Button"
-            }
+            { "value": "solid", "label": "Primary Solid Button" },
+            { "value": "outline", "label": "Secondary Outline Button" },
+            { "value": "underline", "label": "Editorial Underline Link" }
           ],
-          "default": "underline"
+          "default": "solid"
         },
-        {
-          "type": "color",
-          "id": "cta_color",
-          "label": "Primary text color",
-          "default": "#FFFFFF"
-        },
-        {
-          "type": "color",
-          "id": "cta_bg",
-          "label": "Primary fill color (solid style)",
-          "default": "#244737"
-        },
-        {
-          "type": "text",
-          "id": "cta2_label",
-          "label": "Secondary CTA label (optional)"
-        },
-        {
-          "type": "url",
-          "id": "cta2_url",
-          "label": "Secondary CTA link"
-        },
+        { "type": "color", "id": "cta_color", "label": "Primary text color", "default": "#FFFFFF" },
+        { "type": "color", "id": "cta_bg", "label": "Primary fill color (solid style)", "default": "#244737" },
+        { "type": "text", "id": "cta2_label", "label": "Secondary CTA label (optional)" },
+        { "type": "url", "id": "cta2_url", "label": "Secondary CTA link" },
         {
           "type": "select",
           "id": "cta2_style",
           "label": "Secondary CTA style",
           "options": [
-            {
-              "value": "outline",
-              "label": "Outline Button"
-            },
-            {
-              "value": "underline",
-              "label": "Editorial Underline"
-            },
-            {
-              "value": "solid",
-              "label": "Solid Button"
-            }
+            { "value": "outline", "label": "Outline Button" },
+            { "value": "underline", "label": "Editorial Underline Link" },
+            { "value": "solid", "label": "Solid Button" }
           ],
           "default": "outline"
         },
-        {
-          "type": "color",
-          "id": "cta2_color",
-          "label": "Secondary text color",
-          "default": "#FFFFFF"
-        },
-        {
-          "type": "color",
-          "id": "cta2_bg",
-          "label": "Secondary fill color (solid style)",
-          "default": "#1C1C1C"
-        },
-        {
-          "type": "range",
-          "id": "font_size",
-          "label": "Font size",
-          "min": 10,
-          "max": 20,
-          "step": 1,
-          "unit": "px",
-          "default": 12
-        },
-        {
-          "type": "range",
-          "id": "letter_spacing",
-          "label": "Letter spacing",
-          "min": 0,
-          "max": 6,
-          "step": 0.5,
-          "unit": "px",
-          "default": 2.5
-        },
-        {
-          "type": "range",
-          "id": "gap_top",
-          "label": "Top spacing",
-          "min": 0,
-          "max": 40,
-          "step": 2,
-          "unit": "px",
-          "default": 0
-        },
-        {
-          "type": "range",
-          "id": "gap_bottom",
-          "label": "Bottom spacing",
-          "min": 0,
-          "max": 40,
-          "step": 2,
-          "unit": "px",
-          "default": 0
-        }
+        { "type": "color", "id": "cta2_color", "label": "Secondary text color", "default": "#FAF2E3" },
+        { "type": "color", "id": "cta2_bg", "label": "Secondary fill color (solid style)", "default": "#202521" },
+        { "type": "range", "id": "font_size", "label": "Font size", "min": 12, "max": 16, "step": 1, "unit": "px", "default": 13 },
+        { "type": "range", "id": "letter_spacing", "label": "Letter spacing", "min": 0, "max": 3, "step": 0.5, "unit": "px", "default": 1 },
+        { "type": "range", "id": "gap_top", "label": "Top spacing", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 0 },
+        { "type": "range", "id": "gap_bottom", "label": "Bottom spacing", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 0 }
       ]
     }
   ],
@@ -945,18 +461,10 @@
     {
       "name": "Hero Editorial",
       "blocks": [
-        {
-          "type": "kicker"
-        },
-        {
-          "type": "heading"
-        },
-        {
-          "type": "subheading"
-        },
-        {
-          "type": "buttons"
-        }
+        { "type": "kicker" },
+        { "type": "heading" },
+        { "type": "subheading" },
+        { "type": "buttons" }
       ]
     }
   ]

@@ -1,0 +1,152 @@
+{% style %}
+  #shopify-section-{{ section.id }} .vv-edfeat-sec {
+    {% if section.settings.bg_color != blank and section.settings.bg_color != 'rgba(0,0,0,0)' %}
+      background: {{ section.settings.bg_color }};
+    {% endif %}
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  #shopify-section-{{ section.id }} .vv-edfeat-grid {
+    gap: {{ section.settings.gap }}px;
+  }
+  #shopify-section-{{ section.id }} .vv-edfeat-media {
+    aspect-ratio: {{ section.settings.image_ratio }};
+    border-radius: {{ section.settings.radius }}px;
+  }
+  #shopify-section-{{ section.id }} .vv-edfeat-panel {
+    background: {{ section.settings.panel_bg }};
+    color: {{ section.settings.text_color }};
+    border-radius: {{ section.settings.radius }}px;
+  }
+  #shopify-section-{{ section.id }} .vv-edfeat-panel h2 {
+    font-size: {{ section.settings.heading_size }}px;
+    color: {{ section.settings.heading_color }};
+  }
+  @media (max-width: 900px) {
+    #shopify-section-{{ section.id }} .vv-edfeat-sec {
+      padding-top: 44px;
+      padding-bottom: 44px;
+    }
+    #shopify-section-{{ section.id }} .vv-edfeat-panel h2 {
+      font-size: 28px;
+    }
+  }
+{% endstyle %}
+
+<section class="vv-edfeat-sec">
+  <div class="wrap">
+    <div class="vv-edfeat-grid{% if section.settings.image_position == 'right' %} vv-edfeat-grid--reverse{% endif %}">
+      <div class="vv-edfeat-media">
+        {% if section.settings.image != blank %}
+          <img
+            src="{{ section.settings.image | image_url: width: 1400 }}"
+            srcset="{{ section.settings.image | image_url: width: 640 }} 640w, {{ section.settings.image | image_url: width: 1000 }} 1000w, {{ section.settings.image | image_url: width: 1400 }} 1400w"
+            sizes="(max-width: 900px) 100vw, 56vw"
+            alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}"
+            width="1000"
+            height="750"
+            loading="lazy"
+          >
+        {% else %}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+      </div>
+
+      <div class="vv-edfeat-panel">
+        {% if section.settings.show_woven_accent %}
+          <div class="vv-woven-accent" aria-hidden="true"></div>
+        {% endif %}
+        {% if section.settings.eyebrow != blank %}
+          <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+        {% endif %}
+        {% if section.settings.heading != blank %}
+          <h2>{{ section.settings.heading }}</h2>
+        {% endif %}
+        {% if section.settings.body != blank %}
+          <div class="vv-edfeat-body rte">{{ section.settings.body }}</div>
+        {% endif %}
+        {% if section.settings.cta_label != blank %}
+          <div class="vv-edfeat-actions">
+            {%- assign fallback_href = section.settings.fallback_path | default: routes.all_products_collection_url -%}
+            <a
+              class="{% if section.settings.cta_style == 'outline' %}btn outline{% elsif section.settings.cta_style == 'underline' %}link-cta{% else %}btn{% endif %}"
+              href="{{ section.settings.cta_url | default: fallback_href }}"
+            >
+              <span>{{ section.settings.cta_label }}</span>
+              {% if section.settings.cta_style == 'underline' %}{% render 'icons', icon: 'arrow-right' %}{% endif %}
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Signature Editorial",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Editorial photograph" },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image placement (desktop)",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image aspect ratio",
+      "options": [
+        { "value": "4 / 3", "label": "Editorial landscape (4:3)" },
+        { "value": "16 / 10", "label": "Wide (16:10)" },
+        { "value": "4 / 5", "label": "Portrait (4:5)" },
+        { "value": "1 / 1", "label": "Square (1:1)" }
+      ],
+      "default": "4 / 3"
+    },
+    { "type": "checkbox", "id": "show_woven_accent", "label": "Show woven brass hairline accent", "default": true },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Signature Curation" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The Festive & Wedding Edit" },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Editorial copy",
+      "default": "<p>Thoughtfully selected silks, zari-bordered cottons and celebratory drapes chosen for their graceful fall, rich colour and lasting wear across family gatherings and ceremonies.</p>"
+    },
+    { "type": "text", "id": "cta_label", "label": "CTA button label", "default": "Explore Festive Edit" },
+    { "type": "url", "id": "cta_url", "label": "CTA link" },
+    { "type": "text", "id": "fallback_path", "label": "Fallback path", "default": "/collections/festive" },
+    {
+      "type": "select",
+      "id": "cta_style",
+      "label": "CTA style",
+      "options": [
+        { "value": "solid", "label": "Primary solid button" },
+        { "value": "outline", "label": "Secondary outline button" },
+        { "value": "underline", "label": "Tertiary underlined link" }
+      ],
+      "default": "solid"
+    },
+    { "type": "header", "content": "Colors & Spacing" },
+    { "type": "color", "id": "bg_color", "label": "Section background (optional)" },
+    { "type": "color", "id": "panel_bg", "label": "Text panel background", "default": "#FFFFFF" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#202521" },
+    { "type": "color", "id": "text_color", "label": "Body text color", "default": "#545A55" },
+    { "type": "range", "id": "heading_size", "label": "Heading size (desktop)", "min": 28, "max": 48, "step": 2, "unit": "px", "default": 36 },
+    { "type": "range", "id": "radius", "label": "Corner radius", "min": 0, "max": 12, "step": 2, "unit": "px", "default": 4 },
+    { "type": "range", "id": "gap", "label": "Column gap", "min": 16, "max": 48, "step": 8, "unit": "px", "default": 32 },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 32, "max": 96, "step": 8, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 32, "max": 96, "step": 8, "unit": "px", "default": 72 }
+  ],
+  "presets": [
+    {
+      "name": "Signature Editorial"
+    }
+  ]
+}
+{% endschema %}
