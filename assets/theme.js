@@ -941,6 +941,65 @@
     });
   }
 
+  function initEditorialVideos(root) {
+    (root || document).querySelectorAll('[data-editorial-video]').forEach(function (frame) {
+      if (frame.dataset.videoBound) return;
+      frame.dataset.videoBound = '1';
+
+      if (reducedMotion) {
+        var ambient = frame.querySelector('video[autoplay]');
+        if (ambient) {
+          ambient.removeAttribute('autoplay');
+          try { ambient.pause(); } catch (e) {}
+        }
+      }
+
+      var playBtn = frame.querySelector('[data-video-play]');
+      if (!playBtn) return;
+
+      playBtn.addEventListener('click', function () {
+        var poster = frame.querySelector('[data-video-poster]');
+        var tpl = frame.querySelector('template[data-video-template]');
+
+        if (tpl && tpl.content) {
+          var frag = tpl.content.cloneNode(true);
+          var videoEl = frag.querySelector('video');
+          if (poster) poster.remove();
+          frame.appendChild(frag);
+          if (videoEl) {
+            videoEl.setAttribute('controls', '');
+            var p = videoEl.play && videoEl.play();
+            if (p && typeof p.catch === 'function') p.catch(function () {});
+            videoEl.focus && videoEl.focus();
+          }
+          return;
+        }
+
+        var provider = frame.getAttribute('data-video-provider');
+        var videoId = frame.getAttribute('data-video-id');
+        if (!provider || !videoId) return;
+
+        var iframe = document.createElement('iframe');
+        iframe.className = 'vv-video-el';
+        iframe.title = frame.getAttribute('data-video-title') || 'Video player';
+        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+        iframe.setAttribute('allowfullscreen', '');
+        iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+
+        if (provider === 'youtube') {
+          iframe.src = 'https://www.youtube.com/embed/' + encodeURIComponent(videoId) + '?autoplay=1&rel=0&modestbranding=1';
+        } else if (provider === 'vimeo') {
+          iframe.src = 'https://player.vimeo.com/video/' + encodeURIComponent(videoId) + '?autoplay=1';
+        } else {
+          return;
+        }
+
+        if (poster) poster.remove();
+        frame.appendChild(iframe);
+      });
+    });
+  }
+
   function bootAll(root) {
     initHeaderAndDrawers(root);
     initSearchClearButtons(root);
@@ -952,6 +1011,7 @@
     initCollectionControls(root);
     initAjaxAddToCart(root);
     initProductRecommendations(root);
+    initEditorialVideos(root);
   }
 
   document.addEventListener('DOMContentLoaded', function () {

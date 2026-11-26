@@ -57,7 +57,7 @@
         "body": "<p>A saree is meant to feel effortless from morning rituals to evening celebrations. We curate each collection across four essential fabrics — breathable Cottons, luminous Silks, featherlight Chiffons and fluid Georgettes — paying close attention to weave texture, border finish and honest colour.</p>",
         "cta_label": "",
         "panel_bg": "#FFFFFF",
-        "radius": 4,
+        "radius": 12,
         "padding_top": 64,
         "padding_bottom": 48
       }
@@ -72,7 +72,7 @@
         "signature": "— Vedajanani Vastralayam, Anantapur",
         "cta_label": "Shop Sarees",
         "outer_bg": "#F2E7D3",
-        "card_radius": 4,
+        "card_radius": 12,
         "padding_top": 56,
         "padding_bottom": 56
       }
@@ -90,7 +90,7 @@
         "fallback_path": "/collections/all",
         "cta_style": "solid",
         "panel_bg": "#FFFFFF",
-        "radius": 4,
+        "radius": 12,
         "padding_top": 56,
         "padding_bottom": 72
       }

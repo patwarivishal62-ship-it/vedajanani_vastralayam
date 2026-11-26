@@ -19,11 +19,11 @@
     "font_heading": "cormorant_n5",
     "font_accent": "cormorant_n5",
     "font_body": "inter_n4",
-    "card_radius": 4,
-    "image_radius": 4,
+    "card_radius": 12,
+    "image_radius": 12,
     "card_border_width": 1,
     "card_shadow": "none",
-    "button_radius": 4
+    "button_radius": 8
   },
   "presets": {
     "South Indian Heritage": {
@@ -46,11 +46,11 @@
       "font_heading": "cormorant_n5",
       "font_accent": "cormorant_n5",
       "font_body": "inter_n4",
-      "card_radius": 4,
-      "image_radius": 4,
+      "card_radius": 12,
+      "image_radius": 12,
       "card_border_width": 1,
       "card_shadow": "none",
-      "button_radius": 4
+      "button_radius": 8
     },
     "Classic Maroon & Ivory": {
       "color_ivory": "#F9F6F1",
