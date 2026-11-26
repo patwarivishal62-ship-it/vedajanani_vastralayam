@@ -405,7 +405,7 @@
         "max": 24,
         "step": 2,
         "unit": "px",
-        "default": 4
+        "default": 12
       },
       {
         "type": "range",
@@ -415,7 +415,7 @@
         "max": 24,
         "step": 2,
         "unit": "px",
-        "default": 4
+        "default": 12
       },
       {
         "type": "range",
@@ -490,8 +490,8 @@
         "max": 50,
         "step": 2,
         "unit": "px",
-        "default": 4,
-        "info": "4–6px recommended for crisp editorial buttons"
+        "default": 8,
+        "info": "6–10px recommended for refined softly rounded buttons"
       },
       {
         "type": "range",

@@ -1,0 +1,260 @@
+{%- liquid
+  assign has_hosted = false
+  if section.settings.hosted_video != blank
+    assign has_hosted = true
+  endif
+  assign has_external = false
+  if section.settings.video_url != blank
+    assign has_external = true
+  endif
+  assign has_video = false
+  if has_hosted or has_external
+    assign has_video = true
+  endif
+
+  assign poster_img = section.settings.cover_image
+  if poster_img == blank and has_hosted and section.settings.hosted_video.preview_image != blank
+    assign poster_img = section.settings.hosted_video.preview_image
+  endif
+
+  assign is_split = false
+  if section.settings.layout == 'split'
+    assign is_split = true
+  endif
+
+  assign fallback_cta = section.settings.fallback_path | default: routes.all_products_collection_url
+-%}
+
+{% style %}
+  #shopify-section-{{ section.id }} .vv-video-sec {
+    {% if section.settings.bg_color != blank and section.settings.bg_color != 'rgba(0,0,0,0)' %}
+      background: {{ section.settings.bg_color }};
+    {% endif %}
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  #shopify-section-{{ section.id }} .vv-video-frame {
+    aspect-ratio: {{ section.settings.video_ratio }};
+    border-radius: {{ section.settings.video_radius }}px;
+    background: {{ section.settings.poster_bg }};
+  }
+  #shopify-section-{{ section.id }} .vv-video-panel {
+    border-radius: {{ section.settings.video_radius }}px;
+  }
+  @media (max-width: 900px) {
+    #shopify-section-{{ section.id }} .vv-video-sec {
+      padding-top: 44px;
+      padding-bottom: 44px;
+    }
+  }
+{% endstyle %}
+
+<section class="vv-video-sec">
+  <div class="wrap">
+    {% unless is_split %}
+      {% if section.settings.eyebrow != blank or section.settings.heading != blank %}
+        <div class="section-head section-head--{{ section.settings.heading_align }}">
+          {% if section.settings.eyebrow != blank %}
+            <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+          {% endif %}
+          {% if section.settings.heading != blank %}
+            <h2 style="font-size: {{ section.settings.heading_size }}px; color: {{ section.settings.heading_color }};">
+              {{ section.settings.heading }}
+            </h2>
+          {% endif %}
+          {% if section.settings.subheading != blank %}
+            <div class="section-sub rte">{{ section.settings.subheading }}</div>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endunless %}
+
+    <div class="vv-video-layout{% if is_split %} vv-video-layout--split{% endif %}{% if is_split and section.settings.video_position == 'right' %} vv-video-layout--reverse{% endif %}">
+      <div
+        class="vv-video-frame"
+        data-editorial-video
+        {% if has_external and has_hosted == false %}
+          data-video-provider="{{ section.settings.video_url.type }}"
+          data-video-id="{{ section.settings.video_url.id }}"
+          data-video-title="{{ section.settings.video_alt | default: section.settings.heading | escape }}"
+        {% endif %}
+      >
+        {% if has_hosted and section.settings.autoplay_muted %}
+          {{ section.settings.hosted_video | video_tag: image_size: '1400x', autoplay: true, loop: true, muted: true, controls: true, playsinline: true, class: 'vv-video-el' }}
+        {% elsif has_video %}
+          <div class="vv-video-poster" data-video-poster>
+            {% if poster_img != blank %}
+              <img
+                src="{{ poster_img | image_url: width: 1400 }}"
+                srcset="{{ poster_img | image_url: width: 640 }} 640w, {{ poster_img | image_url: width: 1000 }} 1000w, {{ poster_img | image_url: width: 1400 }} 1400w"
+                sizes="(max-width: 900px) 100vw, 85vw"
+                alt="{{ section.settings.video_alt | default: poster_img.alt | default: section.settings.heading | escape }}"
+                width="1280"
+                height="720"
+                loading="lazy"
+              >
+            {% endif %}
+            <div class="vv-video-scrim" aria-hidden="true"></div>
+            <button
+              type="button"
+              class="vv-video-play-btn"
+              data-video-play
+              aria-label="Play video: {{ section.settings.video_alt | default: section.settings.heading | escape }}"
+            >
+              <span class="vv-video-play-circle">{% render 'icons', icon: 'play' %}</span>
+              {% if section.settings.play_label != blank %}
+                <span class="vv-video-play-text">{{ section.settings.play_label }}</span>
+              {% endif %}
+            </button>
+          </div>
+
+          {% if has_hosted %}
+            <template data-video-template>
+              {{ section.settings.hosted_video | video_tag: image_size: '1400x', autoplay: true, loop: section.settings.loop_video, controls: true, playsinline: true, class: 'vv-video-el' }}
+            </template>
+          {% endif %}
+        {% else %}
+          <div class="vv-video-poster vv-video-poster--placeholder">
+            {% if poster_img != blank %}
+              <img
+                src="{{ poster_img | image_url: width: 1400 }}"
+                alt="{{ section.settings.video_alt | default: section.settings.heading | escape }}"
+                width="1280"
+                height="720"
+                loading="lazy"
+              >
+              <div class="vv-video-scrim" aria-hidden="true"></div>
+            {% endif %}
+            <div class="vv-video-placeholder-inner">
+              <div class="vv-woven-accent" aria-hidden="true" style="margin: 0 auto 18px;"></div>
+              <span class="vv-video-play-circle vv-video-play-circle--static" aria-hidden="true">
+                {% render 'icons', icon: 'play' %}
+              </span>
+              <p class="vv-video-placeholder-title">{{ section.settings.placeholder_title }}</p>
+              <p class="vv-video-placeholder-note">{{ section.settings.placeholder_note }}</p>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+
+      {% if is_split %}
+        <div class="vv-video-panel">
+          <div class="vv-woven-accent" aria-hidden="true"></div>
+          {% if section.settings.eyebrow != blank %}
+            <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+          {% endif %}
+          {% if section.settings.heading != blank %}
+            <h2 style="font-size: {{ section.settings.heading_size }}px; color: {{ section.settings.heading_color }};">
+              {{ section.settings.heading }}
+            </h2>
+          {% endif %}
+          {% if section.settings.subheading != blank %}
+            <div class="vv-video-copy rte">{{ section.settings.subheading }}</div>
+          {% endif %}
+          {% if section.settings.cta_label != blank %}
+            <div class="vv-video-actions">
+              <a class="btn" href="{{ section.settings.cta_url | default: fallback_cta }}">{{ section.settings.cta_label }}</a>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    {% unless is_split %}
+      {% if section.settings.caption != blank or section.settings.cta_label != blank %}
+        <div class="vv-video-foot vv-video-foot--{{ section.settings.heading_align }}">
+          {% if section.settings.caption != blank %}
+            <p class="vv-video-caption">{{ section.settings.caption }}</p>
+          {% endif %}
+          {% if section.settings.cta_label != blank %}
+            <a class="btn outline" href="{{ section.settings.cta_url | default: fallback_cta }}">{{ section.settings.cta_label }}</a>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endunless %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Editorial Video",
+  "settings": [
+    { "type": "header", "content": "Video Source" },
+    { "type": "video", "id": "hosted_video", "label": "Shopify-hosted video (MP4 / MOV — recommended)" },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "label": "Or YouTube / Vimeo URL",
+      "accept": ["youtube", "vimeo"],
+      "info": "Used when no Shopify-hosted video is selected above."
+    },
+    { "type": "image_picker", "id": "cover_image", "label": "Cover poster image (optional)" },
+    { "type": "text", "id": "video_alt", "label": "Accessible video title / description", "default": "Vedajanani Vastralayam Saree Drape Film" },
+    { "type": "checkbox", "id": "autoplay_muted", "label": "Muted ambient autoplay (Shopify-hosted video only)", "default": false },
+    { "type": "checkbox", "id": "loop_video", "label": "Loop Shopify-hosted video", "default": true },
+    { "type": "text", "id": "play_label", "label": "Play button label", "default": "Watch Film" },
+    { "type": "header", "content": "Layout & Framing" },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Section layout",
+      "options": [
+        { "value": "cinematic", "label": "Cinematic wide showcase" },
+        { "value": "split", "label": "Split video & story (ideal for vertical Reels)" }
+      ],
+      "default": "cinematic"
+    },
+    {
+      "type": "select",
+      "id": "video_position",
+      "label": "Video placement (split layout)",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "video_ratio",
+      "label": "Video aspect ratio",
+      "options": [
+        { "value": "16 / 9", "label": "Widescreen (16:9)" },
+        { "value": "4 / 3", "label": "Editorial (4:3)" },
+        { "value": "4 / 5", "label": "Vertical Portrait (4:5)" },
+        { "value": "9 / 16", "label": "Vertical Reel (9:16)" }
+      ],
+      "default": "16 / 9"
+    },
+    { "type": "range", "id": "video_radius", "label": "Video frame corner radius", "min": 0, "max": 24, "step": 2, "unit": "px", "default": 12 },
+    { "type": "header", "content": "Story & Call to Action" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "In Motion" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "See the Fall & Drape Up Close" },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Description",
+      "default": "<p>Experience the weave, lustre and effortless movement of our Cotton, Silk, Chiffon &amp; Georgette sarees in natural light.</p>"
+    },
+    { "type": "text", "id": "caption", "label": "Bottom caption (cinematic layout, optional)" },
+    { "type": "text", "id": "cta_label", "label": "CTA button label", "default": "Explore Sarees" },
+    { "type": "url", "id": "cta_url", "label": "CTA link" },
+    { "type": "text", "id": "fallback_path", "label": "Fallback link path", "default": "/collections/all" },
+    { "type": "text_alignment", "id": "heading_align", "label": "Header alignment", "default": "center" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 24, "max": 48, "step": 2, "unit": "px", "default": 36 },
+    { "type": "text", "id": "placeholder_title", "label": "Placeholder heading (before video upload)", "default": "Saree Drape & Weave Film" },
+    { "type": "text", "id": "placeholder_note", "label": "Placeholder note", "default": "Add a Shopify MP4 video or YouTube / Vimeo link in Theme Editor to showcase your sarees in motion." },
+    { "type": "header", "content": "Colors & Spacing" },
+    { "type": "color", "id": "bg_color", "label": "Section background (optional)" },
+    { "type": "color", "id": "poster_bg", "label": "Video frame fallback color", "default": "#1C382B" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#202521" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 32, "max": 96, "step": 8, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 32, "max": 96, "step": 8, "unit": "px", "default": 72 }
+  ],
+  "presets": [
+    {
+      "name": "Editorial Video"
+    }
+  ]
+}
+{% endschema %}
