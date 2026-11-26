@@ -40,7 +40,13 @@
     color: {{ section.settings.text_color }};
   }
   #shopify-section-{{ section.id }} .logo img {
-    width: {{ section.settings.logo_width_desktop }}px;
+    width: auto;
+    height: auto;
+    max-width: {{ section.settings.logo_width_desktop }}px;
+    max-height: {{ section.settings.logo_max_height_desktop }}px;
+    {% if section.settings.blend_logo_bg %}
+      mix-blend-mode: multiply;
+    {% endif %}
   }
   #shopify-section-{{ section.id }} .logo-name {
     font-size: {{ section.settings.logo_font_size }}px;
@@ -52,7 +58,9 @@
   }
   #shopify-section-{{ section.id }} .desktop-menubar {
     background: {{ section.settings.menubar_bg }};
-    border-top-color: {{ section.settings.border_color }};
+  }
+  #shopify-section-{{ section.id }} .desktop-menubar--inline {
+    background: transparent;
   }
   #shopify-section-{{ section.id }} .desktop-menubar > a,
   #shopify-section-{{ section.id }} .desktop-menubar .shopall-wrap > a {
@@ -70,164 +78,212 @@
   }
   @media (max-width: 1100px) {
     #shopify-section-{{ section.id }} .logo img {
-      width: {{ section.settings.logo_width_mobile }}px;
+      max-width: {{ section.settings.logo_width_mobile }}px;
+      max-height: {{ section.settings.logo_max_height_mobile }}px;
     }
   }
 {% endstyle %}
 
+{%- capture desktop_nav_markup -%}
+  {% if section.settings.show_home_link %}
+    <a href="{{ routes.root_url }}" class="{% if is_home_active %}is-active{% endif %}"{% if is_home_active %} aria-current="page"{% endif %}>Home</a>
+  {% endif %}
+
+  {% if section.settings.show_shop_all %}
+    <span class="shopall-wrap" data-mega-wrap>
+      <a
+        href="{{ shop_all_href }}"
+        class="{% if is_shop_active %}is-active{% endif %}"
+        data-mega-trigger
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        <span>{{ section.settings.shop_all_label | default: 'Shop Sarees' }}</span>
+        <span class="caret">{% render 'icons', icon: 'chevron-down' %}</span>
+      </a>
+      <div class="shopall-dropdown" data-mega-panel role="region" aria-label="{{ section.settings.shop_all_label | default: 'Shop Sarees' }} menu">
+        <div class="dd-grid">
+          {% if mega_blocks.size > 0 %}
+            {% for block in mega_blocks %}
+              <div class="dd-col" {{ block.shopify_attributes }}>
+                <h4>{{ block.settings.heading }}</h4>
+                {% if block.settings.menu != blank and block.settings.menu.links.size > 0 %}
+                  {% for link in block.settings.menu.links %}
+                    <a href="{{ link.url }}">{{ link.title }}</a>
+                  {% endfor %}
+                {% else %}
+                  {% assign lines = block.settings.links_list | newline_to_br | split: '<br />' %}
+                  {% for line in lines %}
+                    {% assign clean_line = line | strip %}
+                    {% if clean_line != blank %}
+                      {% assign parts = clean_line | split: '|' %}
+                      {% assign lbl = parts[0] | strip %}
+                      {% assign href = parts[1] | strip | default: routes.all_products_collection_url %}
+                      <a href="{{ href }}">{{ lbl }}</a>
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="dd-col">
+              <h4>By Fabric</h4>
+              <a href="{{ routes.collections_url }}/cotton">Cotton</a>
+              <a href="{{ routes.collections_url }}/silk">Silk</a>
+              <a href="{{ routes.collections_url }}/chiffon">Chiffon</a>
+              <a href="{{ routes.collections_url }}/georgette">Georgette</a>
+            </div>
+            <div class="dd-col">
+              <h4>By Occasion</h4>
+              <a href="{{ routes.collections_url }}/daily-use">Everyday</a>
+              <a href="{{ routes.collections_url }}/office">Office</a>
+              <a href="{{ routes.collections_url }}/festive">Festive</a>
+              <a href="{{ routes.collections_url }}/wedding">Wedding</a>
+            </div>
+            <div class="dd-col">
+              <h4>By Price</h4>
+              <a href="{{ routes.collections_url }}/affordable">₹500–₹1,499</a>
+              <a href="{{ routes.collections_url }}/mid-range">₹1,500–₹2,999</a>
+              <a href="{{ routes.collections_url }}/premium">₹3,000 &amp; Above</a>
+            </div>
+          {% endif %}
+
+          {% if has_mega_image %}
+            <a class="dd-editorial" href="{{ section.settings.mega_image_url | default: shop_all_href }}">
+              <img
+                src="{{ section.settings.mega_image | image_url: width: 520 }}"
+                alt="{{ section.settings.mega_image.alt | default: section.settings.mega_image_caption | default: 'Featured Sarees' | escape }}"
+                width="260"
+                height="325"
+                loading="lazy"
+              >
+              {% if section.settings.mega_image_caption != blank %}
+                <span>{{ section.settings.mega_image_caption }}</span>
+              {% endif %}
+            </a>
+          {% endif %}
+        </div>
+        <div class="dd-footer">
+          <a class="link-cta" href="{{ shop_all_href }}">View All Sarees {% render 'icons', icon: 'arrow-right' %}</a>
+        </div>
+      </div>
+    </span>
+  {% endif %}
+
+  {% if use_shopify_menu %}
+    {% for link in section.settings.menu.links %}
+      <a href="{{ link.url }}" class="{% if link.active %}is-active{% endif %}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title }}</a>
+    {% endfor %}
+  {% elsif nav_blocks.size > 0 %}
+    {% for block in nav_blocks %}
+      {%- liquid
+        assign nav_href = block.settings.url | default: block.settings.fallback_path | default: routes.all_products_collection_url
+        assign is_nav_active = false
+        if request.path == nav_href
+          assign is_nav_active = true
+        endif
+      -%}
+      <a href="{{ nav_href }}" class="{% if is_nav_active %}is-active{% endif %}"{% if is_nav_active %} aria-current="page"{% endif %} {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
+    {% endfor %}
+  {% else %}
+    <a href="{{ routes.collections_url }}/new-arrivals">New Arrivals</a>
+    <a href="/pages/about">Our Story</a>
+  {% endif %}
+{%- endcapture -%}
+
 <header class="site-header{% if section.settings.sticky_header %} is-sticky{% endif %}" id="siteHeader">
-  <div class="header-inner wrap{% if section.settings.logo_position == 'center' %} header-inner--logo-center{% endif %}">
-    {% if section.settings.logo_position == 'center' %}
+  {% if section.settings.logo_position == 'center' %}
+    <div class="header-inner wrap header-inner--logo-center">
       <div class="header-left-slot">
         <button class="burger" id="menuDrawerOpen" type="button" aria-label="Open navigation menu" aria-controls="mobileDrawer" aria-expanded="false">{% render 'icons', icon: 'menu' %}</button>
       </div>
-    {% else %}
-      <button class="burger" id="menuDrawerOpen" type="button" aria-label="Open navigation menu" aria-controls="mobileDrawer" aria-expanded="false">{% render 'icons', icon: 'menu' %}</button>
-    {% endif %}
 
-    <a class="logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }} home">
-      {% if logo_img != blank %}
-        <img
-          src="{{ logo_img | image_url: width: 600 }}"
-          alt="{{ section.settings.logo_text | default: shop.name | escape }}"
-          width="{{ section.settings.logo_width_desktop }}"
-          height="{{ section.settings.logo_width_desktop | divided_by: logo_img.aspect_ratio | round }}"
-          loading="eager"
-        >
-      {% else %}
-        <span class="logo-name">{{ section.settings.logo_text | default: shop.name }}</span>
-        {% if section.settings.logo_subtext != blank %}
-          <span class="logo-sub">{{ section.settings.logo_subtext }}</span>
+      <a class="logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }} home">
+        {% if logo_img != blank %}
+          <img
+            src="{{ logo_img | image_url: width: 600 }}"
+            alt="{{ section.settings.logo_text | default: shop.name | escape }}"
+            width="{{ section.settings.logo_width_desktop }}"
+            height="{{ section.settings.logo_width_desktop | divided_by: logo_img.aspect_ratio | round }}"
+            loading="eager"
+          >
+        {% else %}
+          <span class="logo-name">{{ section.settings.logo_text | default: shop.name }}</span>
+          {% if section.settings.logo_subtext != blank %}
+            <span class="logo-sub">{{ section.settings.logo_subtext }}</span>
+          {% endif %}
         {% endif %}
-      {% endif %}
-    </a>
+      </a>
 
-    <div class="header-actions">
-      {% if section.settings.show_search %}
-        <button class="icon-btn" id="searchOpen" type="button" aria-label="Search store" aria-controls="searchDrawer" aria-expanded="false">
-          {% render 'icons', icon: 'search' %}
-        </button>
-      {% endif %}
-      {% if section.settings.show_account %}
-        <a class="icon-btn" href="{{ account_url }}" aria-label="{% if customer %}My account{% else %}Sign in to account{% endif %}">
-          {% render 'icons', icon: 'account' %}
-        </a>
-      {% endif %}
-      {% if section.settings.show_cart %}
-        <button class="icon-btn bag-btn" id="cartOpen" type="button" aria-label="Shopping bag, {{ cart.item_count }} items" aria-controls="cartDrawer" aria-expanded="false">
-          {% render 'icons', icon: 'bag' %}
-          <span class="cart-count" id="cartCount">{{ cart.item_count }}</span>
-        </button>
-      {% endif %}
+      <div class="header-actions">
+        {% if section.settings.show_search %}
+          <button class="icon-btn" id="searchOpen" type="button" aria-label="Search store" aria-controls="searchDrawer" aria-expanded="false">
+            {% render 'icons', icon: 'search' %}
+          </button>
+        {% endif %}
+        {% if section.settings.show_account %}
+          <a class="icon-btn" href="{{ account_url }}" aria-label="{% if customer %}My account{% else %}Sign in to account{% endif %}">
+            {% render 'icons', icon: 'account' %}
+          </a>
+        {% endif %}
+        {% if section.settings.show_cart %}
+          <button class="icon-btn bag-btn" id="cartOpen" type="button" aria-label="Shopping bag, {{ cart.item_count }} items" aria-controls="cartDrawer" aria-expanded="false">
+            {% render 'icons', icon: 'bag' %}
+            <span class="cart-count" id="cartCount">{{ cart.item_count }}</span>
+          </button>
+        {% endif %}
+      </div>
     </div>
-  </div>
 
-  <nav class="desktop-menubar" aria-label="Main menu">
-    {% if section.settings.show_home_link %}
-      <a href="{{ routes.root_url }}" class="{% if is_home_active %}is-active{% endif %}"{% if is_home_active %} aria-current="page"{% endif %}>Home</a>
-    {% endif %}
-
-    {% if section.settings.show_shop_all %}
-      <span class="shopall-wrap" data-mega-wrap>
-        <a
-          href="{{ shop_all_href }}"
-          class="{% if is_shop_active %}is-active{% endif %}"
-          data-mega-trigger
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          <span>{{ section.settings.shop_all_label | default: 'Shop Sarees' }}</span>
-          <span class="caret">{% render 'icons', icon: 'chevron-down' %}</span>
+    <nav class="desktop-menubar" aria-label="Main menu">
+      {{ desktop_nav_markup }}
+    </nav>
+  {% else %}
+    <div class="header-inner wrap header-inner--logo-left">
+      <div class="header-brand-slot">
+        <button class="burger" id="menuDrawerOpen" type="button" aria-label="Open navigation menu" aria-controls="mobileDrawer" aria-expanded="false">{% render 'icons', icon: 'menu' %}</button>
+        <a class="logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }} home">
+          {% if logo_img != blank %}
+            <img
+              src="{{ logo_img | image_url: width: 600 }}"
+              alt="{{ section.settings.logo_text | default: shop.name | escape }}"
+              width="{{ section.settings.logo_width_desktop }}"
+              height="{{ section.settings.logo_width_desktop | divided_by: logo_img.aspect_ratio | round }}"
+              loading="eager"
+            >
+          {% else %}
+            <span class="logo-name">{{ section.settings.logo_text | default: shop.name }}</span>
+            {% if section.settings.logo_subtext != blank %}
+              <span class="logo-sub">{{ section.settings.logo_subtext }}</span>
+            {% endif %}
+          {% endif %}
         </a>
-        <div class="shopall-dropdown" data-mega-panel role="region" aria-label="{{ section.settings.shop_all_label | default: 'Shop Sarees' }} menu">
-          <div class="dd-grid">
-            {% if mega_blocks.size > 0 %}
-              {% for block in mega_blocks %}
-                <div class="dd-col" {{ block.shopify_attributes }}>
-                  <h4>{{ block.settings.heading }}</h4>
-                  {% if block.settings.menu != blank and block.settings.menu.links.size > 0 %}
-                    {% for link in block.settings.menu.links %}
-                      <a href="{{ link.url }}">{{ link.title }}</a>
-                    {% endfor %}
-                  {% else %}
-                    {% assign lines = block.settings.links_list | newline_to_br | split: '<br />' %}
-                    {% for line in lines %}
-                      {% assign clean_line = line | strip %}
-                      {% if clean_line != blank %}
-                        {% assign parts = clean_line | split: '|' %}
-                        {% assign lbl = parts[0] | strip %}
-                        {% assign href = parts[1] | strip | default: routes.all_products_collection_url %}
-                        <a href="{{ href }}">{{ lbl }}</a>
-                      {% endif %}
-                    {% endfor %}
-                  {% endif %}
-                </div>
-              {% endfor %}
-            {% else %}
-              <div class="dd-col">
-                <h4>By Fabric</h4>
-                <a href="{{ routes.collections_url }}/cotton">Cotton</a>
-                <a href="{{ routes.collections_url }}/silk">Silk</a>
-                <a href="{{ routes.collections_url }}/chiffon">Chiffon</a>
-                <a href="{{ routes.collections_url }}/georgette">Georgette</a>
-              </div>
-              <div class="dd-col">
-                <h4>By Occasion</h4>
-                <a href="{{ routes.collections_url }}/daily-use">Everyday</a>
-                <a href="{{ routes.collections_url }}/office">Office</a>
-                <a href="{{ routes.collections_url }}/festive">Festive</a>
-                <a href="{{ routes.collections_url }}/wedding">Wedding</a>
-              </div>
-              <div class="dd-col">
-                <h4>By Price</h4>
-                <a href="{{ routes.collections_url }}/affordable">₹500–₹1,499</a>
-                <a href="{{ routes.collections_url }}/mid-range">₹1,500–₹2,999</a>
-                <a href="{{ routes.collections_url }}/premium">₹3,000 &amp; Above</a>
-              </div>
-            {% endif %}
+      </div>
 
-            {% if has_mega_image %}
-              <a class="dd-editorial" href="{{ section.settings.mega_image_url | default: shop_all_href }}">
-                <img
-                  src="{{ section.settings.mega_image | image_url: width: 520 }}"
-                  alt="{{ section.settings.mega_image.alt | default: section.settings.mega_image_caption | default: 'Featured Sarees' | escape }}"
-                  width="260"
-                  height="325"
-                  loading="lazy"
-                >
-                {% if section.settings.mega_image_caption != blank %}
-                  <span>{{ section.settings.mega_image_caption }}</span>
-                {% endif %}
-              </a>
-            {% endif %}
-          </div>
-          <div class="dd-footer">
-            <a class="link-cta" href="{{ shop_all_href }}">View All Sarees {% render 'icons', icon: 'arrow-right' %}</a>
-          </div>
-        </div>
-      </span>
-    {% endif %}
+      <nav class="desktop-menubar desktop-menubar--inline" aria-label="Main menu">
+        {{ desktop_nav_markup }}
+      </nav>
 
-    {% if use_shopify_menu %}
-      {% for link in section.settings.menu.links %}
-        <a href="{{ link.url }}" class="{% if link.active %}is-active{% endif %}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title }}</a>
-      {% endfor %}
-    {% elsif nav_blocks.size > 0 %}
-      {% for block in nav_blocks %}
-        {%- liquid
-          assign nav_href = block.settings.url | default: block.settings.fallback_path | default: routes.all_products_collection_url
-          assign is_nav_active = false
-          if request.path == nav_href
-            assign is_nav_active = true
-          endif
-        -%}
-        <a href="{{ nav_href }}" class="{% if is_nav_active %}is-active{% endif %}"{% if is_nav_active %} aria-current="page"{% endif %} {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
-      {% endfor %}
-    {% else %}
-      <a href="{{ routes.collections_url }}/new-arrivals">New Arrivals</a>
-      <a href="/pages/about">Our Story</a>
-    {% endif %}
-  </nav>
+      <div class="header-actions">
+        {% if section.settings.show_search %}
+          <button class="icon-btn" id="searchOpen" type="button" aria-label="Search store" aria-controls="searchDrawer" aria-expanded="false">
+            {% render 'icons', icon: 'search' %}
+          </button>
+        {% endif %}
+        {% if section.settings.show_account %}
+          <a class="icon-btn" href="{{ account_url }}" aria-label="{% if customer %}My account{% else %}Sign in to account{% endif %}">
+            {% render 'icons', icon: 'account' %}
+          </a>
+        {% endif %}
+        {% if section.settings.show_cart %}
+          <button class="icon-btn bag-btn" id="cartOpen" type="button" aria-label="Shopping bag, {{ cart.item_count }} items" aria-controls="cartDrawer" aria-expanded="false">
+            {% render 'icons', icon: 'bag' %}
+            <span class="cart-count" id="cartCount">{{ cart.item_count }}</span>
+          </button>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
 </header>
 
 <div class="drawer-overlay" id="drawerOverlay" aria-hidden="true"></div>
@@ -393,17 +449,20 @@
   "settings": [
     { "type": "header", "content": "Logo" },
     { "type": "image_picker", "id": "logo_image", "label": "Logo image (overrides text logo)" },
-    { "type": "range", "id": "logo_width_desktop", "label": "Logo width (desktop)", "min": 120, "max": 260, "step": 10, "unit": "px", "default": 200 },
-    { "type": "range", "id": "logo_width_mobile", "label": "Logo width (mobile)", "min": 100, "max": 200, "step": 10, "unit": "px", "default": 140 },
+    { "type": "range", "id": "logo_width_desktop", "label": "Logo max width (desktop)", "min": 120, "max": 260, "step": 10, "unit": "px", "default": 200 },
+    { "type": "range", "id": "logo_max_height_desktop", "label": "Logo max height (desktop)", "min": 40, "max": 120, "step": 4, "unit": "px", "default": 76 },
+    { "type": "range", "id": "logo_width_mobile", "label": "Logo max width (mobile)", "min": 100, "max": 200, "step": 10, "unit": "px", "default": 140 },
+    { "type": "range", "id": "logo_max_height_mobile", "label": "Logo max height (mobile)", "min": 32, "max": 80, "step": 4, "unit": "px", "default": 52 },
+    { "type": "checkbox", "id": "blend_logo_bg", "label": "Blend white logo background into header", "default": true },
     {
       "type": "select",
       "id": "logo_position",
       "label": "Desktop logo placement",
       "options": [
-        { "value": "center", "label": "Center" },
-        { "value": "left", "label": "Left" }
+        { "value": "left", "label": "Left (single aligned row)" },
+        { "value": "center", "label": "Center" }
       ],
-      "default": "center"
+      "default": "left"
     },
     { "type": "text", "id": "logo_text", "label": "Logo text", "default": "VEDAJANANI" },
     { "type": "text", "id": "logo_subtext", "label": "Logo subtext", "default": "Vastralayam" },
