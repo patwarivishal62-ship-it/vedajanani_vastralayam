@@ -1,91 +1,115 @@
-/* Vedajanani Editorial — Minimal Prada-Style Rounded Product Card */
+/* Vedajanani Editorial — Product Cards & Pricing */
 .product-card {
   display: flex;
   flex-direction: column;
-  background: transparent;
-  border-radius: var(--radius, 20px);
-  border: var(--card-border-w, 0px) solid var(--border-color, #E5DFD5);
+  text-decoration: none;
+  background: var(--surface, #FFFFFF);
+  border-radius: var(--radius, 10px);
+  border: var(--card-border-w, 1px) solid var(--border-color, #E3D8C5);
+  box-shadow: var(--card-shadow, 0 4px 16px rgba(28, 28, 28, 0.04));
   overflow: hidden;
-  text-align: var(--product-align, left);
-  transition: transform 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
-.product-card:hover { transform: translateY(-2px); }
+.product-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(168, 138, 72, 0.45);
+  box-shadow: 0 12px 28px rgba(28, 28, 28, 0.08);
+}
 
 .product-card-media {
   position: relative;
   display: block;
   overflow: hidden;
-  border-radius: var(--img-radius, 16px);
-  background: var(--surface-soft, #F3EDE3);
   aspect-ratio: var(--product-ratio, 3 / 4);
+  background: var(--surface-soft, #F2E7D3);
 }
 .product-card-media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 0;
-  transition: transform 0.55s ease;
+  transition: transform 0.55s ease, opacity 0.35s ease;
+}
+.product-card-img-secondary {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+.product-card:hover .product-card-media.has-secondary .product-card-img-secondary {
+  opacity: 1;
 }
 .product-card:hover .product-card-media img {
-  transform: scale(1.04);
+  transform: scale(1.03);
+}
+.product-card--sold-out .product-card-media img {
+  opacity: 0.75;
 }
 
 .product-card-badge {
   position: absolute;
-  top: 12px;
-  left: 12px;
-  background: var(--sale-color, var(--maroon, #5C1A24));
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  background: var(--sale-color, var(--terracotta, #A8492D));
   color: #FFFFFF;
   font-size: 10px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   padding: 5px 10px;
-  border-radius: 999px;
+  border-radius: 3px;
   font-weight: 500;
+}
+.product-card-badge--soldout {
+  background: var(--char, #1C1C1C);
 }
 
 .product-card-info {
-  padding: 12px 4px 4px;
+  padding: 14px 16px 16px;
+  text-align: var(--product-align, left);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
 }
-
 .product-card-vendor {
   font-size: 10px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--text-muted, #777777);
-  margin-bottom: 4px;
+  color: var(--gold, #A88A48);
 }
-
 .product-card-title {
-  font-family: var(--font-accent, 'Cormorant', serif);
-  font-size: var(--product-title-size, 15px);
-  letter-spacing: var(--product-title-ls, 1px);
-  text-transform: var(--product-title-transform, uppercase);
-  font-weight: 600;
+  font-family: var(--font-accent, 'Cormorant', Georgia, serif);
+  font-weight: var(--font-accent-weight, 500);
+  font-style: var(--font-accent-style, normal);
+  font-size: var(--product-title-size, 17px);
+  letter-spacing: var(--product-title-ls, 0.5px);
+  text-transform: var(--product-title-transform, none);
   line-height: 1.3;
-  margin: 0 0 6px;
+  margin: 0;
+  color: var(--char, #1C1C1C);
 }
 .product-card-title a {
   text-decoration: none;
   color: inherit;
 }
 .product-card-title a:hover {
-  color: var(--maroon, #5C1A24);
+  color: var(--maroon, #244737);
 }
 
-.product-card .price {
-  font-family: var(--font-body, 'Jost', sans-serif);
+.price {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
   font-size: 14px;
   font-weight: 500;
   color: var(--char, #1C1C1C);
 }
-.product-card .price--on-sale .price-current {
-  color: var(--sale-color, var(--maroon, #5C1A24));
-}
-.product-card .price s {
-  color: var(--compare-color, #999999);
-  margin-left: 8px;
+.price .sale { color: var(--sale-color, var(--terracotta, #A8492D)); }
+.price .compare {
+  text-decoration: line-through;
+  color: var(--compare-color, #8C8478);
   font-weight: 400;
+  font-size: 13px;
 }
 
 .product-card-quickadd {
@@ -94,5 +118,6 @@
 .product-card-quickadd .btn {
   width: 100%;
   padding: 10px 14px;
+  min-height: 40px;
   font-size: 10px;
 }

@@ -10,34 +10,19 @@
     grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr));
     gap: {{ section.settings.grid_gap }}px;
   }
-  #shopify-section-{{ section.id }} .vv-tile {
+  #shopify-section-{{ section.id }} .lookbook-card {
+    aspect-ratio: {{ section.settings.image_ratio }};
     border-radius: {{ section.settings.card_radius }}px;
-    {% if section.settings.aspect_ratio == 'custom' %}
-      min-height: {{ section.settings.custom_height_desktop }}px;
-    {% endif %}
-  }
-  #shopify-section-{{ section.id }} .vv-tile-media {
-    {% unless section.settings.aspect_ratio == 'custom' %}
-      aspect-ratio: {{ section.settings.aspect_ratio }};
-    {% endunless %}
-  }
-  #shopify-section-{{ section.id }} .vv-tile-title {
-    font-size: {{ section.settings.caption_size }}px;
   }
   @media (max-width: 900px) {
     #shopify-section-{{ section.id }} .vv-grid {
       grid-template-columns: repeat({{ section.settings.columns_mobile }}, minmax(0, 1fr));
     }
-    {% if section.settings.aspect_ratio == 'custom' %}
-      #shopify-section-{{ section.id }} .vv-tile {
-        min-height: {{ section.settings.custom_height_mobile }}px;
-      }
-    {% endif %}
   }
 {% endstyle %}
 
 <section class="vv-lookbook-sec">
-  <div class="wrap">
+  <div class="{% if section.settings.full_width %}vv-banner-wrap--inset{% else %}wrap{% endif %}">
     {% if section.settings.eyebrow != blank or section.settings.heading != blank %}
       <div class="section-head section-head--{{ section.settings.heading_align }}">
         {% if section.settings.eyebrow != blank %}
@@ -57,53 +42,63 @@
     <div class="vv-grid">
       {% if section.blocks.size > 0 %}
         {% for block in section.blocks %}
-          {%- assign ov_alpha = block.settings.overlay_opacity | divided_by: 100.0 -%}
-          {%- assign look_href = block.settings.link | default: routes.all_products_collection_url -%}
+          {%- liquid
+            assign linked_product = block.settings.product
+            assign card_img = block.settings.image
+            if card_img == blank and linked_product != blank
+              assign card_img = linked_product.featured_image
+            endif
+            assign card_caption = block.settings.caption
+            if card_caption == blank and linked_product != blank
+              assign card_caption = linked_product.title
+            endif
+            assign card_sub = block.settings.subcaption
+            if card_sub == blank and linked_product != blank
+              assign card_sub = linked_product.price | money
+            endif
+            assign card_href = block.settings.url
+            if card_href == blank and linked_product != blank
+              assign card_href = linked_product.url
+            endif
+            if card_href == blank
+              assign card_href = routes.all_products_collection_url
+            endif
+            assign ov_alpha = block.settings.overlay_opacity | divided_by: 100.0
+          -%}
           <a
-            class="vv-tile{% if section.settings.caption_placement != 'below' %} vv-tile--overlay{% endif %}"
-            href="{{ look_href }}"
-            style="
-              background: {{ block.settings.card_bg }};
-              color: {{ block.settings.text_color }};
-              text-align: {{ section.settings.caption_align }};
-              {% if section.settings.caption_placement == 'overlay_center' %}justify-content: center;{% endif %}
-            "
+            class="lookbook-card"
+            href="{{ card_href }}"
+            style="background: {{ block.settings.bg_color }};"
             {{ block.shopify_attributes }}
           >
-            {% if block.settings.image != blank %}
-              <div class="vv-tile-media">
-                <img
-                  src="{{ block.settings.image | image_url: width: 900 }}"
-                  alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
-                  style="object-position: {{ block.settings.focal_point }};"
-                  width="600"
-                  height="800"
-                  loading="lazy"
-                >
-              </div>
-              {% if section.settings.caption_placement != 'below' %}
-                <div class="vv-tile-overlay" style="background: #000000; opacity: {{ ov_alpha }};"></div>
-              {% endif %}
+            {% if card_img != blank %}
+              <img
+                src="{{ card_img | image_url: width: 900 }}"
+                alt="{{ card_img.alt | default: card_caption | escape }}"
+                style="object-position: {{ block.settings.focal_point }};"
+                width="600"
+                height="800"
+                loading="lazy"
+              >
+            {% else %}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
             {% endif %}
-
-            <div class="vv-tile-body">
-              {% if block.settings.tag != blank %}
-                <span class="vv-tile-badge">{{ block.settings.tag }}</span>
-              {% endif %}
-              <h3 class="vv-tile-title">{{ block.settings.title }}</h3>
-              {% if block.settings.subtitle != blank %}
-                <p class="vv-tile-sub">{{ block.settings.subtitle }}</p>
-              {% endif %}
-            </div>
+            <div class="lookbook-card-overlay" style="opacity: {{ ov_alpha }};"></div>
+            {% if card_caption != blank or card_sub != blank %}
+              <div class="lookbook-caption" style="color: {{ block.settings.text_color }};">
+                {% if card_caption != blank %}<span>{{ card_caption }}</span>{% endif %}
+                {% if card_sub != blank %}
+                  <span style="display: block; font-family: var(--font-body); font-size: 12px; opacity: 0.9; margin-top: 4px;">{{ card_sub }}</span>
+                {% endif %}
+              </div>
+            {% endif %}
           </a>
         {% endfor %}
       {% else %}
         {% for i in (1..4) %}
-          <a class="vv-tile" href="{{ routes.all_products_collection_url }}" style="min-height: 240px; justify-content: center; text-align: center;">
-            <div class="vv-tile-body">
-              <span class="vv-tile-badge">Edit 0{{ i }}</span>
-              <h3 class="vv-tile-title">Look {{ i }}</h3>
-            </div>
+          <a class="lookbook-card" href="{{ routes.all_products_collection_url }}">
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            <div class="lookbook-caption">Look 0{{ i }}</div>
           </a>
         {% endfor %}
       {% endif %}
@@ -115,290 +110,69 @@
 {
   "name": "Lookbook Grid",
   "settings": [
-    {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Eyebrow",
-      "default": "Lookbook"
-    },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "The Editorial Edit"
-    },
-    {
-      "type": "textarea",
-      "id": "subheading",
-      "label": "Subheading (optional)"
-    },
-    {
-      "type": "text_alignment",
-      "id": "heading_align",
-      "label": "Header alignment",
-      "default": "center"
-    },
-    {
-      "type": "range",
-      "id": "heading_size",
-      "label": "Heading size",
-      "min": 20,
-      "max": 64,
-      "step": 2,
-      "unit": "px",
-      "default": 34
-    },
-    {
-      "type": "color",
-      "id": "heading_color",
-      "label": "Heading color",
-      "default": "#1C1C1C"
-    },
-    {
-      "type": "header",
-      "content": "Grid & Sizing"
-    },
-    {
-      "type": "range",
-      "id": "columns_desktop",
-      "label": "Columns (desktop)",
-      "min": 2,
-      "max": 6,
-      "step": 1,
-      "default": 4
-    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Lookbook" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Draped in Grace" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading (optional)" },
+    { "type": "text_alignment", "id": "heading_align", "label": "Header alignment", "default": "center" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 60, "step": 2, "unit": "px", "default": 34 },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#1C1C1C" },
+    { "type": "header", "content": "Grid & Aspect Ratio" },
+    { "type": "checkbox", "id": "full_width", "label": "Full-width grid", "default": false },
+    { "type": "range", "id": "columns_desktop", "label": "Columns (desktop)", "min": 2, "max": 6, "step": 1, "default": 4 },
     {
       "type": "select",
       "id": "columns_mobile",
       "label": "Columns (mobile)",
       "options": [
-        {
-          "value": "1",
-          "label": "1 column"
-        },
-        {
-          "value": "2",
-          "label": "2 columns"
-        },
-        {
-          "value": "3",
-          "label": "3 columns"
-        }
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
       ],
       "default": "2"
     },
+    { "type": "range", "id": "grid_gap", "label": "Grid gap", "min": 4, "max": 36, "step": 2, "unit": "px", "default": 16 },
     {
       "type": "select",
-      "id": "aspect_ratio",
-      "label": "Tile aspect ratio / height",
+      "id": "image_ratio",
+      "label": "Photo aspect ratio",
       "options": [
-        {
-          "value": "3 / 4",
-          "label": "Portrait (3:4)"
-        },
-        {
-          "value": "4 / 5",
-          "label": "Editorial (4:5)"
-        },
-        {
-          "value": "1 / 1",
-          "label": "Square (1:1)"
-        },
-        {
-          "value": "4 / 3",
-          "label": "Landscape (4:3)"
-        },
-        {
-          "value": "custom",
-          "label": "Custom pixel height"
-        }
+        { "value": "3 / 4", "label": "Portrait (3:4)" },
+        { "value": "4 / 5", "label": "Editorial (4:5)" },
+        { "value": "2 / 3", "label": "Tall (2:3)" },
+        { "value": "1 / 1", "label": "Square (1:1)" },
+        { "value": "4 / 3", "label": "Landscape (4:3)" }
       ],
-      "default": "custom"
+      "default": "3 / 4"
     },
-    {
-      "type": "range",
-      "id": "custom_height_desktop",
-      "label": "Custom height (desktop)",
-      "min": 160,
-      "max": 680,
-      "step": 20,
-      "unit": "px",
-      "default": 320
-    },
-    {
-      "type": "range",
-      "id": "custom_height_mobile",
-      "label": "Custom height (mobile)",
-      "min": 140,
-      "max": 480,
-      "step": 20,
-      "unit": "px",
-      "default": 220
-    },
-    {
-      "type": "range",
-      "id": "grid_gap",
-      "label": "Grid gap",
-      "min": 8,
-      "max": 40,
-      "step": 2,
-      "unit": "px",
-      "default": 16
-    },
-    {
-      "type": "range",
-      "id": "card_radius",
-      "label": "Tile corner radius",
-      "min": 0,
-      "max": 36,
-      "step": 2,
-      "unit": "px",
-      "default": 20
-    },
-    {
-      "type": "header",
-      "content": "Caption Placement"
-    },
-    {
-      "type": "select",
-      "id": "caption_placement",
-      "label": "Caption placement",
-      "options": [
-        {
-          "value": "overlay_bottom",
-          "label": "Overlaid at bottom"
-        },
-        {
-          "value": "overlay_center",
-          "label": "Overlaid in center"
-        },
-        {
-          "value": "below",
-          "label": "Below image"
-        }
-      ],
-      "default": "overlay_bottom"
-    },
-    {
-      "type": "text_alignment",
-      "id": "caption_align",
-      "label": "Caption alignment",
-      "default": "center"
-    },
-    {
-      "type": "range",
-      "id": "caption_size",
-      "label": "Caption title size",
-      "min": 14,
-      "max": 32,
-      "step": 1,
-      "unit": "px",
-      "default": 20
-    },
-    {
-      "type": "header",
-      "content": "Section Spacing"
-    },
-    {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Section background (optional)"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "label": "Top padding",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "default": 48
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "label": "Bottom padding",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "default": 48
-    }
+    { "type": "range", "id": "card_radius", "label": "Card corner radius", "min": 0, "max": 36, "step": 2, "unit": "px", "default": 10 },
+    { "type": "header", "content": "Section Spacing" },
+    { "type": "color", "id": "bg_color", "label": "Section background (optional)" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
   ],
   "blocks": [
     {
-      "type": "look",
-      "name": "Lookbook Tile",
+      "type": "photo",
+      "name": "Lookbook Photo",
       "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Image"
-        },
+        { "type": "product", "id": "product", "label": "Featured saree (optional — auto-fills photo, title & price)" },
+        { "type": "image_picker", "id": "image", "label": "Custom photo (overrides product image)" },
         {
           "type": "select",
           "id": "focal_point",
           "label": "Image focal point",
           "options": [
-            {
-              "value": "center center",
-              "label": "Center"
-            },
-            {
-              "value": "top center",
-              "label": "Top"
-            },
-            {
-              "value": "bottom center",
-              "label": "Bottom"
-            }
+            { "value": "center center", "label": "Center" },
+            { "value": "top center", "label": "Top" },
+            { "value": "bottom center", "label": "Bottom" }
           ],
           "default": "center center"
         },
-        {
-          "type": "range",
-          "id": "overlay_opacity",
-          "label": "Image overlay opacity",
-          "min": 0,
-          "max": 85,
-          "step": 5,
-          "unit": "%",
-          "default": 30
-        },
-        {
-          "type": "color",
-          "id": "card_bg",
-          "label": "Fallback card background",
-          "default": "#F3EDE3"
-        },
-        {
-          "type": "color",
-          "id": "text_color",
-          "label": "Text color",
-          "default": "#1C1C1C"
-        },
-        {
-          "type": "text",
-          "id": "tag",
-          "label": "Small tag",
-          "default": "Look 01"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Morning Mul Cotton"
-        },
-        {
-          "type": "text",
-          "id": "subtitle",
-          "label": "Subtitle (optional)"
-        },
-        {
-          "type": "url",
-          "id": "link",
-          "label": "Link"
-        }
+        { "type": "range", "id": "overlay_opacity", "label": "Bottom gradient darkness", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 70 },
+        { "type": "text", "id": "caption", "label": "Caption (overrides product title)" },
+        { "type": "text", "id": "subcaption", "label": "Subcaption (overrides product price)" },
+        { "type": "url", "id": "url", "label": "Custom link (overrides product link)" },
+        { "type": "color", "id": "bg_color", "label": "Fallback background", "default": "#244737" },
+        { "type": "color", "id": "text_color", "label": "Caption color", "default": "#FAF2E3" }
       ]
     }
   ],
@@ -406,34 +180,10 @@
     {
       "name": "Lookbook Grid",
       "blocks": [
-        {
-          "type": "look",
-          "settings": {
-            "tag": "Look 01",
-            "title": "Morning Mul Cotton"
-          }
-        },
-        {
-          "type": "look",
-          "settings": {
-            "tag": "Look 02",
-            "title": "Banarasi Heirloom"
-          }
-        },
-        {
-          "type": "look",
-          "settings": {
-            "tag": "Look 03",
-            "title": "Bandhani Chiffon"
-          }
-        },
-        {
-          "type": "look",
-          "settings": {
-            "tag": "Look 04",
-            "title": "Satin Georgette"
-          }
-        }
+        { "type": "photo", "settings": { "caption": "Cotton Weaves", "subcaption": "Explore Collection" } },
+        { "type": "photo", "settings": { "caption": "Silk Drapes", "subcaption": "Explore Collection" } },
+        { "type": "photo", "settings": { "caption": "Festive Chiffon", "subcaption": "Explore Collection" } },
+        { "type": "photo", "settings": { "caption": "Wedding Edit", "subcaption": "Explore Collection" } }
       ]
     }
   ]

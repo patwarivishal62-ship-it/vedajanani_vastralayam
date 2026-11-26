@@ -116,20 +116,26 @@
             <img
               class="img-desktop{% if section.settings.image_mobile != blank %} has-mobile{% endif %}"
               src="{{ section.settings.image_desktop | image_url: width: 2000 }}"
+              srcset="{{ section.settings.image_desktop | image_url: width: 900 }} 900w, {{ section.settings.image_desktop | image_url: width: 1400 }} 1400w, {{ section.settings.image_desktop | image_url: width: 2000 }} 2000w"
+              sizes="100vw"
               alt="{{ section.settings.image_desktop.alt | default: shop.name | escape }}"
               width="{{ section.settings.image_desktop.width }}"
               height="{{ section.settings.image_desktop.height }}"
               loading="eager"
+              fetchpriority="high"
             >
           {% endif %}
           {% if section.settings.image_mobile != blank %}
             <img
               class="img-mobile"
               src="{{ section.settings.image_mobile | image_url: width: 1000 }}"
+              srcset="{{ section.settings.image_mobile | image_url: width: 600 }} 600w, {{ section.settings.image_mobile | image_url: width: 1000 }} 1000w"
+              sizes="100vw"
               alt="{{ section.settings.image_mobile.alt | default: shop.name | escape }}"
               width="{{ section.settings.image_mobile.width }}"
               height="{{ section.settings.image_mobile.height }}"
               loading="eager"
+              fetchpriority="high"
             >
           {% endif %}
         </div>
@@ -213,10 +219,10 @@
               {% endcase %}
             {% endfor %}
           {% else %}
-            <div class="kicker" style="color: #D9C7A5; margin-bottom: 14px;">Vedajanani Vastralayam · Festive 2026</div>
-            <h1 style="color: #FFFFFF; font-size: 72px; line-height: 0.95; margin-bottom: 16px;">Drape the story you carry.</h1>
-            <p style="color: #F3EDE3; margin-bottom: 28px;">Cotton, Silk, Chiffon & Georgette — handpicked from master weavers.</p>
-            <a class="link-cta" href="{{ routes.all_products_collection_url }}" style="color: #FFFFFF;">Shop New Arrivals →</a>
+            <div class="kicker" style="color: #E2CFA8; margin-bottom: 14px;">Vedajanani Vastralayam</div>
+            <h1 style="color: #FAF2E3; font-size: 68px; line-height: 0.98; margin-bottom: 16px;">Drape the story you carry.</h1>
+            <p style="color: #EFE5D2; margin-bottom: 28px;">Cotton, Silk, Chiffon &amp; Georgette sarees thoughtfully curated for everyday grace and special occasions.</p>
+            <a class="link-cta" href="{{ routes.all_products_collection_url }}" style="color: #FAF2E3;">Explore Sarees →</a>
           {% endif %}
         </div>
       </div>
@@ -420,7 +426,7 @@
       "type": "color_background",
       "id": "fallback_bg",
       "label": "Background color / gradient (when no image)",
-      "default": "linear-gradient(160deg, #1A0A0E 0%, #5C1A24 55%, #8A3A2E 100%)"
+      "default": "linear-gradient(145deg, #173125 0%, #244737 58%, #4A2B20 100%)"
     },
     {
       "type": "color",
@@ -594,13 +600,13 @@
           "type": "text",
           "id": "text",
           "label": "Text",
-          "default": "Vedajanani Vastralayam · Festive 2026"
+          "default": "Vedajanani Vastralayam · Anantapur"
         },
         {
           "type": "color",
           "id": "color",
           "label": "Color",
-          "default": "#D9C7A5"
+          "default": "#E2CFA8"
         },
         {
           "type": "range",
@@ -752,7 +758,7 @@
           "type": "textarea",
           "id": "text",
           "label": "Text",
-          "default": "Cotton, Silk, Chiffon & Georgette — handpicked from master weavers."
+          "default": "Cotton, Silk, Chiffon & Georgette sarees curated for everyday comfort and timeless celebrations."
         },
         {
           "type": "color",
@@ -848,7 +854,7 @@
           "type": "color",
           "id": "cta_bg",
           "label": "Primary fill color (solid style)",
-          "default": "#5C1A24"
+          "default": "#244737"
         },
         {
           "type": "text",

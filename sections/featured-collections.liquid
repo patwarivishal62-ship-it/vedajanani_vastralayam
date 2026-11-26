@@ -122,10 +122,10 @@
           </a>
         {% endfor %}
       {% else %}
-        <a class="vv-tile" href="{{ routes.collections_url }}/cotton" style="justify-content:center;"><div class="vv-tile-body"><span class="vv-tile-badge">9 Weaves</span><h3 class="vv-tile-title">Cotton</h3><p class="vv-tile-sub">Mul, Madurai, Kanchi, Kota & Jamdhani</p></div></a>
-        <a class="vv-tile" href="{{ routes.collections_url }}/silk" style="justify-content:center;"><div class="vv-tile-body"><span class="vv-tile-badge">8 Weaves</span><h3 class="vv-tile-title">Silk</h3><p class="vv-tile-sub">Banarasi, Soft, Crepe & Viscose Silk</p></div></a>
-        <a class="vv-tile" href="{{ routes.collections_url }}/chiffon" style="justify-content:center;"><div class="vv-tile-body"><span class="vv-tile-badge">5 Styles</span><h3 class="vv-tile-title">Chiffon</h3><p class="vv-tile-sub">Printed, Embroidered, Bandhani & Floral</p></div></a>
-        <a class="vv-tile" href="{{ routes.collections_url }}/georgette" style="justify-content:center;"><div class="vv-tile-body"><span class="vv-tile-badge">5 Styles</span><h3 class="vv-tile-title">Georgette</h3><p class="vv-tile-sub">Satin, Printed, Bandhani & Plain</p></div></a>
+        <a class="vv-tile" href="{{ routes.collections_url }}/cotton" style="justify-content:center;"><div class="vv-tile-body"><h3 class="vv-tile-title">Cotton</h3><p class="vv-tile-sub">Mul, Madurai, Kanchi, Kota &amp; Jamdani</p></div></a>
+        <a class="vv-tile" href="{{ routes.collections_url }}/silk" style="justify-content:center;"><div class="vv-tile-body"><h3 class="vv-tile-title">Silk</h3><p class="vv-tile-sub">Banarasi, Soft, Crepe &amp; Viscose Silk</p></div></a>
+        <a class="vv-tile" href="{{ routes.collections_url }}/chiffon" style="justify-content:center;"><div class="vv-tile-body"><h3 class="vv-tile-title">Chiffon</h3><p class="vv-tile-sub">Printed, Embroidered, Bandhani &amp; Floral</p></div></a>
+        <a class="vv-tile" href="{{ routes.collections_url }}/georgette" style="justify-content:center;"><div class="vv-tile-body"><h3 class="vv-tile-title">Georgette</h3><p class="vv-tile-sub">Satin, Printed, Bandhani &amp; Plain</p></div></a>
       {% endif %}
     </div>
   </div>
@@ -290,7 +290,7 @@
       "max": 36,
       "step": 2,
       "unit": "px",
-      "default": 20
+      "default": 10
     },
     {
       "type": "range",
@@ -451,16 +451,14 @@
         {
           "type": "collection_card",
           "settings": {
-            "badge": "9 Weaves",
             "title": "Cotton",
-            "subtitle": "Mul, Madurai, Kanchi, Kota & Jamdhani",
+            "subtitle": "Mul, Madurai, Kanchi, Kota & Jamdani",
             "fallback_path": "/collections/cotton"
           }
         },
         {
           "type": "collection_card",
           "settings": {
-            "badge": "8 Weaves",
             "title": "Silk",
             "subtitle": "Banarasi, Soft, Crepe & Viscose Silk",
             "fallback_path": "/collections/silk"
@@ -469,7 +467,6 @@
         {
           "type": "collection_card",
           "settings": {
-            "badge": "5 Styles",
             "title": "Chiffon",
             "subtitle": "Printed, Embroidered, Bandhani & Floral",
             "fallback_path": "/collections/chiffon"
@@ -478,7 +475,6 @@
         {
           "type": "collection_card",
           "settings": {
-            "badge": "5 Styles",
             "title": "Georgette",
             "subtitle": "Satin, Printed, Bandhani & Plain",
             "fallback_path": "/collections/georgette"

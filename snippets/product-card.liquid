@@ -13,26 +13,42 @@
   if show_quick_add_flag == nil
     assign show_quick_add_flag = settings.product_show_quick_add
   endif
+  assign second_image = product.images[1]
 -%}
 
-<article class="product-card" style="--product-ratio: {{ card_ratio }}; --product-align: {{ card_align }};">
-  <a class="product-card-media" href="{{ product.url }}">
+<article class="product-card{% unless product.available %} product-card--sold-out{% endunless %}" style="--product-ratio: {{ card_ratio }}; --product-align: {{ card_align }};">
+  <a class="product-card-media{% if second_image %} has-secondary{% endif %}" href="{{ product.url }}">
     {% if product.featured_image %}
       <img
+        class="product-card-img-primary"
         src="{{ product.featured_image | image_url: width: 720 }}"
+        srcset="{{ product.featured_image | image_url: width: 360 }} 360w, {{ product.featured_image | image_url: width: 540 }} 540w, {{ product.featured_image | image_url: width: 720 }} 720w, {{ product.featured_image | image_url: width: 960 }} 960w"
+        sizes="(max-width: 900px) 50vw, 25vw"
         alt="{{ product.featured_image.alt | default: product.title | escape }}"
         width="600"
         height="800"
         loading="lazy"
       >
+      {% if second_image %}
+        <img
+          class="product-card-img-secondary"
+          src="{{ second_image | image_url: width: 720 }}"
+          srcset="{{ second_image | image_url: width: 360 }} 360w, {{ second_image | image_url: width: 540 }} 540w, {{ second_image | image_url: width: 720 }} 720w"
+          sizes="(max-width: 900px) 50vw, 25vw"
+          alt="{{ second_image.alt | default: product.title | escape }}"
+          width="600"
+          height="800"
+          loading="lazy"
+        >
+      {% endif %}
     {% else %}
       {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
     {% endif %}
 
-    {% if show_sale_flag and product.compare_at_price > product.price %}
+    {% if product.available == false %}
+      <span class="product-card-badge product-card-badge--soldout">Sold Out</span>
+    {% elsif show_sale_flag and product.compare_at_price > product.price %}
       <span class="product-card-badge">Sale</span>
-    {% elsif product.available == false %}
-      <span class="product-card-badge" style="background: var(--char, #1C1C1C);">Sold Out</span>
     {% endif %}
   </a>
 
@@ -47,11 +63,17 @@
 
     {% render 'price', product: product %}
 
-    {% if show_quick_add_flag and product.available %}
-      <form class="product-card-quickadd js-ajax-cart-form" method="post" action="{{ routes.cart_add_url }}">
-        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-        <button type="submit" class="btn">Add to Bag</button>
-      </form>
+    {% if show_quick_add_flag %}
+      {% if product.available %}
+        <form class="product-card-quickadd js-ajax-cart-form" method="post" action="{{ routes.cart_add_url }}">
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          <button type="submit" class="btn">Add to Bag</button>
+        </form>
+      {% else %}
+        <div class="product-card-quickadd">
+          <button type="button" class="btn outline" disabled>Sold Out</button>
+        </div>
+      {% endif %}
     {% endif %}
   </div>
 </article>

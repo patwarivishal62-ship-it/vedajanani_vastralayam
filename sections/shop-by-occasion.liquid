@@ -16,10 +16,9 @@
     color: {{ section.settings.card_text }};
     min-height: {{ section.settings.card_height_desktop }}px;
     text-align: {{ section.settings.card_align }};
-    justify-content: {% if section.settings.card_style == 'overlay' %}flex-end{% else %}center{% endif %};
   }
   #shopify-section-{{ section.id }} .vv-tile-title {
-    font-size: {{ section.settings.card_title_size }}px;
+    font-size: {{ section.settings.title_size }}px;
   }
   @media (max-width: 900px) {
     #shopify-section-{{ section.id }} .vv-grid {
@@ -43,9 +42,6 @@
             {{ section.settings.heading }}
           </h2>
         {% endif %}
-        {% if section.settings.subheading != blank %}
-          <p class="section-sub">{{ section.settings.subheading }}</p>
-        {% endif %}
       </div>
     {% endif %}
 
@@ -53,35 +49,36 @@
       {% if section.blocks.size > 0 %}
         {% for block in section.blocks %}
           {%- liquid
-            assign occ_href = block.settings.url | default: block.settings.collection.url | default: block.settings.fallback_path | default: routes.all_products_collection_url
-            assign occ_img = block.settings.image | default: block.settings.collection.featured_image
+            assign col = block.settings.collection
+            assign tile_img = block.settings.image
+            if tile_img == blank and col != blank
+              assign tile_img = col.featured_image
+            endif
+            assign tile_href = block.settings.url
+            if tile_href == blank and col != blank
+              assign tile_href = col.url
+            endif
+            if tile_href == blank
+              assign tile_href = block.settings.fallback_path | default: routes.all_products_collection_url
+            endif
             assign ov_alpha = block.settings.overlay_opacity | divided_by: 100.0
           -%}
           <a
-            class="vv-tile{% if occ_img != blank and section.settings.card_style == 'overlay' %} vv-tile--overlay{% endif %}"
-            href="{{ occ_href }}"
+            class="vv-tile{% if tile_img != blank %} vv-tile--overlay{% endif %}"
+            href="{{ tile_href }}"
             style="
               {% if block.settings.card_bg != blank and block.settings.card_bg != 'rgba(0,0,0,0)' %}background: {{ block.settings.card_bg }};{% endif %}
               {% if block.settings.text_color != blank and block.settings.text_color != 'rgba(0,0,0,0)' %}color: {{ block.settings.text_color }};{% endif %}
             "
             {{ block.shopify_attributes }}
           >
-            {% if occ_img != blank %}
-              <div class="vv-tile-media" style="{% unless section.settings.card_style == 'overlay' %}aspect-ratio: {{ section.settings.image_ratio }};{% endunless %}">
-                <img
-                  src="{{ occ_img | image_url: width: 800 }}"
-                  alt="{{ occ_img.alt | default: block.settings.title | escape }}"
-                  style="object-position: {{ block.settings.focal_point }};"
-                  width="600"
-                  height="600"
-                  loading="lazy"
-                >
+            {% if tile_img != blank %}
+              <div class="vv-tile-media">
+                <img src="{{ tile_img | image_url: width: 900 }}" alt="{{ tile_img.alt | default: block.settings.title | escape }}" width="600" height="750" loading="lazy">
               </div>
-              {% if section.settings.card_style == 'overlay' %}
-                <div class="vv-tile-overlay" style="background: #000000; opacity: {{ ov_alpha }};"></div>
-              {% endif %}
+              <div class="vv-tile-overlay" style="background: #000000; opacity: {{ ov_alpha }};"></div>
             {% endif %}
-            <div class="vv-tile-body" style="padding: {{ section.settings.card_pad }}px;">
+            <div class="vv-tile-body">
               <h3 class="vv-tile-title">{{ block.settings.title }}</h3>
               {% if block.settings.subtitle != blank %}
                 <p class="vv-tile-sub">{{ block.settings.subtitle }}</p>
@@ -90,12 +87,10 @@
           </a>
         {% endfor %}
       {% else %}
-        <a class="vv-tile" href="{{ routes.collections_url }}/daily-use"><div class="vv-tile-body"><h3 class="vv-tile-title">Daily Use</h3></div></a>
-        <a class="vv-tile" href="{{ routes.collections_url }}/office"><div class="vv-tile-body"><h3 class="vv-tile-title">Office</h3></div></a>
-        <a class="vv-tile" href="{{ routes.collections_url }}/festive"><div class="vv-tile-body"><h3 class="vv-tile-title">Festive</h3></div></a>
-        <a class="vv-tile" href="{{ routes.collections_url }}/wedding"><div class="vv-tile-body"><h3 class="vv-tile-title">Brides</h3></div></a>
-        <a class="vv-tile" href="{{ routes.collections_url }}/wedding"><div class="vv-tile-body"><h3 class="vv-tile-title">Bridesmaids</h3></div></a>
-        <a class="vv-tile" href="{{ routes.collections_url }}/wedding"><div class="vv-tile-body"><h3 class="vv-tile-title">Guests</h3></div></a>
+        <a class="vv-tile" href="{{ routes.collections_url }}/daily-use" style="justify-content:center;"><div class="vv-tile-body"><h3 class="vv-tile-title">Daily Use</h3><p class="vv-tile-sub">Breathable cottons &amp; light prints</p></div></a>
+        <a class="vv-tile" href="{{ routes.collections_url }}/office" style="justify-content:center;"><div class="vv-tile-body"><h3 class="vv-tile-title">Office</h3><p class="vv-tile-sub">Crisp, composed drapes for workdays</p></div></a>
+        <a class="vv-tile" href="{{ routes.collections_url }}/festive" style="justify-content:center;"><div class="vv-tile-body"><h3 class="vv-tile-title">Festive</h3><p class="vv-tile-sub">Zari borders &amp; celebratory tones</p></div></a>
+        <a class="vv-tile" href="{{ routes.collections_url }}/wedding" style="justify-content:center;"><div class="vv-tile-body"><h3 class="vv-tile-title">Wedding Edit</h3><p class="vv-tile-sub">Brides, family &amp; ceremony guests</p></div></a>
       {% endif %}
     </div>
   </div>
@@ -105,299 +100,50 @@
 {
   "name": "Shop by Occasion",
   "settings": [
-    {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Eyebrow",
-      "default": "Dressed For The Moment"
-    },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Shop by Occasion"
-    },
-    {
-      "type": "textarea",
-      "id": "subheading",
-      "label": "Subheading (optional)"
-    },
-    {
-      "type": "text_alignment",
-      "id": "heading_align",
-      "label": "Header alignment",
-      "default": "center"
-    },
-    {
-      "type": "range",
-      "id": "heading_size",
-      "label": "Heading size",
-      "min": 20,
-      "max": 64,
-      "step": 2,
-      "unit": "px",
-      "default": 34
-    },
-    {
-      "type": "color",
-      "id": "heading_color",
-      "label": "Heading color",
-      "default": "#1C1C1C"
-    },
-    {
-      "type": "header",
-      "content": "Grid & Card Styling"
-    },
-    {
-      "type": "select",
-      "id": "card_style",
-      "label": "Card layout when image is set",
-      "options": [
-        {
-          "value": "overlay",
-          "label": "Text overlaid on image"
-        },
-        {
-          "value": "below",
-          "label": "Text below image"
-        }
-      ],
-      "default": "overlay"
-    },
-    {
-      "type": "select",
-      "id": "image_ratio",
-      "label": "Image aspect ratio (text-below mode)",
-      "options": [
-        {
-          "value": "3 / 4",
-          "label": "Portrait (3:4)"
-        },
-        {
-          "value": "1 / 1",
-          "label": "Square (1:1)"
-        },
-        {
-          "value": "4 / 3",
-          "label": "Landscape (4:3)"
-        }
-      ],
-      "default": "4 / 3"
-    },
-    {
-      "type": "range",
-      "id": "columns_desktop",
-      "label": "Columns (desktop)",
-      "min": 2,
-      "max": 6,
-      "step": 1,
-      "default": 3
-    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "By Occasion" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Where Will You Wear It?" },
+    { "type": "text_alignment", "id": "heading_align", "label": "Header alignment", "default": "center" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 60, "step": 2, "unit": "px", "default": 34 },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#1C1C1C" },
+    { "type": "header", "content": "Grid & Cards" },
+    { "type": "range", "id": "columns_desktop", "label": "Columns (desktop)", "min": 2, "max": 5, "step": 1, "default": 4 },
     {
       "type": "select",
       "id": "columns_mobile",
       "label": "Columns (mobile)",
       "options": [
-        {
-          "value": "1",
-          "label": "1 column"
-        },
-        {
-          "value": "2",
-          "label": "2 columns"
-        },
-        {
-          "value": "3",
-          "label": "3 columns"
-        }
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
       ],
       "default": "2"
     },
-    {
-      "type": "range",
-      "id": "grid_gap",
-      "label": "Grid gap",
-      "min": 8,
-      "max": 40,
-      "step": 2,
-      "unit": "px",
-      "default": 16
-    },
-    {
-      "type": "range",
-      "id": "card_height_desktop",
-      "label": "Card min height (desktop)",
-      "min": 100,
-      "max": 460,
-      "step": 20,
-      "unit": "px",
-      "default": 160
-    },
-    {
-      "type": "range",
-      "id": "card_height_mobile",
-      "label": "Card min height (mobile)",
-      "min": 100,
-      "max": 360,
-      "step": 20,
-      "unit": "px",
-      "default": 120
-    },
-    {
-      "type": "range",
-      "id": "card_radius",
-      "label": "Card corner radius",
-      "min": 0,
-      "max": 36,
-      "step": 2,
-      "unit": "px",
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "card_pad",
-      "label": "Card padding",
-      "min": 12,
-      "max": 44,
-      "step": 2,
-      "unit": "px",
-      "default": 26
-    },
-    {
-      "type": "range",
-      "id": "card_title_size",
-      "label": "Card title size",
-      "min": 14,
-      "max": 34,
-      "step": 1,
-      "unit": "px",
-      "default": 22
-    },
-    {
-      "type": "text_alignment",
-      "id": "card_align",
-      "label": "Card text alignment",
-      "default": "center"
-    },
-    {
-      "type": "color",
-      "id": "card_bg",
-      "label": "Card background (no image)",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "card_text",
-      "label": "Card text color (no image)",
-      "default": "#1C1C1C"
-    },
-    {
-      "type": "header",
-      "content": "Section Spacing"
-    },
-    {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Section background (optional)"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "label": "Top padding",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "default": 48
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "label": "Bottom padding",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "default": 48
-    }
+    { "type": "range", "id": "grid_gap", "label": "Grid gap", "min": 8, "max": 36, "step": 2, "unit": "px", "default": 16 },
+    { "type": "range", "id": "card_height_desktop", "label": "Card min height (desktop)", "min": 120, "max": 480, "step": 20, "unit": "px", "default": 200 },
+    { "type": "range", "id": "card_height_mobile", "label": "Card min height (mobile)", "min": 100, "max": 340, "step": 20, "unit": "px", "default": 160 },
+    { "type": "range", "id": "card_radius", "label": "Card corner radius", "min": 0, "max": 36, "step": 2, "unit": "px", "default": 10 },
+    { "type": "range", "id": "title_size", "label": "Card title size", "min": 14, "max": 32, "step": 1, "unit": "px", "default": 21 },
+    { "type": "text_alignment", "id": "card_align", "label": "Card text alignment", "default": "center" },
+    { "type": "color", "id": "card_bg", "label": "Default card background", "default": "#FFFFFF" },
+    { "type": "color", "id": "card_text", "label": "Default card text color", "default": "#1C1C1C" },
+    { "type": "header", "content": "Section Spacing" },
+    { "type": "color", "id": "bg_color", "label": "Section background (optional)" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
   ],
   "blocks": [
     {
       "type": "occasion",
       "name": "Occasion Card",
       "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Optional image"
-        },
-        {
-          "type": "select",
-          "id": "focal_point",
-          "label": "Image focal point",
-          "options": [
-            {
-              "value": "center center",
-              "label": "Center"
-            },
-            {
-              "value": "top center",
-              "label": "Top"
-            },
-            {
-              "value": "bottom center",
-              "label": "Bottom"
-            }
-          ],
-          "default": "center center"
-        },
-        {
-          "type": "range",
-          "id": "overlay_opacity",
-          "label": "Image overlay opacity",
-          "min": 0,
-          "max": 85,
-          "step": 5,
-          "unit": "%",
-          "default": 35
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Occasion name",
-          "default": "Festive"
-        },
-        {
-          "type": "text",
-          "id": "subtitle",
-          "label": "Short subtitle (optional)"
-        },
-        {
-          "type": "collection",
-          "id": "collection",
-          "label": "Linked collection"
-        },
-        {
-          "type": "url",
-          "id": "url",
-          "label": "Custom link"
-        },
-        {
-          "type": "text",
-          "id": "fallback_path",
-          "label": "Fallback path",
-          "default": "/collections/all"
-        },
-        {
-          "type": "color",
-          "id": "card_bg",
-          "label": "Custom card background (optional)"
-        },
-        {
-          "type": "color",
-          "id": "text_color",
-          "label": "Custom text color (optional)"
-        }
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "image", "label": "Custom cover image (optional)" },
+        { "type": "range", "id": "overlay_opacity", "label": "Image overlay opacity", "min": 0, "max": 85, "step": 5, "unit": "%", "default": 35 },
+        { "type": "text", "id": "title", "label": "Title", "default": "Festive" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle (optional)" },
+        { "type": "url", "id": "url", "label": "Custom link" },
+        { "type": "text", "id": "fallback_path", "label": "Fallback path", "default": "/collections/festive" },
+        { "type": "color", "id": "card_bg", "label": "Custom card background" },
+        { "type": "color", "id": "text_color", "label": "Custom text color" }
       ]
     }
   ],
@@ -405,48 +151,10 @@
     {
       "name": "Shop by Occasion",
       "blocks": [
-        {
-          "type": "occasion",
-          "settings": {
-            "title": "Daily Use",
-            "fallback_path": "/collections/daily-use"
-          }
-        },
-        {
-          "type": "occasion",
-          "settings": {
-            "title": "Office",
-            "fallback_path": "/collections/office"
-          }
-        },
-        {
-          "type": "occasion",
-          "settings": {
-            "title": "Festive",
-            "fallback_path": "/collections/festive"
-          }
-        },
-        {
-          "type": "occasion",
-          "settings": {
-            "title": "Brides",
-            "fallback_path": "/collections/wedding"
-          }
-        },
-        {
-          "type": "occasion",
-          "settings": {
-            "title": "Bridesmaids",
-            "fallback_path": "/collections/wedding"
-          }
-        },
-        {
-          "type": "occasion",
-          "settings": {
-            "title": "Guests",
-            "fallback_path": "/collections/wedding"
-          }
-        }
+        { "type": "occasion", "settings": { "title": "Daily Use", "subtitle": "Breathable cottons & light prints", "fallback_path": "/collections/daily-use" } },
+        { "type": "occasion", "settings": { "title": "Office", "subtitle": "Crisp drapes for workdays", "fallback_path": "/collections/office" } },
+        { "type": "occasion", "settings": { "title": "Festive", "subtitle": "Zari borders & celebratory tones", "fallback_path": "/collections/festive" } },
+        { "type": "occasion", "settings": { "title": "Wedding Edit", "subtitle": "Brides, family & ceremony guests", "fallback_path": "/collections/wedding" } }
       ]
     }
   ]

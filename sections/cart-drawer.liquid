@@ -1,93 +1,102 @@
 {%- liquid
-  assign threshold_cents = settings.free_shipping_threshold | default: 999 | times: 100
-  assign remaining_cents = threshold_cents | minus: cart.total_price
+  assign threshold_val = settings.free_shipping_threshold | plus: 0
+  assign threshold_cents = threshold_val | times: 100
+  assign remaining = threshold_cents | minus: cart.total_price
+  if threshold_cents > 0
+    assign pct = cart.total_price | times: 100 | divided_by: threshold_cents | at_most: 100
+  else
+    assign pct = 0
+  endif
+  assign empty_cta_href = section.settings.empty_cta_url | default: routes.all_products_collection_url
 -%}
 
 {% style %}
   #shopify-section-{{ section.id }} .cart-drawer {
-    width: {{ section.settings.drawer_width }}px;
     background: {{ section.settings.bg_color }};
     color: {{ section.settings.text_color }};
   }
-  #shopify-section-{{ section.id }} .cart-drawer-foot {
-    background: {{ section.settings.bg_color }};
-  }
-  #shopify-section-{{ section.id }} .cart-shipping-bar {
-    background: {{ section.settings.shipping_bar_bg }};
-    color: {{ section.settings.shipping_bar_text }};
+  #shopify-section-{{ section.id }} .cart-ship-bar-fill {
+    background: {{ section.settings.bar_color }};
   }
 {% endstyle %}
 
-<aside class="cart-drawer" id="cartDrawer" aria-label="{{ section.settings.heading | default: 'Your Bag' | escape }}" data-section-id="{{ section.id }}">
+<aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Shopping bag" aria-hidden="true">
   <div class="drawer-head">
-    <span>{{ section.settings.heading | default: 'Your Bag' }} (<span id="cartDrawerCount">{{ cart.item_count }}</span>)</span>
-    <button id="cartClose" type="button" aria-label="Close bag">✕</button>
+    <h3>{{ section.settings.heading }} (<span id="cartDrawerCount">{{ cart.item_count }}</span>)</h3>
+    <button id="cartDrawerClose" class="drawer-close-btn" type="button" aria-label="Close bag">{% render 'icons', icon: 'close' %}</button>
   </div>
 
-  {% if section.settings.show_shipping_bar %}
-    <div class="cart-shipping-bar" id="cartShippingBar">
-      {% if cart.total_price >= threshold_cents %}
-        {{ section.settings.shipping_unlocked_text }}
+  {% if section.settings.show_free_shipping_bar and threshold_cents > 0 and cart.item_count > 0 %}
+    <div class="cart-ship-bar">
+      {% if remaining > 0 %}
+        Add <strong>{{ remaining | money }}</strong> more to qualify for complimentary shipping
       {% else %}
-        Add {{ remaining_cents | money }} more for {{ section.settings.shipping_goal_label }}
+        Your order qualifies for complimentary shipping
       {% endif %}
+      <div class="cart-ship-bar-track">
+        <div class="cart-ship-bar-fill" style="width: {{ pct }}%;"></div>
+      </div>
     </div>
   {% endif %}
 
+  <div class="cart-drawer-error" id="cartDrawerError" role="alert" hidden></div>
+
   <div class="cart-drawer-body" id="cartDrawerBody">
     {% if cart.item_count == 0 %}
-      <div class="empty">
-        <p>{{ section.settings.empty_text | default: 'Your bag is empty.' }}</p>
-        <a class="btn" href="{{ section.settings.empty_cta_url | default: routes.all_products_collection_url }}">
-          {{ section.settings.empty_cta_label | default: 'Start Shopping' }}
-        </a>
+      <div class="cart-empty">
+        <p>{{ section.settings.empty_message }}</p>
+        <a class="btn" href="{{ empty_cta_href }}">{{ section.settings.empty_cta_label }}</a>
       </div>
     {% else %}
-      {% for item in cart.items %}
-        <div class="cart-item" data-cart-item-key="{{ item.key }}">
-          {% if item.image %}
-            <img
-              src="{{ item.image | image_url: width: 180 }}"
-              alt="{{ item.title | escape }}"
-              width="78"
-              height="104"
-              loading="lazy"
-            >
-          {% endif %}
-          <div class="cart-item-info">
-            <a class="cart-item-title" href="{{ item.url }}">{{ item.product.title }}</a>
-            {% unless item.product.has_only_default_variant %}
-              <div class="cart-item-variant">{{ item.variant.title }}</div>
-            {% endunless %}
-            <div>{{ item.final_price | money }}</div>
-            <div class="cart-item-controls">
-              <div class="qty-pill">
-                <button type="button" class="js-cart-qty" data-key="{{ item.key }}" data-qty="{{ item.quantity | minus: 1 }}" aria-label="Decrease quantity">−</button>
+      <ul class="cart-items">
+        {% for item in cart.items %}
+          <li class="cart-item" data-line="{{ forloop.index }}">
+            <a href="{{ item.url }}" class="cart-thumb">
+              {% if item.image %}
+                <img src="{{ item.image | image_url: width: 180 }}" alt="{{ item.title | escape }}" width="90" height="120" loading="lazy">
+              {% endif %}
+            </a>
+            <div class="cart-item-info">
+              <a href="{{ item.url }}" class="cart-item-title">{{ item.product.title }}</a>
+              {% unless item.product.has_only_default_variant %}
+                <div class="cart-item-var">{{ item.variant.title }}</div>
+              {% endunless %}
+              <div class="cart-item-price">{{ item.final_line_price | money }}</div>
+              <div class="cart-item-qty">
+                <button type="button" class="js-cart-qty" data-line="{{ forloop.index }}" data-qty="{{ item.quantity | minus: 1 }}" aria-label="Decrease quantity of {{ item.product.title | escape }}">−</button>
                 <span>{{ item.quantity }}</span>
-                <button type="button" class="js-cart-qty" data-key="{{ item.key }}" data-qty="{{ item.quantity | plus: 1 }}" aria-label="Increase quantity">+</button>
+                <button type="button" class="js-cart-qty" data-line="{{ forloop.index }}" data-qty="{{ item.quantity | plus: 1 }}" aria-label="Increase quantity of {{ item.product.title | escape }}">+</button>
+                <button type="button" class="js-cart-qty cart-remove" data-line="{{ forloop.index }}" data-qty="0">Remove</button>
               </div>
-              <button type="button" class="cart-remove-btn js-cart-qty" data-key="{{ item.key }}" data-qty="0">Remove</button>
             </div>
-          </div>
-        </div>
-      {% endfor %}
+          </li>
+        {% endfor %}
+      </ul>
     {% endif %}
   </div>
 
   {% if cart.item_count > 0 %}
-    <div class="cart-drawer-foot" id="cartDrawerFoot">
-      <div class="row">
-        <span>{{ section.settings.subtotal_label | default: 'Subtotal' }}</span>
-        <strong>{{ cart.total_price | money }}</strong>
+    <div class="cart-drawer-foot">
+      {% if section.settings.show_order_note %}
+        <div class="cart-drawer-note">
+          <label for="CartDrawerNote">Order note / gift message</label>
+          <textarea id="CartDrawerNote" name="note" rows="2" placeholder="Add a special note or saree draping request...">{{ cart.note }}</textarea>
+        </div>
+      {% endif %}
+      <div class="cart-sub">
+        <span>Subtotal</span>
+        <strong id="cartSubtotal">{{ cart.total_price | money }}</strong>
       </div>
-      {% if section.settings.shipping_note != blank or settings.shipping_note != blank %}
-        <p class="note">{{ section.settings.shipping_note | default: settings.shipping_note }}</p>
+      {% if section.settings.shipping_note != blank %}
+        <p class="cart-note">{{ section.settings.shipping_note }}</p>
+      {% elsif settings.shipping_note != blank %}
+        <p class="cart-note">{{ settings.shipping_note }}</p>
       {% endif %}
-      {% if section.settings.show_view_bag %}
-        <a class="btn full" href="{{ routes.cart_url }}">{{ section.settings.view_bag_label | default: 'View Bag' }}</a>
-      {% endif %}
-      {% if section.settings.show_checkout %}
-        <a class="btn dark full" href="/checkout">{{ section.settings.checkout_label | default: 'Checkout' }}</a>
+      <form action="{{ routes.cart_url }}" method="post">
+        <button type="submit" name="checkout" class="btn cart-checkout">{{ section.settings.checkout_label }}</button>
+      </form>
+      {% if section.settings.show_view_cart_link %}
+        <a href="{{ routes.cart_url }}" class="cart-view-link">View Full Bag</a>
       {% endif %}
     </div>
   {% endif %}
@@ -104,52 +113,16 @@
       "default": "Your Bag"
     },
     {
-      "type": "range",
-      "id": "drawer_width",
-      "label": "Drawer width (desktop)",
-      "min": 320,
-      "max": 560,
-      "step": 10,
-      "unit": "px",
-      "default": 420
-    },
-    {
-      "type": "header",
-      "content": "Free Shipping Banner"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_shipping_bar",
-      "label": "Show free shipping progress bar",
-      "default": true
-    },
-    {
       "type": "text",
-      "id": "shipping_goal_label",
-      "label": "Goal suffix text",
-      "default": "Free Shipping"
-    },
-    {
-      "type": "text",
-      "id": "shipping_unlocked_text",
-      "label": "Unlocked message",
-      "default": "You have unlocked Free Shipping!"
-    },
-    {
-      "type": "header",
-      "content": "Labels & Buttons"
-    },
-    {
-      "type": "text",
-      "id": "empty_text",
-      "label": "Empty bag text",
-      "default": "Your bag is empty."
+      "id": "empty_message",
+      "label": "Empty bag message",
+      "default": "Your bag is currently empty."
     },
     {
       "type": "text",
       "id": "empty_cta_label",
       "label": "Empty bag button label",
-      "default": "Start Shopping"
+      "default": "Explore Sarees"
     },
     {
       "type": "url",
@@ -157,40 +130,34 @@
       "label": "Empty bag button link"
     },
     {
-      "type": "text",
-      "id": "subtotal_label",
-      "label": "Subtotal label",
-      "default": "Subtotal"
+      "type": "checkbox",
+      "id": "show_free_shipping_bar",
+      "label": "Show free-shipping progress bar (requires threshold > 0)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_order_note",
+      "label": "Show order note field",
+      "default": false
     },
     {
       "type": "text",
       "id": "shipping_note",
-      "label": "Shipping & taxes note",
-      "default": "Shipping & taxes calculated at checkout. Free shipping above ₹999."
-    },
-    {
-      "type": "checkbox",
-      "id": "show_view_bag",
-      "label": "Show 'View Bag' button",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "view_bag_label",
-      "label": "'View Bag' button text",
-      "default": "View Bag"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_checkout",
-      "label": "Show 'Checkout' button",
-      "default": true
+      "label": "Shipping note (overrides global setting)",
+      "default": "Shipping and taxes calculated at checkout."
     },
     {
       "type": "text",
       "id": "checkout_label",
-      "label": "'Checkout' button text",
-      "default": "Checkout"
+      "label": "Checkout button label",
+      "default": "Proceed to Checkout"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_cart_link",
+      "label": "Show 'View Full Bag' link",
+      "default": true
     },
     {
       "type": "header",
@@ -199,7 +166,7 @@
     {
       "type": "color",
       "id": "bg_color",
-      "label": "Drawer background",
+      "label": "Background color",
       "default": "#FFFFFF"
     },
     {
@@ -210,15 +177,9 @@
     },
     {
       "type": "color",
-      "id": "shipping_bar_bg",
-      "label": "Shipping bar background",
-      "default": "#F3EDE3"
-    },
-    {
-      "type": "color",
-      "id": "shipping_bar_text",
-      "label": "Shipping bar text",
-      "default": "#1C1C1C"
+      "id": "bar_color",
+      "label": "Progress bar color",
+      "default": "#244737"
     }
   ]
 }

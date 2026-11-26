@@ -3,16 +3,18 @@
     #shopify-section-{{ section.id }} .announcement {
       background: {{ section.settings.bg_color }};
       color: {{ section.settings.text_color }};
-      padding-top: {{ section.settings.padding_y }}px;
-      padding-bottom: {{ section.settings.padding_y }}px;
       font-size: {{ section.settings.font_size }}px;
       letter-spacing: {{ section.settings.letter_spacing }}px;
+      padding-top: {{ section.settings.padding_y }}px;
+      padding-bottom: {{ section.settings.padding_y }}px;
       text-transform: {{ section.settings.text_transform }};
       text-align: {{ section.settings.text_alignment }};
     }
-    {% if section.settings.border_bottom %}
+    {% if section.settings.sticky_bar %}
       #shopify-section-{{ section.id }} .announcement {
-        border-bottom: 1px solid {{ section.settings.border_color }};
+        position: sticky;
+        top: 0;
+        z-index: 65;
       }
     {% endif %}
   {% endstyle %}
@@ -23,11 +25,11 @@
     aria-label="Announcement"
     data-announcement-bar
     data-autoplay="{{ section.settings.auto_rotate }}"
-    data-speed="{{ section.settings.rotate_seconds | times: 1000 }}"
+    data-speed="{{ section.settings.rotate_speed | times: 1000 }}"
   >
     <div class="announcement-inner">
-      {% if section.settings.show_arrows and section.blocks.size > 1 %}
-        <button type="button" class="announcement-nav" data-announcement-prev aria-label="Previous announcement">‹</button>
+      {% if section.blocks.size > 1 %}
+        <button type="button" class="announcement-nav" data-announcement-prev aria-label="Previous announcement">{% render 'icons', icon: 'chevron-left' %}</button>
       {% endif %}
 
       <div class="announcement-slides">
@@ -36,9 +38,6 @@
             <p
               class="announcement-slide{% if forloop.first %} is-active{% endif %}"
               {{ block.shopify_attributes }}
-              {% if block.settings.text_color != blank and block.settings.text_color != 'rgba(0,0,0,0)' %}
-                style="color: {{ block.settings.text_color }};"
-              {% endif %}
             >
               {% if block.settings.link != blank %}
                 <a href="{{ block.settings.link }}">{{ block.settings.text }}</a>
@@ -52,8 +51,8 @@
         {% endif %}
       </div>
 
-      {% if section.settings.show_arrows and section.blocks.size > 1 %}
-        <button type="button" class="announcement-nav" data-announcement-next aria-label="Next announcement">›</button>
+      {% if section.blocks.size > 1 %}
+        <button type="button" class="announcement-nav" data-announcement-next aria-label="Next announcement">{% render 'icons', icon: 'chevron-right' %}</button>
       {% endif %}
     </div>
   </div>
@@ -72,33 +71,29 @@
     {
       "type": "text",
       "id": "announcement",
-      "label": "Fallback message (used if all blocks are removed)",
-      "default": "Free shipping above ₹999 · Festive Collection Live · COD Available"
-    },
-    {
-      "type": "header",
-      "content": "Rotation"
+      "label": "Fallback text (used if no announcement blocks exist)",
+      "default": "Woven with Grace, Worn with Pride · Curated Sarees from Vedajanani Vastralayam"
     },
     {
       "type": "checkbox",
       "id": "auto_rotate",
-      "label": "Auto-rotate messages",
+      "label": "Auto-rotate multiple announcements",
       "default": true
     },
     {
       "type": "range",
-      "id": "rotate_seconds",
-      "label": "Change slide every",
-      "min": 2,
+      "id": "rotate_speed",
+      "label": "Rotation interval",
+      "min": 3,
       "max": 12,
       "step": 1,
       "unit": "s",
-      "default": 4
+      "default": 5
     },
     {
       "type": "checkbox",
-      "id": "show_arrows",
-      "label": "Show previous / next arrows",
+      "id": "sticky_bar",
+      "label": "Keep sticky on scroll",
       "default": false
     },
     {
@@ -109,25 +104,13 @@
       "type": "color",
       "id": "bg_color",
       "label": "Background color",
-      "default": "#111111"
+      "default": "#244737"
     },
     {
       "type": "color",
       "id": "text_color",
       "label": "Text color",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "checkbox",
-      "id": "border_bottom",
-      "label": "Show bottom border",
-      "default": false
-    },
-    {
-      "type": "color",
-      "id": "border_color",
-      "label": "Border color",
-      "default": "#2A2A2A"
+      "default": "#FAF2E3"
     },
     {
       "type": "header",
@@ -141,17 +124,17 @@
       "max": 18,
       "step": 1,
       "unit": "px",
-      "default": 10
+      "default": 11
     },
     {
       "type": "range",
       "id": "letter_spacing",
       "label": "Letter spacing",
       "min": 0,
-      "max": 6,
+      "max": 5,
       "step": 0.5,
       "unit": "px",
-      "default": 3
+      "default": 2
     },
     {
       "type": "select",
@@ -176,7 +159,7 @@
       "label": "Vertical padding",
       "min": 4,
       "max": 24,
-      "step": 1,
+      "step": 2,
       "unit": "px",
       "default": 10
     }
@@ -185,22 +168,18 @@
     {
       "type": "announcement",
       "name": "Announcement",
+      "limit": 6,
       "settings": [
         {
           "type": "text",
           "id": "text",
           "label": "Message",
-          "default": "Free shipping above ₹999 · Festive Collection Live · COD Available"
+          "default": "Woven with Grace, Worn with Pride · Curated Sarees"
         },
         {
           "type": "url",
           "id": "link",
           "label": "Optional link"
-        },
-        {
-          "type": "color",
-          "id": "text_color",
-          "label": "Custom text color (optional)"
         }
       ]
     }
@@ -210,19 +189,13 @@
       {
         "type": "announcement",
         "settings": {
-          "text": "Free shipping above ₹999 · Festive Collection Live · COD Available"
+          "text": "Woven with Grace, Worn with Pride · Vedajanani Vastralayam"
         }
       },
       {
         "type": "announcement",
         "settings": {
-          "text": "Woven with Grace, Worn with Pride · Handpicked Sarees from Anantapur"
-        }
-      },
-      {
-        "type": "announcement",
-        "settings": {
-          "text": "New Wedding & Festive Silks Now Available · Shop the Edit"
+          "text": "Cotton, Silk, Chiffon & Georgette Sarees · Curated in Anantapur"
         }
       }
     ]

@@ -1,0 +1,107 @@
+{% style %}
+  #shopify-section-{{ section.id }} .vv-recs-sec {
+    {% if section.settings.bg_color != blank and section.settings.bg_color != 'rgba(0,0,0,0)' %}
+      background: {{ section.settings.bg_color }};
+    {% endif %}
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  #shopify-section-{{ section.id }} .vv-grid {
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr));
+    gap: {{ section.settings.grid_gap }}px;
+  }
+  @media (max-width: 900px) {
+    #shopify-section-{{ section.id }} .vv-grid {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, minmax(0, 1fr));
+    }
+  }
+{% endstyle %}
+
+<section
+  class="vv-recs-sec"
+  data-product-recommendations
+  data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&amp;product_id={{ product.id }}&amp;limit={{ section.settings.products_limit }}&amp;intent={{ section.settings.intent }}"
+>
+  <div class="wrap">
+    {% if recommendations.performed and recommendations.products_count > 0 %}
+      <div class="section-head section-head--{{ section.settings.heading_align }}">
+        {% if section.settings.eyebrow != blank %}
+          <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+        {% endif %}
+        {% if section.settings.heading != blank %}
+          <h2 style="font-size: {{ section.settings.heading_size }}px; color: {{ section.settings.heading_color }};">
+            {{ section.settings.heading }}
+          </h2>
+        {% endif %}
+      </div>
+
+      <div class="vv-grid">
+        {% for rec_product in recommendations.products limit: section.settings.products_limit %}
+          {% render 'product-card',
+            product: rec_product,
+            ratio: section.settings.image_ratio,
+            align: section.settings.card_align,
+            show_vendor: section.settings.show_vendor,
+            show_sale_badge: section.settings.show_sale_badge,
+            show_quick_add: section.settings.show_quick_add
+          %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Recommendations",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Complete Your Wardrobe" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "You May Also Like" },
+    { "type": "text_alignment", "id": "heading_align", "label": "Header alignment", "default": "center" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 60, "step": 2, "unit": "px", "default": 32 },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#1C1C1C" },
+    {
+      "type": "select",
+      "id": "intent",
+      "label": "Recommendation intent",
+      "options": [
+        { "value": "related", "label": "Related sarees" },
+        { "value": "complementary", "label": "Complementary pairings" }
+      ],
+      "default": "related"
+    },
+    { "type": "range", "id": "products_limit", "label": "Number of sarees", "min": 2, "max": 8, "step": 1, "default": 4 },
+    { "type": "range", "id": "columns_desktop", "label": "Columns (desktop)", "min": 2, "max": 5, "step": 1, "default": 4 },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns (mobile)",
+      "options": [
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
+      ],
+      "default": "2"
+    },
+    { "type": "range", "id": "grid_gap", "label": "Grid gap", "min": 8, "max": 40, "step": 2, "unit": "px", "default": 20 },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Product image ratio",
+      "options": [
+        { "value": "3 / 4", "label": "Portrait (3:4)" },
+        { "value": "4 / 5", "label": "Editorial (4:5)" },
+        { "value": "2 / 3", "label": "Tall (2:3)" },
+        { "value": "1 / 1", "label": "Square (1:1)" }
+      ],
+      "default": "3 / 4"
+    },
+    { "type": "text_alignment", "id": "card_align", "label": "Card text alignment", "default": "left" },
+    { "type": "checkbox", "id": "show_vendor", "label": "Show vendor", "default": false },
+    { "type": "checkbox", "id": "show_sale_badge", "label": "Show sale badge", "default": true },
+    { "type": "checkbox", "id": "show_quick_add", "label": "Show Quick Add button", "default": false },
+    { "type": "color", "id": "bg_color", "label": "Section background (optional)" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 64 }
+  ]
+}
+{% endschema %}

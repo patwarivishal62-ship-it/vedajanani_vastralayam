@@ -1,24 +1,46 @@
-{%- assign ov_alpha = section.settings.banner_overlay | divided_by: 100.0 -%}
+{%- liquid
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+  assign active_filter_count = 0
+  for filter in collection.filters
+    assign active_filter_count = active_filter_count | plus: filter.active_values.size
+    if filter.type == 'price_range'
+      if filter.min_value.value != nil or filter.max_value.value != nil
+        assign active_filter_count = active_filter_count | plus: 1
+      endif
+    endif
+  endfor
+  assign clear_all_url = collection.url
+  if collection.sort_by != blank
+    assign clear_all_url = collection.url | append: '?sort_by=' | append: collection.sort_by
+  endif
+-%}
 
 {% style %}
   #shopify-section-{{ section.id }} .vv-col-sec {
-    {% if section.settings.bg_color != blank and section.settings.bg_color != 'rgba(0,0,0,0)' %}
-      background: {{ section.settings.bg_color }};
-    {% endif %}
     padding-top: {{ section.settings.padding_top }}px;
     padding-bottom: {{ section.settings.padding_bottom }}px;
   }
-  #shopify-section-{{ section.id }} .col-banner {
-    min-height: {{ section.settings.banner_height }}px;
-    border-radius: {{ section.settings.banner_radius }}px;
-    margin-bottom: 32px;
+  #shopify-section-{{ section.id }} .collection-hero {
+    text-align: {{ section.settings.header_align }};
+    margin-bottom: 24px;
   }
-  #shopify-section-{{ section.id }} .product-grid {
+  #shopify-section-{{ section.id }} .collection-hero h1 {
+    font-size: {{ section.settings.title_size }}px;
+    margin-bottom: 10px;
+  }
+  #shopify-section-{{ section.id }} .collection-banner {
+    width: 100%;
+    max-height: {{ section.settings.banner_height }}px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    margin-bottom: 24px;
+  }
+  #shopify-section-{{ section.id }} .vv-grid {
     grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr));
     gap: {{ section.settings.grid_gap }}px;
   }
   @media (max-width: 900px) {
-    #shopify-section-{{ section.id }} .product-grid {
+    #shopify-section-{{ section.id }} .vv-grid {
       grid-template-columns: repeat({{ section.settings.columns_mobile }}, minmax(0, 1fr));
     }
   }
@@ -26,42 +48,55 @@
 
 <section class="vv-col-sec">
   <div class="wrap">
-    {% if section.settings.show_banner and collection.image != blank %}
-      <div class="vv-banner col-banner" style="background: #2B0E14;">
-        <div class="vv-banner-media">
-          <img src="{{ collection.image | image_url: width: 1800 }}" alt="{{ collection.title | escape }}" style="object-fit: cover;" width="1600" height="600" loading="eager">
-        </div>
-        <div class="vv-banner-overlay" style="background: #000000; opacity: {{ ov_alpha }};"></div>
-        <div class="vv-banner-inner" style="align-items: center; justify-content: {% if section.settings.header_align == 'left' %}flex-start{% elsif section.settings.header_align == 'right' %}flex-end{% else %}center{% endif %}; padding: 40px 32px;">
-          <div class="vv-banner-content" style="text-align: {{ section.settings.header_align }}; color: #FFFFFF; max-width: 720px;">
-            <h1 style="font-size: {{ section.settings.heading_size }}px; color: #FFFFFF;">{{ collection.title }}</h1>
-            {% if section.settings.show_description and collection.description != blank %}
-              <div>{{ collection.description }}</div>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-    {% else %}
-      <div class="section-head section-head--{{ section.settings.header_align }}">
-        <h1 style="font-size: {{ section.settings.heading_size }}px; color: {{ section.settings.heading_color }};">{{ collection.title }}</h1>
-        {% if section.settings.show_description and collection.description != blank %}
-          <div class="section-sub">{{ collection.description }}</div>
-        {% endif %}
-      </div>
+    {% if section.settings.show_breadcrumbs %}
+      {% render 'breadcrumbs' %}
     {% endif %}
 
-    {% if section.settings.show_count or section.settings.show_sort %}
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid var(--border-color);">
-        {% if section.settings.show_count %}
-          <span style="font-size: 13px; color: var(--text-muted);">{{ collection.products_count }} sarees</span>
-        {% endif %}
+    {% if section.settings.show_banner and collection.image != blank %}
+      <img
+        class="collection-banner"
+        src="{{ collection.image | image_url: width: 1800 }}"
+        alt="{{ collection.image.alt | default: collection.title | escape }}"
+        width="1600"
+        height="500"
+        loading="eager"
+      >
+    {% endif %}
+
+    <div class="collection-hero">
+      <span class="eyebrow">Collection</span>
+      <h1>{{ collection.title }}</h1>
+      {% if section.settings.show_description and collection.description != blank %}
+        <div class="section-sub">{{ collection.description }}</div>
+      {% endif %}
+    </div>
+
+    {% if section.settings.show_filters or section.settings.show_count or section.settings.show_sort %}
+      <div class="collection-toolbar">
+        <div class="collection-toolbar-left">
+          {% if section.settings.show_filters and collection.filters.size > 0 %}
+            <button
+              type="button"
+              class="filter-toggle-btn"
+              data-filter-drawer-open="collectionFilterDrawer-{{ section.id }}"
+              aria-controls="collectionFilterDrawer-{{ section.id }}"
+              aria-expanded="false"
+            >
+              {% render 'icons', icon: 'filter' %}
+              <span>Filter{% if active_filter_count > 0 %} ({{ active_filter_count }}){% endif %}</span>
+            </button>
+          {% endif %}
+          {% if section.settings.show_count %}
+            <span class="collection-count">{{ collection.products_count }} {{ collection.products_count | pluralize: 'saree', 'sarees' }}</span>
+          {% endif %}
+        </div>
+
         {% if section.settings.show_sort %}
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <label for="SortBy-{{ section.id }}" style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase;">Sort</label>
-            <select id="SortBy-{{ section.id }}" data-collection-sort style="width: auto; padding: 8px 14px;">
-              {% assign current_sort = collection.sort_by | default: collection.default_sort_by %}
+          <div class="collection-sort">
+            <label for="SortBy-{{ section.id }}">Sort</label>
+            <select id="SortBy-{{ section.id }}" data-collection-sort>
               {% for option in collection.sort_options %}
-                <option value="{{ option.value }}"{% if option.value == current_sort %} selected{% endif %}>{{ option.name }}</option>
+                <option value="{{ option.value }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name }}</option>
               {% endfor %}
             </select>
           </div>
@@ -69,24 +104,158 @@
       </div>
     {% endif %}
 
+    {% if section.settings.show_filters and active_filter_count > 0 %}
+      <div class="active-filters" aria-label="Active filters">
+        {% for filter in collection.filters %}
+          {% for value in filter.active_values %}
+            <a href="{{ value.url_to_remove }}" class="active-filter-chip">
+              <span>{{ filter.label }}: {{ value.label }}</span>
+              <span aria-hidden="true">×</span>
+            </a>
+          {% endfor %}
+          {% if filter.type == 'price_range' %}
+            {% if filter.min_value.value != nil or filter.max_value.value != nil %}
+              <a href="{{ filter.url_to_remove }}" class="active-filter-chip">
+                <span>
+                  {{ filter.label }}:
+                  {% if filter.min_value.value %}{{ filter.min_value.value | money }}{% else %}{{ 0 | money }}{% endif %}
+                  –
+                  {% if filter.max_value.value %}{{ filter.max_value.value | money }}{% else %}{{ filter.range_max | money }}{% endif %}
+                </span>
+                <span aria-hidden="true">×</span>
+              </a>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        <a href="{{ clear_all_url }}" class="active-filter-clear">Clear all</a>
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_filters and collection.filters.size > 0 %}
+      <aside
+        class="filter-drawer"
+        id="collectionFilterDrawer-{{ section.id }}"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Filter collection"
+        aria-hidden="true"
+      >
+        <div class="drawer-head">
+          <h3>Filter Sarees</h3>
+          <button type="button" class="drawer-close-btn" data-filter-drawer-close aria-label="Close filters">
+            {% render 'icons', icon: 'close' %}
+          </button>
+        </div>
+
+        <form class="filter-form" method="get" action="{{ collection.url }}">
+          {% if collection.sort_by != blank %}
+            <input type="hidden" name="sort_by" value="{{ collection.sort_by }}">
+          {% endif %}
+
+          <div class="filter-drawer-body">
+            {% for filter in collection.filters %}
+              <details class="filter-group" {% if forloop.index <= 3 or filter.active_values.size > 0 %}open{% endif %}>
+                <summary>
+                  <span>{{ filter.label }}{% if filter.active_values.size > 0 %} ({{ filter.active_values.size }}){% endif %}</span>
+                  <span>{% render 'icons', icon: 'chevron-down' %}</span>
+                </summary>
+
+                <div class="filter-group-body">
+                  {% case filter.type %}
+                    {% when 'boolean', 'list' %}
+                      <ul class="filter-list">
+                        {% for value in filter.values %}
+                          <li>
+                            <label class="filter-check{% if value.count == 0 and value.active == false %} is-disabled{% endif %}">
+                              <input
+                                type="checkbox"
+                                name="{{ value.param_name }}"
+                                value="{{ value.value }}"
+                                {% if value.active %}checked{% endif %}
+                                {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                              >
+                              <span>{{ value.label }}</span>
+                              <span class="filter-val-count">({{ value.count }})</span>
+                            </label>
+                          </li>
+                        {% endfor %}
+                      </ul>
+
+                    {% when 'price_range' %}
+                      {%- assign max_major = filter.range_max | divided_by: 100 | ceil -%}
+                      <div class="filter-price-range">
+                        <div class="filter-price-field">
+                          <label for="FilterMin-{{ section.id }}-{{ forloop.index }}">Min ({{ cart.currency.symbol }})</label>
+                          <input
+                            id="FilterMin-{{ section.id }}-{{ forloop.index }}"
+                            type="number"
+                            name="{{ filter.min_value.param_name }}"
+                            min="0"
+                            max="{{ max_major }}"
+                            placeholder="0"
+                            {% if filter.min_value.value %}value="{{ filter.min_value.value | divided_by: 100 }}"{% endif %}
+                          >
+                        </div>
+                        <div class="filter-price-field">
+                          <label for="FilterMax-{{ section.id }}-{{ forloop.index }}">Max ({{ cart.currency.symbol }})</label>
+                          <input
+                            id="FilterMax-{{ section.id }}-{{ forloop.index }}"
+                            type="number"
+                            name="{{ filter.max_value.param_name }}"
+                            min="0"
+                            max="{{ max_major }}"
+                            placeholder="{{ max_major }}"
+                            {% if filter.max_value.value %}value="{{ filter.max_value.value | divided_by: 100 }}"{% endif %}
+                          >
+                        </div>
+                      </div>
+                  {% endcase %}
+                </div>
+              </details>
+            {% endfor %}
+          </div>
+
+          <div class="filter-drawer-foot">
+            <a href="{{ clear_all_url }}" class="btn outline">Clear All</a>
+            <button type="submit" class="btn">Apply Filters</button>
+          </div>
+        </form>
+      </aside>
+    {% endif %}
+
     {% paginate collection.products by section.settings.products_per_page %}
       {% if collection.products.size > 0 %}
-        <div class="product-grid">
-          {% for p in collection.products %}
-            {% render 'product-card', product: p, ratio: section.settings.image_ratio %}
+        <div class="vv-grid">
+          {% for product in collection.products %}
+            {% render 'product-card',
+              product: product,
+              ratio: section.settings.image_ratio,
+              align: section.settings.card_align,
+              show_vendor: section.settings.show_vendor,
+              show_sale_badge: section.settings.show_sale_badge,
+              show_quick_add: section.settings.show_quick_add
+            %}
           {% endfor %}
         </div>
-      {% else %}
-        <div class="empty">
-          <p>No products in this collection yet.</p>
-          <a class="btn" href="{{ routes.all_products_collection_url }}">Browse All Sarees</a>
-        </div>
-      {% endif %}
 
-      {% if paginate.pages > 1 %}
-        <nav class="pagination" aria-label="Pagination">
-          {{ paginate | default_pagination }}
-        </nav>
+        {% if paginate.pages > 1 %}
+          <nav class="pagination" aria-label="Pagination">
+            {{ paginate | default_pagination }}
+          </nav>
+        {% endif %}
+      {% else %}
+        <div class="empty-state-box">
+          {% if active_filter_count > 0 %}
+            <p>No sarees match your current filter selection.</p>
+            <a class="btn" href="{{ clear_all_url }}">Clear Filters</a>
+          {% else %}
+            <p>{{ section.settings.empty_message }}</p>
+            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+              <a class="btn" href="{{ routes.all_products_collection_url }}">Browse All Sarees</a>
+              <a class="btn outline" href="{{ routes.root_url }}">Return Home</a>
+            </div>
+          {% endif %}
+        </div>
       {% endif %}
     {% endpaginate %}
   </div>
@@ -96,183 +265,50 @@
 {
   "name": "Main Collection",
   "settings": [
-    {
-      "type": "header",
-      "content": "Collection Header & Banner"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_banner",
-      "label": "Show collection banner when image exists",
-      "default": true
-    },
-    {
-      "type": "range",
-      "id": "banner_height",
-      "label": "Collection banner height",
-      "min": 180,
-      "max": 600,
-      "step": 20,
-      "unit": "px",
-      "default": 320
-    },
-    {
-      "type": "range",
-      "id": "banner_radius",
-      "label": "Banner corner radius",
-      "min": 0,
-      "max": 36,
-      "step": 2,
-      "unit": "px",
-      "default": 24
-    },
-    {
-      "type": "range",
-      "id": "banner_overlay",
-      "label": "Banner overlay opacity",
-      "min": 0,
-      "max": 85,
-      "step": 5,
-      "unit": "%",
-      "default": 35
-    },
-    {
-      "type": "text_alignment",
-      "id": "header_align",
-      "label": "Header alignment",
-      "default": "center"
-    },
-    {
-      "type": "range",
-      "id": "heading_size",
-      "label": "Heading size",
-      "min": 24,
-      "max": 64,
-      "step": 2,
-      "unit": "px",
-      "default": 40
-    },
-    {
-      "type": "color",
-      "id": "heading_color",
-      "label": "Heading color (when no banner)",
-      "default": "#1C1C1C"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_description",
-      "label": "Show collection description",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_count",
-      "label": "Show product count",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_sort",
-      "label": "Show sort dropdown",
-      "default": true
-    },
-    {
-      "type": "header",
-      "content": "Product Grid"
-    },
-    {
-      "type": "range",
-      "id": "products_per_page",
-      "label": "Products per page",
-      "min": 4,
-      "max": 48,
-      "step": 4,
-      "default": 12
-    },
-    {
-      "type": "range",
-      "id": "columns_desktop",
-      "label": "Columns (desktop)",
-      "min": 2,
-      "max": 5,
-      "step": 1,
-      "default": 4
-    },
+    { "type": "header", "content": "Collection Header" },
+    { "type": "checkbox", "id": "show_breadcrumbs", "label": "Show breadcrumbs", "default": true },
+    { "type": "checkbox", "id": "show_banner", "label": "Show collection banner image", "default": true },
+    { "type": "range", "id": "banner_height", "label": "Banner max height", "min": 180, "max": 540, "step": 20, "unit": "px", "default": 320 },
+    { "type": "text_alignment", "id": "header_align", "label": "Header alignment", "default": "center" },
+    { "type": "range", "id": "title_size", "label": "Title size", "min": 24, "max": 64, "step": 2, "unit": "px", "default": 40 },
+    { "type": "checkbox", "id": "show_description", "label": "Show collection description", "default": true },
+    { "type": "checkbox", "id": "show_filters", "label": "Enable storefront faceted filters", "default": true },
+    { "type": "checkbox", "id": "show_count", "label": "Show saree count", "default": true },
+    { "type": "checkbox", "id": "show_sort", "label": "Show Sort By dropdown", "default": true },
+    { "type": "header", "content": "Product Grid" },
+    { "type": "range", "id": "products_per_page", "label": "Sarees per page", "min": 8, "max": 48, "step": 4, "default": 24 },
+    { "type": "range", "id": "columns_desktop", "label": "Columns (desktop)", "min": 2, "max": 5, "step": 1, "default": 4 },
     {
       "type": "select",
       "id": "columns_mobile",
       "label": "Columns (mobile)",
       "options": [
-        {
-          "value": "1",
-          "label": "1 column"
-        },
-        {
-          "value": "2",
-          "label": "2 columns"
-        }
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
       ],
       "default": "2"
     },
-    {
-      "type": "range",
-      "id": "grid_gap",
-      "label": "Grid gap",
-      "min": 8,
-      "max": 40,
-      "step": 2,
-      "unit": "px",
-      "default": 20
-    },
+    { "type": "range", "id": "grid_gap", "label": "Grid gap", "min": 8, "max": 40, "step": 2, "unit": "px", "default": 20 },
     {
       "type": "select",
       "id": "image_ratio",
       "label": "Product image ratio",
       "options": [
-        {
-          "value": "3 / 4",
-          "label": "Portrait (3:4)"
-        },
-        {
-          "value": "4 / 5",
-          "label": "Editorial (4:5)"
-        },
-        {
-          "value": "2 / 3",
-          "label": "Tall (2:3)"
-        },
-        {
-          "value": "1 / 1",
-          "label": "Square (1:1)"
-        }
+        { "value": "3 / 4", "label": "Portrait (3:4)" },
+        { "value": "4 / 5", "label": "Editorial (4:5)" },
+        { "value": "2 / 3", "label": "Tall (2:3)" },
+        { "value": "1 / 1", "label": "Square (1:1)" }
       ],
       "default": "3 / 4"
     },
-    {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Section background (optional)"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "label": "Top padding",
-      "min": 16,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "default": 40
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "label": "Bottom padding",
-      "min": 16,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "default": 64
-    }
+    { "type": "text_alignment", "id": "card_align", "label": "Card text alignment", "default": "left" },
+    { "type": "checkbox", "id": "show_vendor", "label": "Show vendor", "default": false },
+    { "type": "checkbox", "id": "show_sale_badge", "label": "Show sale badge", "default": true },
+    { "type": "checkbox", "id": "show_quick_add", "label": "Show Quick Add button", "default": false },
+    { "type": "text", "id": "empty_message", "label": "Empty collection message", "default": "New sarees for this collection are being curated and will arrive soon." },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 16, "max": 100, "step": 4, "unit": "px", "default": 36 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 24, "max": 120, "step": 4, "unit": "px", "default": 72 }
   ]
 }
 {% endschema %}
