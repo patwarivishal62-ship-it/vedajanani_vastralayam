@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "color_ivory": "#FAF2E3",
@@ -23,7 +32,208 @@
     "image_radius": 12,
     "card_border_width": 1,
     "card_shadow": "none",
-    "button_radius": 8
+    "button_radius": 8,
+    "sections": {
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "blocks": {
+          "announcement-bar-0": {
+            "type": "announcement",
+            "settings": {
+              "text": "Woven with Grace, Worn with Pride · Curated Sarees from Anantapur",
+              "link": ""
+            }
+          }
+        },
+        "block_order": [
+          "announcement-bar-0"
+        ],
+        "settings": {
+          "show_bar": true,
+          "show_close": true,
+          "announcement": "Curated Cotton, Silk, Chiffon & Georgette Sarees · Vedajanani Vastralayam",
+          "auto_rotate": false,
+          "rotate_speed": 6,
+          "sticky_bar": false,
+          "bg_color": "#244737",
+          "text_color": "#faf2e3",
+          "font_size": 12,
+          "letter_spacing": 0.5,
+          "text_transform": "none",
+          "text_alignment": "center"
+        }
+      },
+      "header": {
+        "type": "header",
+        "blocks": {
+          "header-0": {
+            "type": "mega_column",
+            "settings": {
+              "heading": "By Fabric",
+              "menu": "",
+              "links_list": "Cotton | /collections/cotton\nSilk | /collections/silk\nChiffon | /collections/chiffon\nGeorgette | /collections/georgette"
+            }
+          },
+          "header-1": {
+            "type": "mega_column",
+            "settings": {
+              "heading": "By Occasion",
+              "menu": "",
+              "links_list": "Everyday | /collections/daily-use\nOffice | /collections/office\nFestive | /collections/festive\nWedding | /collections/wedding"
+            }
+          },
+          "header-2": {
+            "type": "mega_column",
+            "settings": {
+              "heading": "By Price",
+              "menu": "",
+              "links_list": "₹500–₹1,499 | /collections/affordable\n₹1,500–₹2,999 | /collections/mid-range\n₹3,000 & Above | /collections/premium"
+            }
+          },
+          "header-3": {
+            "type": "nav_link",
+            "settings": {
+              "label": "New Arrivals",
+              "url": "",
+              "fallback_path": "/collections/new-arrivals"
+            }
+          },
+          "header-4": {
+            "type": "nav_link",
+            "settings": {
+              "label": "Our Story",
+              "url": "",
+              "fallback_path": "/pages/about"
+            }
+          }
+        },
+        "block_order": [
+          "header-0",
+          "header-1",
+          "header-2",
+          "header-3",
+          "header-4"
+        ],
+        "settings": {
+          "logo_image": "shopify://shop_images/458231660_2206920716360879_1869149726400012595_n.jpg",
+          "logo_width_desktop": 200,
+          "logo_width_mobile": 140,
+          "logo_position": "center",
+          "logo_text": "",
+          "logo_subtext": "",
+          "logo_font_size": 24,
+          "logo_letter_spacing": 2.5,
+          "sticky_header": true,
+          "show_home_link": true,
+          "show_shop_all": true,
+          "shop_all_label": "Shop Sarees",
+          "shop_all_url": "",
+          "mega_image_caption": "Explore Festive Edit",
+          "mega_image_url": "",
+          "menu": "",
+          "show_search": true,
+          "show_account": true,
+          "show_cart": true,
+          "search_placeholder": "Search by fabric, weave or occasion (e.g. Cotton, Silk, Jamdani)…",
+          "popular_searches": "Cotton, Silk, Chiffon, Festive, Wedding",
+          "bg_color": "#faf2e3",
+          "menubar_bg": "#faf2e3",
+          "text_color": "#202521",
+          "hover_color": "#244737",
+          "border_color": "#e3d8c5",
+          "badge_bg": "#244737",
+          "badge_text": "#ffffff",
+          "dropdown_bg": "#ffffff",
+          "nav_font_size": 14,
+          "nav_letter_spacing": 0.5,
+          "nav_transform": "none",
+          "dropdown_width": 680
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "blocks": {
+          "footer-0": {
+            "type": "brand_info",
+            "settings": {
+              "logo_width": 150,
+              "heading": "Vedajanani Vastralayam",
+              "tagline": "Woven with Grace, Worn with Pride",
+              "description": "<p>Curated Cotton, Silk, Chiffon &amp; Georgette sarees from Anantapur, Andhra Pradesh.</p>"
+            }
+          },
+          "footer-1": {
+            "type": "link_column",
+            "settings": {
+              "heading": "Shop",
+              "menu": "",
+              "links_list": "Shop All Sarees | /collections/all\nNew Arrivals | /collections/new-arrivals\nCotton Sarees | /collections/cotton\nSilk Sarees | /collections/silk\nChiffon & Georgette | /collections/chiffon"
+            }
+          },
+          "footer-2": {
+            "type": "link_column",
+            "settings": {
+              "heading": "Help",
+              "menu": "",
+              "links_list": "Our Story | /pages/about\nJournal | /blogs/journal\nContact & FAQ | /pages/contact\nMy Account | /account"
+            }
+          },
+          "footer-3": {
+            "type": "contact_info",
+            "settings": {
+              "heading": "Contact",
+              "address": "Anantapur, Andhra Pradesh, India",
+              "phone": "",
+              "email": "",
+              "hours": ""
+            }
+          }
+        },
+        "block_order": [
+          "footer-0",
+          "footer-1",
+          "footer-2",
+          "footer-3"
+        ],
+        "settings": {
+          "columns_desktop": 4,
+          "column_gap": 32,
+          "text_alignment": "left",
+          "padding_top": 56,
+          "padding_bottom": 40,
+          "bg_color": "#1a3327",
+          "heading_color": "#faf2e3",
+          "text_color": "#ddd6c8",
+          "hover_color": "#e0c88f",
+          "border_color": "#2d4d3d",
+          "heading_size": 13,
+          "heading_spacing": 1,
+          "font_size": 14,
+          "show_policies": true,
+          "copyright_text": "Vedajanani Vastralayam · All rights reserved.",
+          "show_social": true,
+          "show_payment_icons": true
+        }
+      },
+      "cart-drawer": {
+        "type": "cart-drawer",
+        "settings": {
+          "heading": "Your Bag",
+          "empty_message": "Your bag is currently empty.",
+          "empty_cta_label": "Explore Sarees",
+          "empty_cta_url": "",
+          "show_free_shipping_bar": false,
+          "show_order_note": false,
+          "shipping_note": "Shipping and taxes calculated at checkout.",
+          "checkout_label": "Proceed to Checkout",
+          "show_view_cart_link": true,
+          "bg_color": "#ffffff",
+          "text_color": "#202521",
+          "bar_color": "#244737"
+        }
+      }
+    },
+    "content_for_index": []
   },
   "presets": {
     "South Indian Heritage": {
