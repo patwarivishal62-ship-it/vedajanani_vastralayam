@@ -1,40 +1,93 @@
-<section style="padding: {{ section.settings.padding_y }}px 0;">
-  <div class="wrap" style="max-width: 880px;">
-    <p><a href="{{ routes.account_url }}">← Back to Account</a></p>
-    <h1 style="margin-bottom: 24px;">Saved Addresses</h1>
+<section class="account-sec">
+  <div class="wrap account-wide">
+    <div class="account-top-bar">
+      <div>
+        <span class="eyebrow">Account</span>
+        <h1>Saved Addresses</h1>
+      </div>
+      <a href="{{ routes.account_url }}" class="btn outline">Back to Account</a>
+    </div>
 
     {% if customer.addresses.size > 0 %}
-      <div class="vv-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-bottom: 32px;">
+      <div class="address-grid">
         {% for address in customer.addresses %}
-          <div style="background: var(--surface); border-radius: var(--radius); padding: 22px; border: 1px solid var(--border-color);">
-            {% if address == customer.default_address %}<span class="eyebrow" style="margin-bottom: 8px;">Default</span>{% endif %}
-            {{ address | format_address }}
+          <div class="account-card">
+            {% if address == customer.default_address %}
+              <span class="eyebrow">Default Address</span>
+            {% endif %}
+            <div class="address-body">{{ address | format_address }}</div>
+            <form method="post" action="{{ routes.account_addresses_url }}/{{ address.id }}" style="margin-top: 16px;">
+              <input type="hidden" name="_method" value="delete">
+              <button type="submit" class="btn outline" style="min-height: 40px; padding: 8px 16px;">Delete</button>
+            </form>
           </div>
         {% endfor %}
       </div>
     {% endif %}
 
-    <div style="background: var(--surface); border-radius: var(--radius); padding: 28px; border: 1px solid var(--border-color);">
-      <h2 style="font-size: 22px; margin-bottom: 16px;">Add New Address</h2>
-      {% form 'customer_address', customer.new_address, class: 'form-stack' %}
-        <input type="text" name="address[first_name]" placeholder="First name">
-        <input type="text" name="address[last_name]" placeholder="Last name">
-        <input type="text" name="address[address1]" placeholder="Address line 1" required>
-        <input type="text" name="address[city]" placeholder="City" required>
-        <input type="text" name="address[province]" placeholder="State / Province">
-        <input type="text" name="address[zip]" placeholder="PIN / Postal code" required>
-        <input type="text" name="address[phone]" placeholder="Phone">
-        <button type="submit" class="btn">Save Address</button>
-      {% endform %}
+    <div class="account-card" style="margin-top: 24px;">
+      <details class="vv-accordion">
+        <summary>
+          <span>Add a New Address</span>
+          <span class="vv-accordion-icon" aria-hidden="true">{% render 'icons', icon: 'chevron-down' %}</span>
+        </summary>
+        <div class="vv-accordion-body">
+          {% form 'customer_address', customer.new_address, class: 'form-stack' %}
+            <div class="field-row-2">
+              <div class="field-group">
+                <label for="AddressFirstName">First name</label>
+                <input id="AddressFirstName" type="text" name="address[first_name]" autocomplete="given-name" required>
+              </div>
+              <div class="field-group">
+                <label for="AddressLastName">Last name</label>
+                <input id="AddressLastName" type="text" name="address[last_name]" autocomplete="family-name" required>
+              </div>
+            </div>
+            <div class="field-group">
+              <label for="AddressLine1">Address line 1</label>
+              <input id="AddressLine1" type="text" name="address[address1]" autocomplete="address-line1" required>
+            </div>
+            <div class="field-group">
+              <label for="AddressLine2">Apartment, landmark or suite (optional)</label>
+              <input id="AddressLine2" type="text" name="address[address2]" autocomplete="address-line2">
+            </div>
+            <div class="field-row-2">
+              <div class="field-group">
+                <label for="AddressCity">City</label>
+                <input id="AddressCity" type="text" name="address[city]" autocomplete="address-level2" required>
+              </div>
+              <div class="field-group">
+                <label for="AddressProvince">State / Province</label>
+                <input id="AddressProvince" type="text" name="address[province]" autocomplete="address-level1" required>
+              </div>
+            </div>
+            <div class="field-row-2">
+              <div class="field-group">
+                <label for="AddressCountry">Country</label>
+                <input id="AddressCountry" type="text" name="address[country]" value="India" autocomplete="country-name" required>
+              </div>
+              <div class="field-group">
+                <label for="AddressZip">PIN / Postal code</label>
+                <input id="AddressZip" type="text" name="address[zip]" autocomplete="postal-code" required>
+              </div>
+            </div>
+            <div class="field-group">
+              <label for="AddressPhone">Phone number</label>
+              <input id="AddressPhone" type="tel" name="address[phone]" autocomplete="tel">
+            </div>
+            <div>
+              <button type="submit" class="btn">Save Address</button>
+            </div>
+          {% endform %}
+        </div>
+      </details>
     </div>
   </div>
 </section>
 
 {% schema %}
 {
-  "name": "Main Addresses",
-  "settings": [
-    { "type": "range", "id": "padding_y", "label": "Vertical padding", "min": 24, "max": 100, "step": 4, "unit": "px", "default": 56 }
-  ]
+  "name": "Customer Addresses",
+  "settings": []
 }
 {% endschema %}

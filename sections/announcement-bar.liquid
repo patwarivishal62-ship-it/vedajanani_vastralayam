@@ -5,8 +5,6 @@
       color: {{ section.settings.text_color }};
       font-size: {{ section.settings.font_size }}px;
       letter-spacing: {{ section.settings.letter_spacing }}px;
-      padding-top: {{ section.settings.padding_y }}px;
-      padding-bottom: {{ section.settings.padding_y }}px;
       text-transform: {{ section.settings.text_transform }};
       text-align: {{ section.settings.text_alignment }};
     }
@@ -22,7 +20,7 @@
   <div
     class="announcement"
     role="region"
-    aria-label="Announcement"
+    aria-label="Store announcement"
     data-announcement-bar
     data-autoplay="{{ section.settings.auto_rotate }}"
     data-speed="{{ section.settings.rotate_speed | times: 1000 }}"
@@ -54,6 +52,12 @@
       {% if section.blocks.size > 1 %}
         <button type="button" class="announcement-nav" data-announcement-next aria-label="Next announcement">{% render 'icons', icon: 'chevron-right' %}</button>
       {% endif %}
+
+      {% if section.settings.show_close %}
+        <button type="button" class="announcement-close" data-announcement-close aria-label="Dismiss announcement">
+          {% render 'icons', icon: 'close' %}
+        </button>
+      {% endif %}
     </div>
   </div>
 {% endif %}
@@ -69,26 +73,32 @@
       "default": true
     },
     {
+      "type": "checkbox",
+      "id": "show_close",
+      "label": "Show accessible dismiss button",
+      "default": true
+    },
+    {
       "type": "text",
       "id": "announcement",
       "label": "Fallback text (used if no announcement blocks exist)",
-      "default": "Woven with Grace, Worn with Pride · Curated Sarees from Vedajanani Vastralayam"
+      "default": "Curated Cotton, Silk, Chiffon & Georgette Sarees · Vedajanani Vastralayam"
     },
     {
       "type": "checkbox",
       "id": "auto_rotate",
       "label": "Auto-rotate multiple announcements",
-      "default": true
+      "default": false
     },
     {
       "type": "range",
       "id": "rotate_speed",
       "label": "Rotation interval",
-      "min": 3,
+      "min": 4,
       "max": 12,
-      "step": 1,
+      "step": 2,
       "unit": "s",
-      "default": 5
+      "default": 6
     },
     {
       "type": "checkbox",
@@ -114,67 +124,57 @@
     },
     {
       "type": "header",
-      "content": "Typography & Spacing"
+      "content": "Typography"
     },
     {
       "type": "range",
       "id": "font_size",
       "label": "Font size",
-      "min": 9,
-      "max": 18,
+      "min": 12,
+      "max": 16,
       "step": 1,
       "unit": "px",
-      "default": 11
+      "default": 12
     },
     {
       "type": "range",
       "id": "letter_spacing",
       "label": "Letter spacing",
       "min": 0,
-      "max": 5,
+      "max": 3,
       "step": 0.5,
       "unit": "px",
-      "default": 2
+      "default": 0.5
     },
     {
       "type": "select",
       "id": "text_transform",
       "label": "Text case",
       "options": [
+        { "value": "none", "label": "Sentence case" },
         { "value": "uppercase", "label": "Uppercase" },
-        { "value": "capitalize", "label": "Capitalize" },
-        { "value": "none", "label": "Normal" }
+        { "value": "capitalize", "label": "Title case" }
       ],
-      "default": "uppercase"
+      "default": "none"
     },
     {
       "type": "text_alignment",
       "id": "text_alignment",
       "label": "Text alignment",
       "default": "center"
-    },
-    {
-      "type": "range",
-      "id": "padding_y",
-      "label": "Vertical padding",
-      "min": 4,
-      "max": 24,
-      "step": 2,
-      "unit": "px",
-      "default": 10
     }
   ],
   "blocks": [
     {
       "type": "announcement",
       "name": "Announcement",
-      "limit": 6,
+      "limit": 4,
       "settings": [
         {
           "type": "text",
           "id": "text",
           "label": "Message",
-          "default": "Woven with Grace, Worn with Pride · Curated Sarees"
+          "default": "Woven with Grace, Worn with Pride · Curated Sarees from Anantapur"
         },
         {
           "type": "url",
@@ -189,13 +189,7 @@
       {
         "type": "announcement",
         "settings": {
-          "text": "Woven with Grace, Worn with Pride · Vedajanani Vastralayam"
-        }
-      },
-      {
-        "type": "announcement",
-        "settings": {
-          "text": "Cotton, Silk, Chiffon & Georgette Sarees · Curated in Anantapur"
+          "text": "Woven with Grace, Worn with Pride · Curated Sarees from Anantapur"
         }
       }
     ]

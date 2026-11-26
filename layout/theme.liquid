@@ -2,7 +2,7 @@
 <html lang="{{ request.locale.iso_code }}">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>{{ page_title }}{% if current_page != 1 %} – Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} | {{ shop.name }}{% endunless %}</title>
   {% if page_description %}
     <meta name="description" content="{{ page_description | escape }}">
@@ -20,26 +20,24 @@
     assign heading_font = settings.font_heading
     assign heading_font_bold = heading_font | font_modify: 'weight', 'bolder'
     assign heading_font_italic = heading_font | font_modify: 'style', 'italic'
-    assign heading_font_bold_italic = heading_font_bold | font_modify: 'style', 'italic'
 
     assign accent_font = settings.font_accent
-    assign accent_font_bold = accent_font | font_modify: 'weight', 'bolder'
-    assign accent_font_italic = accent_font | font_modify: 'style', 'italic'
+    assign load_accent_separately = true
+    if accent_font.family == heading_font.family
+      assign load_accent_separately = false
+    endif
 
     assign body_font = settings.font_body
+    assign body_font_medium = body_font | font_modify: 'weight', '+100'
     assign body_font_bold = body_font | font_modify: 'weight', 'bolder'
-    assign body_font_italic = body_font | font_modify: 'style', 'italic'
-    assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
 
     case settings.card_shadow
-      when 'none'
-        assign card_shadow_val = 'none'
       when 'medium'
-        assign card_shadow_val = '0 10px 28px rgba(28, 28, 28, 0.08)'
-      when 'lifted'
-        assign card_shadow_val = '0 18px 42px rgba(28, 28, 28, 0.13)'
+        assign card_shadow_val = '0 8px 24px rgba(32, 37, 33, 0.07)'
+      when 'subtle'
+        assign card_shadow_val = '0 2px 10px rgba(32, 37, 33, 0.04)'
       else
-        assign card_shadow_val = '0 4px 16px rgba(28, 28, 28, 0.04)'
+        assign card_shadow_val = 'none'
     endcase
   -%}
 
@@ -47,35 +45,34 @@
     {{ heading_font | font_face: font_display: 'swap' }}
     {% if heading_font_bold %}{{ heading_font_bold | font_face: font_display: 'swap' }}{% endif %}
     {% if heading_font_italic %}{{ heading_font_italic | font_face: font_display: 'swap' }}{% endif %}
-    {% if heading_font_bold_italic %}{{ heading_font_bold_italic | font_face: font_display: 'swap' }}{% endif %}
 
-    {{ accent_font | font_face: font_display: 'swap' }}
-    {% if accent_font_bold %}{{ accent_font_bold | font_face: font_display: 'swap' }}{% endif %}
-    {% if accent_font_italic %}{{ accent_font_italic | font_face: font_display: 'swap' }}{% endif %}
+    {% if load_accent_separately %}
+      {{ accent_font | font_face: font_display: 'swap' }}
+    {% endif %}
 
     {{ body_font | font_face: font_display: 'swap' }}
+    {% if body_font_medium %}{{ body_font_medium | font_face: font_display: 'swap' }}{% endif %}
     {% if body_font_bold %}{{ body_font_bold | font_face: font_display: 'swap' }}{% endif %}
-    {% if body_font_italic %}{{ body_font_italic | font_face: font_display: 'swap' }}{% endif %}
-    {% if body_font_bold_italic %}{{ body_font_bold_italic | font_face: font_display: 'swap' }}{% endif %}
 
     :root {
-      /* South Indian Heritage Palette (editable in Theme Settings) */
+      /* South Indian Heritage Palette (WCAG AA checked) */
       --ivory: {{ settings.color_ivory | default: '#FAF2E3' }};
       --surface: {{ settings.color_surface | default: '#FFFFFF' }};
       --surface-soft: {{ settings.color_surface_soft | default: '#F2E7D3' }};
       --maroon: {{ settings.color_maroon | default: '#244737' }};
       --terracotta: {{ settings.color_terracotta | default: '#A8492D' }};
       --gold: {{ settings.color_gold | default: '#A88A48' }};
-      --char: {{ settings.color_charcoal | default: '#1C1C1C' }};
-      --text-muted: {{ settings.color_text_muted | default: '#5E5A52' }};
+      --label-accent: {{ settings.color_maroon | default: '#244737' }};
+      --char: {{ settings.color_charcoal | default: '#202521' }};
+      --text-muted: {{ settings.color_text_muted | default: '#545A55' }};
       --border-color: {{ settings.color_border | default: '#E3D8C5' }};
       --btn-bg: {{ settings.color_btn_bg | default: '#244737' }};
       --btn-text: {{ settings.color_btn_text | default: '#FFFFFF' }};
       --btn-hover-bg: {{ settings.color_btn_hover_bg | default: '#1A3529' }};
-      --btn-dark-bg: {{ settings.color_btn_dark_bg | default: '#1C1C1C' }};
+      --btn-dark-bg: {{ settings.color_btn_dark_bg | default: '#202521' }};
       --btn-dark-text: {{ settings.color_btn_dark_text | default: '#FFFFFF' }};
       --sale-color: {{ settings.color_sale_price | default: '#A8492D' }};
-      --compare-color: {{ settings.color_compare_price | default: '#8C8478' }};
+      --compare-color: {{ settings.color_compare_price | default: '#6E736F' }};
 
       /* Typography */
       --font-heading: {{ heading_font.family }}, {{ heading_font.fallback_families }};
@@ -89,33 +86,33 @@
       --font-accent: {{ accent_font.family }}, {{ accent_font.fallback_families }};
       --font-accent-weight: {{ accent_font.weight }};
       --font-accent-style: {{ accent_font.style }};
-      --product-title-size: {{ settings.product_title_size | default: 17 }}px;
-      --product-title-ls: {{ settings.product_title_spacing | default: 0.5 }}px;
+      --product-title-size: {{ settings.product_title_size | default: 18 }}px;
+      --product-title-ls: {{ settings.product_title_spacing | default: 0 }}px;
       --product-title-transform: {{ settings.product_title_transform | default: 'none' }};
 
       --font-body: {{ body_font.family }}, {{ body_font.fallback_families }};
       --font-body-weight: {{ body_font.weight }};
       --font-body-style: {{ body_font.style }};
       --body-size: {{ settings.body_font_size | default: 15 }}px;
-      --body-lh: {{ settings.body_line_height | default: 165 | divided_by: 100.0 }};
-      --eyebrow-size: {{ settings.eyebrow_font_size | default: 11 }}px;
-      --eyebrow-ls: {{ settings.eyebrow_letter_spacing | default: 3 }}px;
+      --body-lh: {{ settings.body_line_height | default: 160 | divided_by: 100.0 }};
+      --eyebrow-size: {{ settings.eyebrow_font_size | default: 12 }}px;
+      --eyebrow-ls: {{ settings.eyebrow_letter_spacing | default: 1.5 }}px;
 
-      --btn-size: {{ settings.button_font_size | default: 11 }}px;
-      --btn-ls: {{ settings.button_letter_spacing | default: 2 }}px;
-      --btn-transform: {{ settings.button_transform | default: 'uppercase' }};
+      --btn-size: {{ settings.button_font_size | default: 14 }}px;
+      --btn-ls: {{ settings.button_letter_spacing | default: 0.5 }}px;
+      --btn-transform: {{ settings.button_transform | default: 'none' }};
       --btn-radius: {{ settings.button_radius | default: 4 }}px;
-      --btn-py: {{ settings.button_padding_y | default: 14 }}px;
+      --btn-py: {{ settings.button_padding_y | default: 12 }}px;
       --btn-px: {{ settings.button_padding_x | default: 28 }}px;
 
       /* Layout & Cards */
-      --page-width: {{ settings.page_width | default: 1360 }}px;
-      --page-pad-desktop: {{ settings.page_padding_desktop | default: 32 }}px;
+      --page-width: {{ settings.page_width | default: 1320 }}px;
+      --page-pad-desktop: {{ settings.page_padding_desktop | default: 48 }}px;
       --page-pad-mobile: {{ settings.page_padding_mobile | default: 16 }}px;
-      --section-space: {{ settings.section_spacing | default: 64 }}px;
-      --grid-gap: {{ settings.grid_gap | default: 20 }}px;
-      --radius: {{ settings.card_radius | default: 10 }}px;
-      --img-radius: {{ settings.image_radius | default: 8 }}px;
+      --section-space: {{ settings.section_spacing | default: 72 }}px;
+      --grid-gap: {{ settings.grid_gap | default: 24 }}px;
+      --radius: {{ settings.card_radius | default: 4 }}px;
+      --img-radius: {{ settings.image_radius | default: 4 }}px;
       --card-border-w: {{ settings.card_border_width | default: 1 }}px;
       --card-shadow: {{ card_shadow_val }};
       --product-ratio: {{ settings.product_aspect_ratio | default: '3 / 4' }};
@@ -129,10 +126,10 @@
   {{ 'header.css' | asset_url | stylesheet_tag }}
 </head>
 <body
+  class="template-{{ request.page_type }}"
   data-cart-drawer="{{ settings.enable_cart_drawer | default: true }}"
   data-predictive-search-url="{{ routes.predictive_search_url }}"
   data-search-url="{{ routes.search_url }}"
-  data-money-format="{{ shop.money_format | escape }}"
 >
   <a class="skip-link" href="#MainContent">Skip to content</a>
   {% section 'announcement-bar' %}

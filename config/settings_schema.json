@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "Vedajanani Editorial",
-    "theme_version": "2.1.0",
+    "theme_version": "2.2.0",
     "theme_author": "Vedajanani Vastralayam",
     "theme_documentation_url": "https://github.com/patwarivishal62-ship-it/vedajanani_vastralayam",
     "theme_support_url": "https://github.com/patwarivishal62-ship-it/vedajanani_vastralayam"
@@ -26,11 +26,11 @@
         "type": "range",
         "id": "logo_width",
         "label": "Default logo width",
-        "min": 60,
+        "min": 80,
         "max": 320,
         "step": 10,
         "unit": "px",
-        "default": 160
+        "default": 200
       },
       {
         "type": "image_picker",
@@ -56,7 +56,7 @@
       {
         "type": "color",
         "id": "color_surface",
-        "label": "Card & surface background",
+        "label": "Product & card surface (White)",
         "default": "#FFFFFF"
       },
       {
@@ -68,7 +68,7 @@
       {
         "type": "color",
         "id": "color_maroon",
-        "label": "Primary accent (Temple Green)",
+        "label": "Primary brand accent (Temple Green)",
         "default": "#244737"
       },
       {
@@ -80,29 +80,30 @@
       {
         "type": "color",
         "id": "color_gold",
-        "label": "Metallic accent (Heritage Brass)",
-        "default": "#A88A48"
+        "label": "Decorative border & line accent (Brass)",
+        "default": "#A88A48",
+        "info": "Used for woven lines, borders and ornaments; avoid for small text on cream"
       },
       {
         "type": "header",
-        "content": "Text & Borders"
+        "content": "Text & Borders (WCAG AA)"
       },
       {
         "type": "color",
         "id": "color_charcoal",
         "label": "Primary text (Charcoal)",
-        "default": "#1C1C1C"
+        "default": "#202521"
       },
       {
         "type": "color",
         "id": "color_text_muted",
-        "label": "Muted / secondary text",
-        "default": "#5E5A52"
+        "label": "Secondary text",
+        "default": "#545A55"
       },
       {
         "type": "color",
         "id": "color_border",
-        "label": "Borders & dividers",
+        "label": "Hairline borders & dividers",
         "default": "#E3D8C5"
       },
       {
@@ -131,7 +132,7 @@
         "type": "color",
         "id": "color_btn_dark_bg",
         "label": "Dark button background",
-        "default": "#1C1C1C"
+        "default": "#202521"
       },
       {
         "type": "color",
@@ -149,7 +150,7 @@
         "type": "color",
         "id": "color_compare_price",
         "label": "Compare-at price color",
-        "default": "#8C8478"
+        "default": "#6E736F"
       }
     ]
   },
@@ -163,15 +164,15 @@
       {
         "type": "font_picker",
         "id": "font_heading",
-        "label": "Heading font",
-        "default": "playfair_display_n5"
+        "label": "Heading serif font",
+        "default": "cormorant_n5"
       },
       {
         "type": "range",
         "id": "heading_scale",
         "label": "Heading size scale",
-        "min": 70,
-        "max": 150,
+        "min": 80,
+        "max": 140,
         "step": 5,
         "unit": "%",
         "default": 100
@@ -180,8 +181,8 @@
         "type": "range",
         "id": "heading_line_height",
         "label": "Heading line height",
-        "min": 90,
-        "max": 160,
+        "min": 95,
+        "max": 150,
         "step": 5,
         "unit": "%",
         "default": 115
@@ -190,8 +191,8 @@
         "type": "range",
         "id": "heading_letter_spacing",
         "label": "Heading letter spacing",
-        "min": -2,
-        "max": 8,
+        "min": -1,
+        "max": 4,
         "step": 0.5,
         "unit": "px",
         "default": 0
@@ -201,9 +202,9 @@
         "id": "heading_transform",
         "label": "Heading text case",
         "options": [
-          { "value": "none", "label": "Normal" },
-          { "value": "uppercase", "label": "Uppercase" },
-          { "value": "capitalize", "label": "Capitalize" }
+          { "value": "none", "label": "Sentence case" },
+          { "value": "capitalize", "label": "Title case" },
+          { "value": "uppercase", "label": "Uppercase" }
         ],
         "default": "none"
       },
@@ -221,30 +222,29 @@
         "type": "range",
         "id": "product_title_size",
         "label": "Product card title size",
-        "min": 12,
-        "max": 28,
+        "min": 14,
+        "max": 24,
         "step": 1,
         "unit": "px",
-        "default": 17
+        "default": 18
       },
       {
         "type": "range",
         "id": "product_title_spacing",
         "label": "Product card title letter spacing",
         "min": 0,
-        "max": 5,
+        "max": 3,
         "step": 0.5,
         "unit": "px",
-        "default": 0.5
+        "default": 0
       },
       {
         "type": "select",
         "id": "product_title_transform",
         "label": "Product card title case",
         "options": [
-          { "value": "none", "label": "Normal (Editorial)" },
-          { "value": "capitalize", "label": "Capitalize" },
-          { "value": "uppercase", "label": "Uppercase" }
+          { "value": "none", "label": "Sentence case (Recommended)" },
+          { "value": "capitalize", "label": "Title case" }
         ],
         "default": "none"
       },
@@ -255,15 +255,15 @@
       {
         "type": "font_picker",
         "id": "font_body",
-        "label": "Body font",
-        "default": "jost_n4"
+        "label": "Body sans font",
+        "default": "inter_n4"
       },
       {
         "type": "range",
         "id": "body_font_size",
         "label": "Base body font size",
-        "min": 12,
-        "max": 22,
+        "min": 14,
+        "max": 20,
         "step": 1,
         "unit": "px",
         "default": 15
@@ -272,31 +272,31 @@
         "type": "range",
         "id": "body_line_height",
         "label": "Body line height",
-        "min": 120,
-        "max": 200,
+        "min": 135,
+        "max": 190,
         "step": 5,
         "unit": "%",
-        "default": 165
+        "default": 160
       },
       {
         "type": "range",
         "id": "eyebrow_font_size",
-        "label": "Eyebrow / kicker font size",
-        "min": 9,
-        "max": 18,
+        "label": "Eyebrow / label font size",
+        "min": 12,
+        "max": 16,
         "step": 1,
         "unit": "px",
-        "default": 11
+        "default": 12
       },
       {
         "type": "range",
         "id": "eyebrow_letter_spacing",
-        "label": "Eyebrow / kicker letter spacing",
+        "label": "Eyebrow letter spacing",
         "min": 0,
-        "max": 6,
+        "max": 4,
         "step": 0.5,
         "unit": "px",
-        "default": 3
+        "default": 1.5
       },
       {
         "type": "header",
@@ -306,32 +306,32 @@
         "type": "range",
         "id": "button_font_size",
         "label": "Button font size",
-        "min": 10,
+        "min": 12,
         "max": 18,
         "step": 1,
         "unit": "px",
-        "default": 11
+        "default": 14
       },
       {
         "type": "range",
         "id": "button_letter_spacing",
         "label": "Button letter spacing",
         "min": 0,
-        "max": 5,
+        "max": 3,
         "step": 0.5,
         "unit": "px",
-        "default": 2
+        "default": 0.5
       },
       {
         "type": "select",
         "id": "button_transform",
         "label": "Button text case",
         "options": [
-          { "value": "uppercase", "label": "Uppercase" },
-          { "value": "capitalize", "label": "Capitalize" },
-          { "value": "none", "label": "Normal" }
+          { "value": "none", "label": "Sentence case (Recommended)" },
+          { "value": "capitalize", "label": "Title case" },
+          { "value": "uppercase", "label": "Uppercase" }
         ],
-        "default": "uppercase"
+        "default": "none"
       }
     ]
   },
@@ -342,51 +342,51 @@
         "type": "range",
         "id": "page_width",
         "label": "Maximum page container width",
-        "min": 1000,
-        "max": 1800,
+        "min": 1200,
+        "max": 1440,
         "step": 20,
         "unit": "px",
-        "default": 1360
+        "default": 1320
       },
       {
         "type": "range",
         "id": "page_padding_desktop",
-        "label": "Page side padding (desktop)",
-        "min": 12,
-        "max": 80,
+        "label": "Page horizontal margin (desktop)",
+        "min": 24,
+        "max": 72,
         "step": 4,
         "unit": "px",
-        "default": 32
+        "default": 48
       },
       {
         "type": "range",
         "id": "page_padding_mobile",
-        "label": "Page side padding (mobile)",
-        "min": 10,
-        "max": 40,
-        "step": 2,
+        "label": "Page horizontal margin (mobile)",
+        "min": 12,
+        "max": 32,
+        "step": 4,
         "unit": "px",
         "default": 16
       },
       {
         "type": "range",
         "id": "section_spacing",
-        "label": "Default section vertical spacing",
-        "min": 20,
-        "max": 120,
-        "step": 4,
+        "label": "Default section vertical spacing (desktop)",
+        "min": 40,
+        "max": 104,
+        "step": 8,
         "unit": "px",
-        "default": 64
+        "default": 72
       },
       {
         "type": "range",
         "id": "grid_gap",
-        "label": "Default grid gap",
-        "min": 8,
-        "max": 48,
-        "step": 2,
+        "label": "Default grid gap (desktop)",
+        "min": 12,
+        "max": 36,
+        "step": 4,
         "unit": "px",
-        "default": 20
+        "default": 24
       }
     ]
   },
@@ -395,34 +395,34 @@
     "settings": [
       {
         "type": "header",
-        "content": "Cards"
+        "content": "Cards & Ornament"
       },
       {
         "type": "range",
         "id": "card_radius",
         "label": "Card corner radius",
         "min": 0,
-        "max": 32,
-        "step": 1,
+        "max": 24,
+        "step": 2,
         "unit": "px",
-        "default": 10
+        "default": 4
       },
       {
         "type": "range",
         "id": "image_radius",
         "label": "Image corner radius",
         "min": 0,
-        "max": 32,
-        "step": 1,
+        "max": 24,
+        "step": 2,
         "unit": "px",
-        "default": 8
+        "default": 4
       },
       {
         "type": "range",
         "id": "card_border_width",
         "label": "Card border thickness",
         "min": 0,
-        "max": 4,
+        "max": 3,
         "step": 1,
         "unit": "px",
         "default": 1
@@ -432,12 +432,11 @@
         "id": "card_shadow",
         "label": "Card shadow",
         "options": [
-          { "value": "none", "label": "None" },
+          { "value": "none", "label": "None (Minimal editorial)" },
           { "value": "subtle", "label": "Subtle" },
-          { "value": "medium", "label": "Medium" },
-          { "value": "lifted", "label": "Lifted" }
+          { "value": "medium", "label": "Medium" }
         ],
-        "default": "subtle"
+        "default": "none"
       },
       {
         "type": "header",
@@ -476,7 +475,7 @@
       {
         "type": "checkbox",
         "id": "product_show_quick_add",
-        "label": "Show Quick Add button on product cards",
+        "label": "Show Quick Add for single-variant sarees",
         "default": false
       },
       {
@@ -492,25 +491,25 @@
         "step": 2,
         "unit": "px",
         "default": 4,
-        "info": "Set to 4px for crisp editorial buttons or 50px for pill buttons"
+        "info": "4–6px recommended for crisp editorial buttons"
       },
       {
         "type": "range",
         "id": "button_padding_y",
         "label": "Button vertical padding",
-        "min": 8,
-        "max": 24,
-        "step": 1,
+        "min": 10,
+        "max": 20,
+        "step": 2,
         "unit": "px",
-        "default": 14
+        "default": 12
       },
       {
         "type": "range",
         "id": "button_padding_x",
         "label": "Button horizontal padding",
         "min": 16,
-        "max": 56,
-        "step": 2,
+        "max": 48,
+        "step": 4,
         "unit": "px",
         "default": 28
       }
@@ -522,7 +521,7 @@
       {
         "type": "checkbox",
         "id": "enable_cart_drawer",
-        "label": "Open slide-out cart drawer on Add to Cart",
+        "label": "Open slide-out cart drawer on Add to Bag",
         "default": true
       },
       {

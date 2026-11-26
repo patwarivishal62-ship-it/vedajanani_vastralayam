@@ -1,19 +1,20 @@
-/* Vedajanani Editorial — Product Cards & Pricing */
+/* Vedajanani Vastralayam — Product Cards & Pricing (3:4 Portrait, Aligned Bottom, Clean States) */
 .product-card {
   display: flex;
   flex-direction: column;
   text-decoration: none;
   background: var(--surface, #FFFFFF);
-  border-radius: var(--radius, 10px);
+  border-radius: var(--radius, 4px);
   border: var(--card-border-w, 1px) solid var(--border-color, #E3D8C5);
-  box-shadow: var(--card-shadow, 0 4px 16px rgba(28, 28, 28, 0.04));
+  box-shadow: var(--card-shadow, none);
   overflow: hidden;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  transition: border-color 180ms ease, transform 180ms ease;
 }
 .product-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(168, 138, 72, 0.45);
-  box-shadow: 0 12px 28px rgba(28, 28, 28, 0.08);
+  border-color: var(--gold, #A88A48);
+}
+.product-card--placeholder {
+  background: var(--surface, #FFFFFF);
 }
 
 .product-card-media {
@@ -28,23 +29,26 @@
   height: 100%;
   object-fit: cover;
   border-radius: 0;
-  transition: transform 0.55s ease, opacity 0.35s ease;
+  transition: transform 220ms ease, opacity 220ms ease;
 }
 .product-card-img-secondary {
   position: absolute;
   inset: 0;
   opacity: 0;
 }
-.product-card:hover .product-card-media.has-secondary .product-card-img-secondary {
-  opacity: 1;
-}
-.product-card:hover .product-card-media img {
-  transform: scale(1.03);
+@media (hover: hover) {
+  .product-card:hover .product-card-media.has-secondary .product-card-img-secondary {
+    opacity: 1;
+  }
+  .product-card:hover .product-card-media img {
+    transform: scale(1.03);
+  }
 }
 .product-card--sold-out .product-card-media img {
-  opacity: 0.75;
+  opacity: 0.72;
 }
 
+/* Single Restrained Status Badge (12px legible) */
 .product-card-badge {
   position: absolute;
   top: 10px;
@@ -52,41 +56,49 @@
   z-index: 2;
   background: var(--sale-color, var(--terracotta, #A8492D));
   color: #FFFFFF;
-  font-size: 10px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  padding: 5px 10px;
-  border-radius: 3px;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 2px;
   font-weight: 500;
+  line-height: 1.25;
+}
+.product-card-badge--new {
+  background: var(--maroon, #244737);
 }
 .product-card-badge--soldout {
-  background: var(--char, #1C1C1C);
+  background: var(--char, #202521);
 }
 
 .product-card-info {
-  padding: 14px 16px 16px;
+  padding: 14px 14px 16px;
   text-align: var(--product-align, left);
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
   flex: 1;
 }
 .product-card-vendor {
-  font-size: 10px;
-  letter-spacing: 2px;
+  font-size: 12px;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--gold, #A88A48);
+  color: var(--label-accent, var(--maroon, #244737));
+  font-weight: 500;
 }
 .product-card-title {
-  font-family: var(--font-accent, 'Cormorant', Georgia, serif);
-  font-weight: var(--font-accent-weight, 500);
-  font-style: var(--font-accent-style, normal);
-  font-size: var(--product-title-size, 17px);
-  letter-spacing: var(--product-title-ls, 0.5px);
-  text-transform: var(--product-title-transform, none);
-  line-height: 1.3;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-weight: 500;
+  font-style: normal;
+  font-size: var(--product-title-size, 15px);
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1.4;
   margin: 0;
-  color: var(--char, #1C1C1C);
+  color: var(--char, #202521);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .product-card-title a {
   text-decoration: none;
@@ -95,19 +107,29 @@
 .product-card-title a:hover {
   color: var(--maroon, #244737);
 }
+.product-card-fabric {
+  font-size: 13px;
+  color: var(--text-muted, #545A55);
+  line-height: 1.4;
+}
+
+.product-card-bottom {
+  margin-top: auto;
+  padding-top: 6px;
+}
 
 .price {
   display: flex;
   align-items: baseline;
   gap: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--char, #1C1C1C);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--char, #202521);
 }
 .price .sale { color: var(--sale-color, var(--terracotta, #A8492D)); }
 .price .compare {
   text-decoration: line-through;
-  color: var(--compare-color, #8C8478);
+  color: var(--compare-color, #6E6A63);
   font-weight: 400;
   font-size: 13px;
 }
@@ -117,7 +139,7 @@
 }
 .product-card-quickadd .btn {
   width: 100%;
-  padding: 10px 14px;
-  min-height: 40px;
-  font-size: 10px;
+  padding: 9px 14px;
+  min-height: 42px;
+  font-size: 13px;
 }

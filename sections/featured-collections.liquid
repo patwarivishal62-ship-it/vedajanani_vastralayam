@@ -14,19 +14,28 @@
     border-radius: {{ section.settings.card_radius }}px;
     background: {{ section.settings.card_bg }};
     color: {{ section.settings.card_text }};
-    min-height: {{ section.settings.card_height_desktop }}px;
+    {% if section.settings.card_style == 'overlay' %}
+      min-height: {{ section.settings.card_height_desktop }}px;
+    {% endif %}
     text-align: {{ section.settings.card_align }};
   }
   #shopify-section-{{ section.id }} .vv-tile-title {
     font-size: {{ section.settings.card_title_size }}px;
   }
   @media (max-width: 900px) {
+    #shopify-section-{{ section.id }} .vv-fcol-sec {
+      padding-top: 44px;
+      padding-bottom: 44px;
+    }
     #shopify-section-{{ section.id }} .vv-grid {
       grid-template-columns: repeat({{ section.settings.columns_mobile }}, minmax(0, 1fr));
+      gap: 12px;
     }
-    #shopify-section-{{ section.id }} .vv-tile {
-      min-height: {{ section.settings.card_height_mobile }}px;
-    }
+    {% if section.settings.card_style == 'overlay' %}
+      #shopify-section-{{ section.id }} .vv-tile {
+        min-height: {{ section.settings.card_height_mobile }}px;
+      }
+    {% endif %}
   }
 {% endstyle %}
 
@@ -71,7 +80,7 @@
             assign ov_alpha = block.settings.overlay_opacity | divided_by: 100.0
           -%}
           <a
-            class="vv-tile{% if col_img != blank and section.settings.card_style == 'overlay' %} vv-tile--overlay{% endif %}"
+            class="vv-tile{% if col_img != blank and section.settings.card_style == 'overlay' %} vv-tile--overlay{% else %} vv-tile--below{% endif %}"
             href="{{ col_href }}"
             style="
               {% if block.settings.card_bg != blank and block.settings.card_bg != 'rgba(0,0,0,0)' %}background: {{ block.settings.card_bg }};{% endif %}
@@ -79,26 +88,34 @@
             "
             {{ block.shopify_attributes }}
           >
-            {% if col_img != blank %}
-              <div class="vv-tile-media" style="{% unless section.settings.card_style == 'overlay' %}aspect-ratio: {{ section.settings.image_ratio }};{% endunless %}">
+            <div class="vv-tile-media" style="{% unless section.settings.card_style == 'overlay' %}aspect-ratio: {{ section.settings.image_ratio }};{% endunless %}">
+              {% if col_img != blank %}
                 <img
                   src="{{ col_img | image_url: width: 900 }}"
+                  srcset="{{ col_img | image_url: width: 420 }} 420w, {{ col_img | image_url: width: 720 }} 720w, {{ col_img | image_url: width: 900 }} 900w"
+                  sizes="(max-width: 900px) 46vw, 23vw"
                   alt="{{ col_img.alt | default: col_title | escape }}"
                   style="object-position: {{ block.settings.focal_point }};"
                   width="600"
                   height="750"
                   loading="lazy"
                 >
-              </div>
-              {% if section.settings.card_style == 'overlay' %}
-                <div class="vv-tile-overlay" style="background: #000000; opacity: {{ ov_alpha }};"></div>
+              {% else %}
+                {% capture ph_idx %}collection-{{ forloop.index | modulo: 6 | plus: 1 }}{% endcapture %}
+                {{ ph_idx | placeholder_svg_tag: 'placeholder-svg' }}
               {% endif %}
+            </div>
+            {% if col_img != blank and section.settings.card_style == 'overlay' %}
+              <div class="vv-tile-overlay" style="background: #141A16; opacity: {{ ov_alpha }};"></div>
             {% endif %}
             <div class="vv-tile-body" style="padding: {{ section.settings.card_pad }}px;">
               {% if block.settings.badge != blank %}
                 <span class="vv-tile-badge">{{ block.settings.badge }}</span>
               {% endif %}
-              <h3 class="vv-tile-title">{{ col_title }}</h3>
+              <div class="vv-tile-heading-row">
+                <h3 class="vv-tile-title">{{ col_title }}</h3>
+                <span class="vv-tile-arrow" aria-hidden="true">{% render 'icons', icon: 'arrow-right' %}</span>
+              </div>
               {% if block.settings.subtitle != blank %}
                 <p class="vv-tile-sub">{{ block.settings.subtitle }}</p>
               {% endif %}
@@ -107,25 +124,22 @@
         {% endfor %}
       {% elsif section.settings.collections != blank %}
         {% for col in section.settings.collections %}
-          <a class="vv-tile{% if col.featured_image != blank and section.settings.card_style == 'overlay' %} vv-tile--overlay{% endif %}" href="{{ col.url }}">
-            {% if col.featured_image != blank %}
-              <div class="vv-tile-media" style="{% unless section.settings.card_style == 'overlay' %}aspect-ratio: {{ section.settings.image_ratio }};{% endunless %}">
+          <a class="vv-tile vv-tile--below" href="{{ col.url }}">
+            <div class="vv-tile-media" style="aspect-ratio: {{ section.settings.image_ratio }};">
+              {% if col.featured_image != blank %}
                 <img src="{{ col.featured_image | image_url: width: 900 }}" alt="{{ col.title | escape }}" width="600" height="750" loading="lazy">
-              </div>
-              {% if section.settings.card_style == 'overlay' %}
-                <div class="vv-tile-overlay" style="background: #000000; opacity: 0.3;"></div>
+              {% else %}
+                {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
               {% endif %}
-            {% endif %}
+            </div>
             <div class="vv-tile-body" style="padding: {{ section.settings.card_pad }}px;">
-              <h3 class="vv-tile-title">{{ col.title }}</h3>
+              <div class="vv-tile-heading-row">
+                <h3 class="vv-tile-title">{{ col.title }}</h3>
+                <span class="vv-tile-arrow" aria-hidden="true">{% render 'icons', icon: 'arrow-right' %}</span>
+              </div>
             </div>
           </a>
         {% endfor %}
-      {% else %}
-        <a class="vv-tile" href="{{ routes.collections_url }}/cotton" style="justify-content:center;"><div class="vv-tile-body"><h3 class="vv-tile-title">Cotton</h3><p class="vv-tile-sub">Mul, Madurai, Kanchi, Kota &amp; Jamdani</p></div></a>
-        <a class="vv-tile" href="{{ routes.collections_url }}/silk" style="justify-content:center;"><div class="vv-tile-body"><h3 class="vv-tile-title">Silk</h3><p class="vv-tile-sub">Banarasi, Soft, Crepe &amp; Viscose Silk</p></div></a>
-        <a class="vv-tile" href="{{ routes.collections_url }}/chiffon" style="justify-content:center;"><div class="vv-tile-body"><h3 class="vv-tile-title">Chiffon</h3><p class="vv-tile-sub">Printed, Embroidered, Bandhani &amp; Floral</p></div></a>
-        <a class="vv-tile" href="{{ routes.collections_url }}/georgette" style="justify-content:center;"><div class="vv-tile-body"><h3 class="vv-tile-title">Georgette</h3><p class="vv-tile-sub">Satin, Printed, Bandhani &amp; Plain</p></div></a>
       {% endif %}
     </div>
   </div>
@@ -135,312 +149,87 @@
 {
   "name": "Featured Collections",
   "settings": [
-    {
-      "type": "text",
-      "id": "eyebrow",
-      "label": "Eyebrow",
-      "default": "By Fabric"
-    },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Shop by Collection"
-    },
-    {
-      "type": "textarea",
-      "id": "subheading",
-      "label": "Subheading (optional)"
-    },
-    {
-      "type": "text_alignment",
-      "id": "heading_align",
-      "label": "Header alignment",
-      "default": "center"
-    },
-    {
-      "type": "range",
-      "id": "heading_size",
-      "label": "Heading size",
-      "min": 20,
-      "max": 64,
-      "step": 2,
-      "unit": "px",
-      "default": 34
-    },
-    {
-      "type": "color",
-      "id": "heading_color",
-      "label": "Heading color",
-      "default": "#1C1C1C"
-    },
-    {
-      "type": "collection_list",
-      "id": "collections",
-      "label": "Quick collection list (used if no Collection Card blocks added)"
-    },
-    {
-      "type": "header",
-      "content": "Grid & Card Styling"
-    },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "By Fabric" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop by Fabric" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading (optional)" },
+    { "type": "text_alignment", "id": "heading_align", "label": "Header alignment", "default": "center" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 24, "max": 48, "step": 2, "unit": "px", "default": 36 },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#202521" },
+    { "type": "collection_list", "id": "collections", "label": "Quick collection list (used if no cards added)" },
+    { "type": "header", "content": "Grid & Card Styling" },
     {
       "type": "select",
       "id": "card_style",
-      "label": "Card layout when image is set",
+      "label": "Card layout",
       "options": [
-        {
-          "value": "overlay",
-          "label": "Text overlaid on image"
-        },
-        {
-          "value": "below",
-          "label": "Text below image"
-        }
+        { "value": "below", "label": "Editorial (text below portrait image)" },
+        { "value": "overlay", "label": "Text overlaid on image" }
       ],
-      "default": "overlay"
+      "default": "below"
     },
     {
       "type": "select",
       "id": "image_ratio",
       "label": "Image aspect ratio (text-below mode)",
       "options": [
-        {
-          "value": "3 / 4",
-          "label": "Portrait (3:4)"
-        },
-        {
-          "value": "4 / 5",
-          "label": "Editorial (4:5)"
-        },
-        {
-          "value": "1 / 1",
-          "label": "Square (1:1)"
-        },
-        {
-          "value": "4 / 3",
-          "label": "Landscape (4:3)"
-        }
+        { "value": "4 / 5", "label": "Portrait Editorial (4:5)" },
+        { "value": "3 / 4", "label": "Portrait (3:4)" },
+        { "value": "1 / 1", "label": "Square (1:1)" },
+        { "value": "4 / 3", "label": "Landscape (4:3)" }
       ],
-      "default": "3 / 4"
+      "default": "4 / 5"
     },
-    {
-      "type": "range",
-      "id": "columns_desktop",
-      "label": "Columns (desktop)",
-      "min": 2,
-      "max": 6,
-      "step": 1,
-      "default": 4
-    },
+    { "type": "range", "id": "columns_desktop", "label": "Columns (desktop)", "min": 2, "max": 6, "step": 1, "default": 4 },
     {
       "type": "select",
       "id": "columns_mobile",
       "label": "Columns (mobile)",
       "options": [
-        {
-          "value": "1",
-          "label": "1 column"
-        },
-        {
-          "value": "2",
-          "label": "2 columns"
-        },
-        {
-          "value": "3",
-          "label": "3 columns"
-        }
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
       ],
       "default": "2"
     },
-    {
-      "type": "range",
-      "id": "grid_gap",
-      "label": "Grid gap",
-      "min": 8,
-      "max": 40,
-      "step": 2,
-      "unit": "px",
-      "default": 18
-    },
-    {
-      "type": "range",
-      "id": "card_height_desktop",
-      "label": "Card min height (desktop)",
-      "min": 140,
-      "max": 580,
-      "step": 20,
-      "unit": "px",
-      "default": 240
-    },
-    {
-      "type": "range",
-      "id": "card_height_mobile",
-      "label": "Card min height (mobile)",
-      "min": 120,
-      "max": 420,
-      "step": 20,
-      "unit": "px",
-      "default": 180
-    },
-    {
-      "type": "range",
-      "id": "card_radius",
-      "label": "Card corner radius",
-      "min": 0,
-      "max": 36,
-      "step": 2,
-      "unit": "px",
-      "default": 10
-    },
-    {
-      "type": "range",
-      "id": "card_pad",
-      "label": "Card padding",
-      "min": 12,
-      "max": 44,
-      "step": 2,
-      "unit": "px",
-      "default": 26
-    },
-    {
-      "type": "range",
-      "id": "card_title_size",
-      "label": "Card title size",
-      "min": 14,
-      "max": 36,
-      "step": 1,
-      "unit": "px",
-      "default": 24
-    },
-    {
-      "type": "text_alignment",
-      "id": "card_align",
-      "label": "Card text alignment",
-      "default": "center"
-    },
-    {
-      "type": "color",
-      "id": "card_bg",
-      "label": "Default card background",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "card_text",
-      "label": "Default card text color",
-      "default": "#1C1C1C"
-    },
-    {
-      "type": "header",
-      "content": "Section Spacing"
-    },
-    {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Section background (optional)"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "label": "Top padding",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "default": 56
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "label": "Bottom padding",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "default": 56
-    }
+    { "type": "range", "id": "grid_gap", "label": "Grid gap (desktop)", "min": 12, "max": 36, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "card_height_desktop", "label": "Min height (overlay mode desktop)", "min": 160, "max": 520, "step": 20, "unit": "px", "default": 280 },
+    { "type": "range", "id": "card_height_mobile", "label": "Min height (overlay mode mobile)", "min": 140, "max": 380, "step": 20, "unit": "px", "default": 200 },
+    { "type": "range", "id": "card_radius", "label": "Card corner radius", "min": 0, "max": 12, "step": 2, "unit": "px", "default": 4 },
+    { "type": "range", "id": "card_pad", "label": "Card body padding", "min": 12, "max": 32, "step": 2, "unit": "px", "default": 18 },
+    { "type": "range", "id": "card_title_size", "label": "Card title size", "min": 16, "max": 28, "step": 1, "unit": "px", "default": 20 },
+    { "type": "text_alignment", "id": "card_align", "label": "Card text alignment", "default": "left" },
+    { "type": "color", "id": "card_bg", "label": "Default card background", "default": "#FFFFFF" },
+    { "type": "color", "id": "card_text", "label": "Default card text color", "default": "#202521" },
+    { "type": "header", "content": "Section Spacing" },
+    { "type": "color", "id": "bg_color", "label": "Section background (optional)" },
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 32, "max": 96, "step": 8, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 32, "max": 96, "step": 8, "unit": "px", "default": 72 }
   ],
   "blocks": [
     {
       "type": "collection_card",
       "name": "Collection Card",
       "settings": [
-        {
-          "type": "collection",
-          "id": "collection",
-          "label": "Collection"
-        },
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Custom cover image (optional)"
-        },
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "image", "label": "Custom cover image (optional)" },
         {
           "type": "select",
           "id": "focal_point",
           "label": "Image focal point",
           "options": [
-            {
-              "value": "center center",
-              "label": "Center"
-            },
-            {
-              "value": "top center",
-              "label": "Top"
-            },
-            {
-              "value": "bottom center",
-              "label": "Bottom"
-            }
+            { "value": "center center", "label": "Center" },
+            { "value": "top center", "label": "Top" },
+            { "value": "bottom center", "label": "Bottom" }
           ],
           "default": "center center"
         },
-        {
-          "type": "range",
-          "id": "overlay_opacity",
-          "label": "Image overlay opacity",
-          "min": 0,
-          "max": 85,
-          "step": 5,
-          "unit": "%",
-          "default": 35
-        },
-        {
-          "type": "text",
-          "id": "badge",
-          "label": "Small eyebrow badge"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title (overrides collection title)"
-        },
-        {
-          "type": "text",
-          "id": "subtitle",
-          "label": "Subtitle / weaves list"
-        },
-        {
-          "type": "url",
-          "id": "url",
-          "label": "Custom link"
-        },
-        {
-          "type": "text",
-          "id": "fallback_path",
-          "label": "Fallback path",
-          "default": "/collections/all"
-        },
-        {
-          "type": "color",
-          "id": "card_bg",
-          "label": "Custom card background (optional)"
-        },
-        {
-          "type": "color",
-          "id": "text_color",
-          "label": "Custom text color (optional)"
-        }
+        { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity (overlay mode)", "min": 0, "max": 85, "step": 5, "unit": "%", "default": 35 },
+        { "type": "text", "id": "badge", "label": "Small eyebrow badge (optional)" },
+        { "type": "text", "id": "title", "label": "Title (overrides collection title)" },
+        { "type": "text", "id": "subtitle", "label": "Short fabric descriptor" },
+        { "type": "url", "id": "url", "label": "Custom link" },
+        { "type": "text", "id": "fallback_path", "label": "Fallback path", "default": "/collections/all" },
+        { "type": "color", "id": "card_bg", "label": "Custom card background (optional)" },
+        { "type": "color", "id": "text_color", "label": "Custom text color (optional)" }
       ]
     }
   ],
@@ -448,38 +237,10 @@
     {
       "name": "Featured Collections",
       "blocks": [
-        {
-          "type": "collection_card",
-          "settings": {
-            "title": "Cotton",
-            "subtitle": "Mul, Madurai, Kanchi, Kota & Jamdani",
-            "fallback_path": "/collections/cotton"
-          }
-        },
-        {
-          "type": "collection_card",
-          "settings": {
-            "title": "Silk",
-            "subtitle": "Banarasi, Soft, Crepe & Viscose Silk",
-            "fallback_path": "/collections/silk"
-          }
-        },
-        {
-          "type": "collection_card",
-          "settings": {
-            "title": "Chiffon",
-            "subtitle": "Printed, Embroidered, Bandhani & Floral",
-            "fallback_path": "/collections/chiffon"
-          }
-        },
-        {
-          "type": "collection_card",
-          "settings": {
-            "title": "Georgette",
-            "subtitle": "Satin, Printed, Bandhani & Plain",
-            "fallback_path": "/collections/georgette"
-          }
-        }
+        { "type": "collection_card", "settings": { "title": "Cotton", "subtitle": "Mul, Madurai, Kanchi, Kota & Jamdani", "fallback_path": "/collections/cotton" } },
+        { "type": "collection_card", "settings": { "title": "Silk", "subtitle": "Banarasi, Soft, Crepe & Viscose Silk", "fallback_path": "/collections/silk" } },
+        { "type": "collection_card", "settings": { "title": "Chiffon", "subtitle": "Printed, Embroidered, Bandhani & Floral", "fallback_path": "/collections/chiffon" } },
+        { "type": "collection_card", "settings": { "title": "Georgette", "subtitle": "Satin, Printed, Bandhani & Plain", "fallback_path": "/collections/georgette" } }
       ]
     }
   ]

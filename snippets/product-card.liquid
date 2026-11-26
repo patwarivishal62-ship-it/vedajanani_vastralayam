@@ -14,6 +14,11 @@
     assign show_quick_add_flag = settings.product_show_quick_add
   endif
   assign second_image = product.images[1]
+  assign fabric_label = product.metafields.custom.fabric | default: product.type
+  assign is_new_product = false
+  if product.tags contains 'new' or product.tags contains 'New' or product.tags contains 'new-arrival'
+    assign is_new_product = true
+  endif
 -%}
 
 <article class="product-card{% unless product.available %} product-card--sold-out{% endunless %}" style="--product-ratio: {{ card_ratio }}; --product-align: {{ card_align }};">
@@ -23,7 +28,7 @@
         class="product-card-img-primary"
         src="{{ product.featured_image | image_url: width: 720 }}"
         srcset="{{ product.featured_image | image_url: width: 360 }} 360w, {{ product.featured_image | image_url: width: 540 }} 540w, {{ product.featured_image | image_url: width: 720 }} 720w, {{ product.featured_image | image_url: width: 960 }} 960w"
-        sizes="(max-width: 900px) 50vw, 25vw"
+        sizes="(max-width: 760px) 50vw, (max-width: 1024px) 33vw, 25vw"
         alt="{{ product.featured_image.alt | default: product.title | escape }}"
         width="600"
         height="800"
@@ -34,7 +39,7 @@
           class="product-card-img-secondary"
           src="{{ second_image | image_url: width: 720 }}"
           srcset="{{ second_image | image_url: width: 360 }} 360w, {{ second_image | image_url: width: 540 }} 540w, {{ second_image | image_url: width: 720 }} 720w"
-          sizes="(max-width: 900px) 50vw, 25vw"
+          sizes="(max-width: 760px) 50vw, (max-width: 1024px) 33vw, 25vw"
           alt="{{ second_image.alt | default: product.title | escape }}"
           width="600"
           height="800"
@@ -46,9 +51,11 @@
     {% endif %}
 
     {% if product.available == false %}
-      <span class="product-card-badge product-card-badge--soldout">Sold Out</span>
+      <span class="product-card-badge product-card-badge--soldout">Sold out</span>
     {% elsif show_sale_flag and product.compare_at_price > product.price %}
       <span class="product-card-badge">Sale</span>
+    {% elsif is_new_product %}
+      <span class="product-card-badge product-card-badge--new">New</span>
     {% endif %}
   </a>
 
@@ -61,19 +68,29 @@
       <a href="{{ product.url }}">{{ product.title }}</a>
     </h3>
 
-    {% render 'price', product: product %}
-
-    {% if show_quick_add_flag %}
-      {% if product.available %}
-        <form class="product-card-quickadd js-ajax-cart-form" method="post" action="{{ routes.cart_add_url }}">
-          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-          <button type="submit" class="btn">Add to Bag</button>
-        </form>
-      {% else %}
-        <div class="product-card-quickadd">
-          <button type="button" class="btn outline" disabled>Sold Out</button>
-        </div>
-      {% endif %}
+    {% if fabric_label != blank %}
+      <div class="product-card-fabric">{{ fabric_label }}</div>
     {% endif %}
+
+    <div class="product-card-bottom">
+      {% render 'price', product: product %}
+
+      {% if show_quick_add_flag %}
+        {% if product.available == false %}
+          <div class="product-card-quickadd">
+            <button type="button" class="btn outline" disabled>Sold out</button>
+          </div>
+        {% elsif product.has_only_default_variant %}
+          <form class="product-card-quickadd js-ajax-cart-form" method="post" action="{{ routes.cart_add_url }}">
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            <button type="submit" class="btn">Add to bag</button>
+          </form>
+        {% else %}
+          <div class="product-card-quickadd">
+            <a href="{{ product.url }}" class="btn outline">Select options</a>
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
   </div>
 </article>

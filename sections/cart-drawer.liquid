@@ -23,7 +23,7 @@
 <aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Shopping bag" aria-hidden="true">
   <div class="drawer-head">
     <h3>{{ section.settings.heading }} (<span id="cartDrawerCount">{{ cart.item_count }}</span>)</h3>
-    <button id="cartDrawerClose" class="drawer-close-btn" type="button" aria-label="Close bag">{% render 'icons', icon: 'close' %}</button>
+    <button id="cartDrawerClose" class="drawer-close-btn" type="button" aria-label="Close shopping bag">{% render 'icons', icon: 'close' %}</button>
   </div>
 
   {% if section.settings.show_free_shipping_bar and threshold_cents > 0 and cart.item_count > 0 %}
@@ -39,7 +39,12 @@
     </div>
   {% endif %}
 
-  <div class="cart-drawer-error" id="cartDrawerError" role="alert" hidden></div>
+  <div class="cart-drawer-error" id="cartDrawerError" role="alert" aria-live="assertive" hidden></div>
+
+  <div class="cart-drawer-loading" id="cartDrawerLoading" aria-live="polite" hidden>
+    <span class="vv-spinner" aria-hidden="true"></span>
+    <span>Updating bag…</span>
+  </div>
 
   <div class="cart-drawer-body" id="cartDrawerBody">
     {% if cart.item_count == 0 %}
@@ -64,7 +69,7 @@
               <div class="cart-item-price">{{ item.final_line_price | money }}</div>
               <div class="cart-item-qty">
                 <button type="button" class="js-cart-qty" data-line="{{ forloop.index }}" data-qty="{{ item.quantity | minus: 1 }}" aria-label="Decrease quantity of {{ item.product.title | escape }}">−</button>
-                <span>{{ item.quantity }}</span>
+                <span aria-label="Quantity">{{ item.quantity }}</span>
                 <button type="button" class="js-cart-qty" data-line="{{ forloop.index }}" data-qty="{{ item.quantity | plus: 1 }}" aria-label="Increase quantity of {{ item.product.title | escape }}">+</button>
                 <button type="button" class="js-cart-qty cart-remove" data-line="{{ forloop.index }}" data-qty="0">Remove</button>
               </div>
@@ -95,9 +100,12 @@
       <form action="{{ routes.cart_url }}" method="post">
         <button type="submit" name="checkout" class="btn cart-checkout">{{ section.settings.checkout_label }}</button>
       </form>
-      {% if section.settings.show_view_cart_link %}
-        <a href="{{ routes.cart_url }}" class="cart-view-link">View Full Bag</a>
-      {% endif %}
+      <div class="cart-foot-links">
+        {% if section.settings.show_view_cart_link %}
+          <a href="{{ routes.cart_url }}" class="cart-view-link">View Full Bag</a>
+        {% endif %}
+        <button type="button" class="cart-view-link cart-continue-btn" data-cart-continue>Continue Shopping</button>
+      </div>
     </div>
   {% endif %}
 </aside>
@@ -106,81 +114,19 @@
 {
   "name": "Cart Drawer",
   "settings": [
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Drawer heading",
-      "default": "Your Bag"
-    },
-    {
-      "type": "text",
-      "id": "empty_message",
-      "label": "Empty bag message",
-      "default": "Your bag is currently empty."
-    },
-    {
-      "type": "text",
-      "id": "empty_cta_label",
-      "label": "Empty bag button label",
-      "default": "Explore Sarees"
-    },
-    {
-      "type": "url",
-      "id": "empty_cta_url",
-      "label": "Empty bag button link"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_free_shipping_bar",
-      "label": "Show free-shipping progress bar (requires threshold > 0)",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "show_order_note",
-      "label": "Show order note field",
-      "default": false
-    },
-    {
-      "type": "text",
-      "id": "shipping_note",
-      "label": "Shipping note (overrides global setting)",
-      "default": "Shipping and taxes calculated at checkout."
-    },
-    {
-      "type": "text",
-      "id": "checkout_label",
-      "label": "Checkout button label",
-      "default": "Proceed to Checkout"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_view_cart_link",
-      "label": "Show 'View Full Bag' link",
-      "default": true
-    },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
-    {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Background color",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color",
-      "default": "#1C1C1C"
-    },
-    {
-      "type": "color",
-      "id": "bar_color",
-      "label": "Progress bar color",
-      "default": "#244737"
-    }
+    { "type": "text", "id": "heading", "label": "Drawer heading", "default": "Your Bag" },
+    { "type": "text", "id": "empty_message", "label": "Empty bag message", "default": "Your bag is currently empty." },
+    { "type": "text", "id": "empty_cta_label", "label": "Empty bag button label", "default": "Explore Sarees" },
+    { "type": "url", "id": "empty_cta_url", "label": "Empty bag button link" },
+    { "type": "checkbox", "id": "show_free_shipping_bar", "label": "Show free-shipping progress bar (requires threshold > 0)", "default": false },
+    { "type": "checkbox", "id": "show_order_note", "label": "Show order note field", "default": false },
+    { "type": "text", "id": "shipping_note", "label": "Shipping note (overrides global setting)", "default": "Shipping and taxes calculated at checkout." },
+    { "type": "text", "id": "checkout_label", "label": "Checkout button label", "default": "Proceed to Checkout" },
+    { "type": "checkbox", "id": "show_view_cart_link", "label": "Show 'View Full Bag' link", "default": true },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg_color", "label": "Background color", "default": "#FFFFFF" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#202521" },
+    { "type": "color", "id": "bar_color", "label": "Progress bar color", "default": "#244737" }
   ]
 }
 {% endschema %}

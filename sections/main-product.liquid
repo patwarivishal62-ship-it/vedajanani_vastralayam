@@ -14,24 +14,27 @@
   #shopify-section-{{ section.id }} .pdp-grid {
     gap: {{ section.settings.column_gap }}px;
     {% if section.settings.media_width == 'narrow' %}
-      grid-template-columns: 0.9fr 1.1fr;
+      grid-template-columns: 50fr 50fr;
     {% elsif section.settings.media_width == 'wide' %}
-      grid-template-columns: 1.35fr 0.85fr;
+      grid-template-columns: 62fr 38fr;
     {% else %}
-      grid-template-columns: 1.15fr 1fr;
+      grid-template-columns: 58fr 42fr;
     {% endif %}
   }
   #shopify-section-{{ section.id }} .pdp-main {
     aspect-ratio: {{ section.settings.media_ratio }};
     border-radius: {{ section.settings.media_radius }}px;
   }
-  #shopify-section-{{ section.id }} .pdp-thumbs img {
+  #shopify-section-{{ section.id }} .pdp-thumb-btn {
     border-radius: {{ section.settings.thumb_radius }}px;
   }
-  @media (max-width: 900px) {
+  @media (max-width: 960px) {
     #shopify-section-{{ section.id }} .pdp-grid {
       grid-template-columns: 1fr;
       gap: 28px;
+    }
+    #shopify-section-{{ section.id }} .vv-pdp-sec {
+      padding-bottom: 104px;
     }
   }
 {% endstyle %}
@@ -50,7 +53,7 @@
     {% endif %}
 
     <div class="pdp-grid{% if section.settings.media_position == 'right' %} pdp-grid--media-right{% endif %}">
-      <div class="pdp-gallery{% if section.settings.sticky_gallery %} pdp-gallery--sticky{% endif %}" data-pdp-gallery>
+      <div class="pdp-gallery{% if section.settings.sticky_column == 'gallery' %} pdp-col--sticky{% endif %}" data-pdp-gallery>
         <div class="pdp-main" data-pdp-main-stage>
           {% if product.featured_image %}
             <img
@@ -59,7 +62,7 @@
               data-current-index="0"
               src="{{ product.featured_image | image_url: width: 1400 }}"
               srcset="{{ product.featured_image | image_url: width: 600 }} 600w, {{ product.featured_image | image_url: width: 1000 }} 1000w, {{ product.featured_image | image_url: width: 1400 }} 1400w"
-              sizes="(max-width: 900px) 100vw, 52vw"
+              sizes="(max-width: 960px) 100vw, 56vw"
               alt="{{ product.featured_image.alt | default: product.title | escape }}"
               width="1000"
               height="1333"
@@ -112,7 +115,7 @@
         {% endif %}
       </div>
 
-      <div class="pdp-info">
+      <div class="pdp-info{% if section.settings.sticky_column == 'info' %} pdp-col--sticky{% endif %}">
         {% for block in section.blocks %}
           {% case block.type %}
             {% when 'vendor' %}
@@ -147,7 +150,7 @@
             {% when 'variant_picker' %}
               {% unless product.has_only_default_variant %}
                 <div class="pdp-variants" style="margin-bottom: 18px;" {{ block.shopify_attributes }}>
-                  <label for="VariantSelect-{{ section.id }}" style="display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px;">
+                  <label for="VariantSelect-{{ section.id }}" class="field-label">
                     {{ block.settings.label }}
                   </label>
                   <select id="VariantSelect-{{ section.id }}" data-variant-select>
@@ -166,7 +169,7 @@
 
             {% when 'quantity' %}
               <div class="pdp-qty-wrap" style="margin-bottom: 18px;" {{ block.shopify_attributes }}>
-                <label for="PdpQty-{{ section.id }}" style="display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px;">Quantity</label>
+                <label for="PdpQty-{{ section.id }}" class="field-label">Quantity</label>
                 <div class="pdp-qty-control">
                   <button type="button" data-qty-step="-1" aria-label="Decrease quantity">−</button>
                   <input id="PdpQty-{{ section.id }}" type="number" name="quantity" value="1" min="1" form="{{ product_form_id }}" data-pdp-qty-input aria-label="Quantity">
@@ -175,7 +178,7 @@
               </div>
 
             {% when 'buy_buttons' %}
-              <div style="margin-bottom: 20px;" data-pdp-buy-sentinel {{ block.shopify_attributes }}>
+              <div style="margin-bottom: 16px;" data-pdp-buy-sentinel {{ block.shopify_attributes }}>
                 {% form 'product', product, id: product_form_id, class: 'js-ajax-cart-form pdp-form' %}
                   <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id-input>
                   <div class="pdp-form-error" data-pdp-error role="alert" hidden></div>
@@ -211,32 +214,34 @@
                 endif
                 assign wa_text = wa_text | append: ' ' | append: product_full_url
               -%}
-              <div class="pdp-assist-row" {{ block.shopify_attributes }}>
-                {% if wa_digits != blank %}
-                  <a
-                    class="btn outline pdp-wa-btn"
-                    data-pdp-wa-link
-                    href="https://wa.me/{{ wa_digits }}?text={{ wa_text | url_encode }}"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    {% render 'icons', icon: 'whatsapp' %}
-                    <span>{{ block.settings.whatsapp_label }}</span>
-                  </a>
-                {% endif %}
-                {% if block.settings.show_share %}
-                  <button
-                    type="button"
-                    class="btn outline pdp-share-btn"
-                    data-pdp-share
-                    data-share-title="{{ product.title | escape }}"
-                    data-share-url="{{ product_full_url | escape }}"
-                  >
-                    {% render 'icons', icon: 'share' %}
-                    <span data-share-label>{{ block.settings.share_label }}</span>
-                  </button>
-                {% endif %}
-              </div>
+              {% if wa_digits != blank or block.settings.show_share %}
+                <div class="pdp-assist-row" {{ block.shopify_attributes }}>
+                  {% if wa_digits != blank %}
+                    <a
+                      class="btn outline pdp-wa-btn"
+                      data-pdp-wa-link
+                      href="https://wa.me/{{ wa_digits }}?text={{ wa_text | url_encode }}"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      {% render 'icons', icon: 'whatsapp' %}
+                      <span>{{ block.settings.whatsapp_label }}</span>
+                    </a>
+                  {% endif %}
+                  {% if block.settings.show_share %}
+                    <button
+                      type="button"
+                      class="btn outline pdp-share-btn"
+                      data-pdp-share
+                      data-share-title="{{ product.title | escape }}"
+                      data-share-url="{{ product_full_url | escape }}"
+                    >
+                      {% render 'icons', icon: 'share' %}
+                      <span data-share-label>{{ block.settings.share_label }}</span>
+                    </button>
+                  {% endif %}
+                </div>
+              {% endif %}
 
             {% when 'pincode_check' %}
               <div
@@ -271,7 +276,7 @@
               {%- liquid
                 assign mf = product.metafields.custom
                 assign has_any_spec = false
-                if mf.fabric != blank or mf.weave != blank or mf.saree_length != blank or mf.blouse_piece != blank or mf.border_type != blank or mf.occasion != blank or mf.weight != blank or mf.care_instructions != blank
+                if mf.fabric != blank or mf.weave != blank or mf.saree_length != blank or mf.width != blank or mf.blouse_piece != blank or mf.colour != blank or mf.border_type != blank or mf.occasion != blank or mf.weight != blank or mf.care_instructions != blank
                   assign has_any_spec = true
                 endif
               -%}
@@ -288,8 +293,14 @@
                     {% if mf.saree_length != blank %}
                       <div><dt>Saree Length</dt><dd>{{ mf.saree_length }}</dd></div>
                     {% endif %}
+                    {% if mf.width != blank %}
+                      <div><dt>Width</dt><dd>{{ mf.width }}</dd></div>
+                    {% endif %}
                     {% if mf.blouse_piece != blank %}
                       <div><dt>Blouse Piece</dt><dd>{{ mf.blouse_piece }}</dd></div>
+                    {% endif %}
+                    {% if mf.colour != blank %}
+                      <div><dt>Colour</dt><dd>{{ mf.colour }}</dd></div>
                     {% endif %}
                     {% if mf.border_type != blank %}
                       <div><dt>Border &amp; Pallu</dt><dd>{{ mf.border_type }}</dd></div>
@@ -307,7 +318,7 @@
                 </div>
               {% elsif request.design_mode %}
                 <div class="pdp-specs pdp-specs--editor-hint" {{ block.shopify_attributes }}>
-                  <p><strong>Saree Specifications (Metafield-driven):</strong> Populate product metafields under <code>custom.*</code> (<code>fabric</code>, <code>weave</code>, <code>saree_length</code>, <code>blouse_piece</code>, <code>border_type</code>, <code>occasion</code>, <code>weight</code>, <code>care_instructions</code>) in Shopify Admin to show verified specs for each saree.</p>
+                  <p><strong>Saree Specifications (Metafield-driven):</strong> Populate product metafields under <code>custom.*</code> (<code>fabric</code>, <code>weave</code>, <code>saree_length</code>, <code>width</code>, <code>blouse_piece</code>, <code>colour</code>, <code>border_type</code>, <code>occasion</code>, <code>weight</code>, <code>care_instructions</code>) in Shopify Admin to show verified specs for each saree.</p>
                 </div>
               {% endif %}
 
@@ -337,7 +348,7 @@
                   <div class="pdp-accordion-body">
                     {% if tab_content != blank %}{{ tab_content }}{% endif %}
                     {% if policy_link_url != blank %}
-                      <p style="margin-top: 10px;"><a href="{{ policy_link_url }}" class="link-cta">{{ policy_link_label }} →</a></p>
+                      <p style="margin-top: 10px;"><a href="{{ policy_link_url }}" class="link-cta"><span>{{ policy_link_label }}</span>{% render 'icons', icon: 'arrow-right' %}</a></p>
                     {% endif %}
                   </div>
                 </details>
@@ -432,9 +443,9 @@
       "id": "media_width",
       "label": "Gallery column width",
       "options": [
-        { "value": "narrow", "label": "Narrow (45%)" },
-        { "value": "medium", "label": "Balanced (54%)" },
-        { "value": "wide", "label": "Wide (62%)" }
+        { "value": "narrow", "label": "Equal (50% / 50%)" },
+        { "value": "medium", "label": "Editorial (58% / 42%)" },
+        { "value": "wide", "label": "Wide (62% / 38%)" }
       ],
       "default": "medium"
     },
@@ -450,15 +461,25 @@
       ],
       "default": "3 / 4"
     },
-    { "type": "checkbox", "id": "sticky_gallery", "label": "Keep gallery sticky while scrolling details", "default": true },
+    {
+      "type": "select",
+      "id": "sticky_column",
+      "label": "Sticky desktop column",
+      "options": [
+        { "value": "info", "label": "Sticky details & buy column" },
+        { "value": "gallery", "label": "Sticky gallery column" },
+        { "value": "none", "label": "None" }
+      ],
+      "default": "info"
+    },
     { "type": "checkbox", "id": "enable_zoom", "label": "Enable fullscreen image zoom lightbox", "default": true },
     { "type": "checkbox", "id": "enable_sticky_mobile_atc", "label": "Show sticky Add-to-Bag bar on mobile", "default": true },
-    { "type": "range", "id": "media_radius", "label": "Main image corner radius", "min": 0, "max": 36, "step": 2, "unit": "px", "default": 8 },
-    { "type": "range", "id": "thumb_radius", "label": "Thumbnail corner radius", "min": 0, "max": 24, "step": 2, "unit": "px", "default": 6 },
-    { "type": "range", "id": "column_gap", "label": "Gap between gallery & info", "min": 20, "max": 80, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "media_radius", "label": "Main image corner radius", "min": 0, "max": 12, "step": 2, "unit": "px", "default": 4 },
+    { "type": "range", "id": "thumb_radius", "label": "Thumbnail corner radius", "min": 0, "max": 8, "step": 2, "unit": "px", "default": 4 },
+    { "type": "range", "id": "column_gap", "label": "Gap between gallery & info", "min": 24, "max": 72, "step": 4, "unit": "px", "default": 48 },
     { "type": "header", "content": "Section Spacing" },
-    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 16, "max": 100, "step": 4, "unit": "px", "default": 32 },
-    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 24, "max": 120, "step": 4, "unit": "px", "default": 72 }
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 16, "max": 80, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 32, "max": 96, "step": 4, "unit": "px", "default": 72 }
   ],
   "blocks": [
     { "type": "vendor", "name": "Vendor / Label", "limit": 1 },
@@ -467,7 +488,7 @@
       "name": "Product Title",
       "limit": 1,
       "settings": [
-        { "type": "range", "id": "title_size", "label": "Title font size", "min": 22, "max": 52, "step": 2, "unit": "px", "default": 34 }
+        { "type": "range", "id": "title_size", "label": "Title font size", "min": 24, "max": 44, "step": 2, "unit": "px", "default": 32 }
       ]
     },
     {
@@ -475,7 +496,7 @@
       "name": "Price & SKU",
       "limit": 1,
       "settings": [
-        { "type": "range", "id": "price_size", "label": "Price font size", "min": 16, "max": 32, "step": 1, "unit": "px", "default": 21 },
+        { "type": "range", "id": "price_size", "label": "Price font size", "min": 18, "max": 28, "step": 1, "unit": "px", "default": 20 },
         { "type": "checkbox", "id": "show_tax_note", "label": "Show tax note", "default": true },
         { "type": "text", "id": "tax_note", "label": "Tax note", "default": "Inclusive of applicable taxes. Shipping calculated at checkout." }
       ]

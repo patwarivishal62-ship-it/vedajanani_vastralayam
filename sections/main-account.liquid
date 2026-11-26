@@ -1,34 +1,49 @@
-<section style="padding: {{ section.settings.padding_y }}px 0;">
-  <div class="wrap" style="max-width: 960px;">
-    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 32px;">
+<section class="account-sec">
+  <div class="wrap account-wide">
+    <div class="account-top-bar">
       <div>
-        <span class="eyebrow">Member Account</span>
-        <h1>Welcome, {{ customer.first_name | default: 'Guest' }}</h1>
+        <span class="eyebrow">Account</span>
+        <h1>Hello, {{ customer.first_name | default: customer.name }}</h1>
       </div>
-      <div style="display: flex; gap: 12px;">
+      <div class="account-top-actions">
         <a class="btn outline" href="{{ routes.account_addresses_url }}">Addresses ({{ customer.addresses_count }})</a>
-        <a class="btn dark" href="{{ routes.account_logout_url }}">Sign Out</a>
+        <a class="btn outline" href="{{ routes.account_logout_url }}">Log Out</a>
       </div>
     </div>
 
-    <div style="background: var(--surface); border-radius: var(--radius); padding: 28px; border: 1px solid var(--border-color);">
-      <h2 style="font-size: 24px; margin-bottom: 18px;">Order History</h2>
-      {% if customer.orders.size > 0 %}
-        {% for o in customer.orders %}
-          <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; gap: 10px;">
-            <div>
-              <a href="{{ o.customer_url }}" style="font-weight: 600;">{{ o.name }}</a>
-              <span style="color: var(--text-muted); margin-left: 10px;">{{ o.created_at | date: '%b %d, %Y' }}</span>
-            </div>
-            <div>
-              <span style="margin-right: 14px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">{{ o.fulfillment_status_label }}</span>
-              <strong>{{ o.total_price | money }}</strong>
-            </div>
-          </div>
-        {% endfor %}
+    <div class="account-card">
+      <h2 class="account-section-title">Order History</h2>
+
+      {% if customer.orders.size == 0 %}
+        <div class="empty-state-box" style="margin: 0;">
+          <p>You have not placed any orders yet.</p>
+          <a class="btn" href="{{ routes.all_products_collection_url }}">Explore Sarees</a>
+        </div>
       {% else %}
-        <p style="color: var(--text-muted);">You haven't placed any orders yet.</p>
-        <a class="btn" href="{{ routes.all_products_collection_url }}" style="margin-top: 12px;">Start Shopping</a>
+        <div class="account-table-wrap">
+          <table class="account-table">
+            <thead>
+              <tr>
+                <th>Order</th>
+                <th>Date</th>
+                <th>Payment</th>
+                <th>Fulfillment</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in customer.orders %}
+                <tr>
+                  <td><a href="{{ order.customer_url }}" class="link-cta">{{ order.name }}</a></td>
+                  <td>{{ order.created_at | date: '%b %d, %Y' }}</td>
+                  <td>{{ order.financial_status_label }}</td>
+                  <td>{{ order.fulfillment_status_label }}</td>
+                  <td><strong>{{ order.total_price | money }}</strong></td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       {% endif %}
     </div>
   </div>
@@ -36,9 +51,7 @@
 
 {% schema %}
 {
-  "name": "Main Account",
-  "settings": [
-    { "type": "range", "id": "padding_y", "label": "Vertical padding", "min": 24, "max": 100, "step": 4, "unit": "px", "default": 56 }
-  ]
+  "name": "Customer Account",
+  "settings": []
 }
 {% endschema %}

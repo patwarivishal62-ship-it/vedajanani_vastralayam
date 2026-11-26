@@ -6,17 +6,27 @@
     padding-top: {{ section.settings.padding_top }}px;
     padding-bottom: {{ section.settings.padding_bottom }}px;
   }
-  #shopify-section-{{ section.id }} .vv-grid {
-    grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr));
+  #shopify-section-{{ section.id }} .lookbook-grid {
     gap: {{ section.settings.grid_gap }}px;
   }
+  #shopify-section-{{ section.id }} .lookbook-grid--strip {
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr));
+  }
   #shopify-section-{{ section.id }} .lookbook-card {
-    aspect-ratio: {{ section.settings.image_ratio }};
     border-radius: {{ section.settings.card_radius }}px;
   }
+  #shopify-section-{{ section.id }} .lookbook-grid--strip .lookbook-card,
+  #shopify-section-{{ section.id }} .lookbook-grid--2x2 .lookbook-card {
+    aspect-ratio: {{ section.settings.image_ratio }};
+  }
   @media (max-width: 900px) {
-    #shopify-section-{{ section.id }} .vv-grid {
+    #shopify-section-{{ section.id }} .vv-lookbook-sec {
+      padding-top: 44px;
+      padding-bottom: 44px;
+    }
+    #shopify-section-{{ section.id }} .lookbook-grid--strip {
       grid-template-columns: repeat({{ section.settings.columns_mobile }}, minmax(0, 1fr));
+      gap: 12px;
     }
   }
 {% endstyle %}
@@ -39,7 +49,7 @@
       </div>
     {% endif %}
 
-    <div class="vv-grid">
+    <div class="lookbook-grid lookbook-grid--{{ section.settings.layout_style }}">
       {% if section.blocks.size > 0 %}
         {% for block in section.blocks %}
           {%- liquid
@@ -64,41 +74,54 @@
               assign card_href = routes.all_products_collection_url
             endif
             assign ov_alpha = block.settings.overlay_opacity | divided_by: 100.0
+            assign alt_text = block.settings.alt_text
+            if alt_text == blank and card_img != blank
+              assign alt_text = card_img.alt
+            endif
+            if alt_text == blank
+              assign alt_text = card_caption | default: 'Vedajanani Vastralayam Saree Look'
+            endif
           -%}
           <a
-            class="lookbook-card"
+            class="lookbook-card{% if section.settings.layout_style == 'editorial' and forloop.first %} lookbook-card--feature{% endif %}"
             href="{{ card_href }}"
             style="background: {{ block.settings.bg_color }};"
             {{ block.shopify_attributes }}
           >
             {% if card_img != blank %}
               <img
-                src="{{ card_img | image_url: width: 900 }}"
-                alt="{{ card_img.alt | default: card_caption | escape }}"
+                src="{{ card_img | image_url: width: 1100 }}"
+                srcset="{{ card_img | image_url: width: 540 }} 540w, {{ card_img | image_url: width: 840 }} 840w, {{ card_img | image_url: width: 1100 }} 1100w"
+                sizes="(max-width: 900px) 100vw, 50vw"
+                alt="{{ alt_text | escape }}"
                 style="object-position: {{ block.settings.focal_point }};"
-                width="600"
-                height="800"
+                width="800"
+                height="1000"
                 loading="lazy"
               >
             {% else %}
               {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
             {% endif %}
             <div class="lookbook-card-overlay" style="opacity: {{ ov_alpha }};"></div>
-            {% if card_caption != blank or card_sub != blank %}
-              <div class="lookbook-caption" style="color: {{ block.settings.text_color }};">
-                {% if card_caption != blank %}<span>{{ card_caption }}</span>{% endif %}
-                {% if card_sub != blank %}
-                  <span style="display: block; font-family: var(--font-body); font-size: 12px; opacity: 0.9; margin-top: 4px;">{{ card_sub }}</span>
-                {% endif %}
-              </div>
-            {% endif %}
+            <div class="lookbook-caption" style="color: {{ block.settings.text_color }};">
+              {% if card_caption != blank %}<span class="lookbook-title">{{ card_caption }}</span>{% endif %}
+              {% if card_sub != blank %}<span class="lookbook-sub">{{ card_sub }}</span>{% endif %}
+              <span class="lookbook-shop-link">
+                <span>{{ block.settings.cta_label | default: 'Shop the Look' }}</span>
+                {% render 'icons', icon: 'arrow-right' %}
+              </span>
+            </div>
           </a>
         {% endfor %}
       {% else %}
-        {% for i in (1..4) %}
-          <a class="lookbook-card" href="{{ routes.all_products_collection_url }}">
+        {% for i in (1..3) %}
+          <a class="lookbook-card{% if section.settings.layout_style == 'editorial' and forloop.first %} lookbook-card--feature{% endif %}" href="{{ routes.all_products_collection_url }}">
             {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
-            <div class="lookbook-caption">Look 0{{ i }}</div>
+            <div class="lookbook-card-overlay" style="opacity: 0.65;"></div>
+            <div class="lookbook-caption">
+              <span class="lookbook-title">Look 0{{ i }}</span>
+              <span class="lookbook-shop-link"><span>Shop the Look</span>{% render 'icons', icon: 'arrow-right' %}</span>
+            </div>
           </a>
         {% endfor %}
       {% endif %}
@@ -114,48 +137,59 @@
     { "type": "text", "id": "heading", "label": "Heading", "default": "Draped in Grace" },
     { "type": "textarea", "id": "subheading", "label": "Subheading (optional)" },
     { "type": "text_alignment", "id": "heading_align", "label": "Header alignment", "default": "center" },
-    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 60, "step": 2, "unit": "px", "default": 34 },
-    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#1C1C1C" },
-    { "type": "header", "content": "Grid & Aspect Ratio" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 24, "max": 48, "step": 2, "unit": "px", "default": 36 },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#202521" },
+    { "type": "header", "content": "Editorial Layout" },
+    {
+      "type": "select",
+      "id": "layout_style",
+      "label": "Lookbook composition",
+      "options": [
+        { "value": "editorial", "label": "Editorial (1 large + 2 stacked)" },
+        { "value": "2x2", "label": "2x2 Editorial Grid" },
+        { "value": "strip", "label": "Multi-column Strip" }
+      ],
+      "default": "editorial"
+    },
     { "type": "checkbox", "id": "full_width", "label": "Full-width grid", "default": false },
-    { "type": "range", "id": "columns_desktop", "label": "Columns (desktop)", "min": 2, "max": 6, "step": 1, "default": 4 },
+    { "type": "range", "id": "columns_desktop", "label": "Columns (strip mode desktop)", "min": 2, "max": 5, "step": 1, "default": 4 },
     {
       "type": "select",
       "id": "columns_mobile",
-      "label": "Columns (mobile)",
+      "label": "Columns (strip mode mobile)",
       "options": [
         { "value": "1", "label": "1 column" },
         { "value": "2", "label": "2 columns" }
       ],
       "default": "2"
     },
-    { "type": "range", "id": "grid_gap", "label": "Grid gap", "min": 4, "max": 36, "step": 2, "unit": "px", "default": 16 },
+    { "type": "range", "id": "grid_gap", "label": "Grid gap", "min": 8, "max": 32, "step": 4, "unit": "px", "default": 20 },
     {
       "type": "select",
       "id": "image_ratio",
-      "label": "Photo aspect ratio",
+      "label": "Photo aspect ratio (2x2 & strip)",
       "options": [
-        { "value": "3 / 4", "label": "Portrait (3:4)" },
         { "value": "4 / 5", "label": "Editorial (4:5)" },
-        { "value": "2 / 3", "label": "Tall (2:3)" },
+        { "value": "3 / 4", "label": "Portrait (3:4)" },
         { "value": "1 / 1", "label": "Square (1:1)" },
         { "value": "4 / 3", "label": "Landscape (4:3)" }
       ],
-      "default": "3 / 4"
+      "default": "4 / 5"
     },
-    { "type": "range", "id": "card_radius", "label": "Card corner radius", "min": 0, "max": 36, "step": 2, "unit": "px", "default": 10 },
+    { "type": "range", "id": "card_radius", "label": "Corner radius", "min": 0, "max": 12, "step": 2, "unit": "px", "default": 4 },
     { "type": "header", "content": "Section Spacing" },
     { "type": "color", "id": "bg_color", "label": "Section background (optional)" },
-    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 },
-    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 56 }
+    { "type": "range", "id": "padding_top", "label": "Top padding (desktop)", "min": 32, "max": 96, "step": 8, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding (desktop)", "min": 32, "max": 96, "step": 8, "unit": "px", "default": 72 }
   ],
   "blocks": [
     {
       "type": "photo",
       "name": "Lookbook Photo",
       "settings": [
-        { "type": "product", "id": "product", "label": "Featured saree (optional — auto-fills photo, title & price)" },
+        { "type": "product", "id": "product", "label": "Featured saree (auto-fills photo, title & price)" },
         { "type": "image_picker", "id": "image", "label": "Custom photo (overrides product image)" },
+        { "type": "text", "id": "alt_text", "label": "Accessible image description" },
         {
           "type": "select",
           "id": "focal_point",
@@ -167,9 +201,10 @@
           ],
           "default": "center center"
         },
-        { "type": "range", "id": "overlay_opacity", "label": "Bottom gradient darkness", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 70 },
+        { "type": "range", "id": "overlay_opacity", "label": "Bottom gradient darkness", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 65 },
         { "type": "text", "id": "caption", "label": "Caption (overrides product title)" },
         { "type": "text", "id": "subcaption", "label": "Subcaption (overrides product price)" },
+        { "type": "text", "id": "cta_label", "label": "Action link label", "default": "Shop the Look" },
         { "type": "url", "id": "url", "label": "Custom link (overrides product link)" },
         { "type": "color", "id": "bg_color", "label": "Fallback background", "default": "#244737" },
         { "type": "color", "id": "text_color", "label": "Caption color", "default": "#FAF2E3" }
@@ -180,10 +215,9 @@
     {
       "name": "Lookbook Grid",
       "blocks": [
-        { "type": "photo", "settings": { "caption": "Cotton Weaves", "subcaption": "Explore Collection" } },
-        { "type": "photo", "settings": { "caption": "Silk Drapes", "subcaption": "Explore Collection" } },
-        { "type": "photo", "settings": { "caption": "Festive Chiffon", "subcaption": "Explore Collection" } },
-        { "type": "photo", "settings": { "caption": "Wedding Edit", "subcaption": "Explore Collection" } }
+        { "type": "photo", "settings": { "caption": "Silk Occasion Drapes", "subcaption": "Heirloom Craft", "cta_label": "Shop the Look" } },
+        { "type": "photo", "settings": { "caption": "Everyday Cotton Weaves", "subcaption": "Breathable Comfort", "cta_label": "Shop the Look" } },
+        { "type": "photo", "settings": { "caption": "Festive Chiffon & Georgette", "subcaption": "Light & Luminous", "cta_label": "Shop the Look" } }
       ]
     }
   ]
