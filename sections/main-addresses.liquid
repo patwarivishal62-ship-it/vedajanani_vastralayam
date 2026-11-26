@@ -1,1 +1,40 @@
-<div class="wrap" style="padding:48px 20px"><h1>Addresses</h1></div>{% schema %}{"name":"Main Addresses"}{% endschema %}
+<section style="padding: {{ section.settings.padding_y }}px 0;">
+  <div class="wrap" style="max-width: 880px;">
+    <p><a href="{{ routes.account_url }}">← Back to Account</a></p>
+    <h1 style="margin-bottom: 24px;">Saved Addresses</h1>
+
+    {% if customer.addresses.size > 0 %}
+      <div class="vv-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-bottom: 32px;">
+        {% for address in customer.addresses %}
+          <div style="background: var(--surface); border-radius: var(--radius); padding: 22px; border: 1px solid var(--border-color);">
+            {% if address == customer.default_address %}<span class="eyebrow" style="margin-bottom: 8px;">Default</span>{% endif %}
+            {{ address | format_address }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div style="background: var(--surface); border-radius: var(--radius); padding: 28px; border: 1px solid var(--border-color);">
+      <h2 style="font-size: 22px; margin-bottom: 16px;">Add New Address</h2>
+      {% form 'customer_address', customer.new_address, class: 'form-stack' %}
+        <input type="text" name="address[first_name]" placeholder="First name">
+        <input type="text" name="address[last_name]" placeholder="Last name">
+        <input type="text" name="address[address1]" placeholder="Address line 1" required>
+        <input type="text" name="address[city]" placeholder="City" required>
+        <input type="text" name="address[province]" placeholder="State / Province">
+        <input type="text" name="address[zip]" placeholder="PIN / Postal code" required>
+        <input type="text" name="address[phone]" placeholder="Phone">
+        <button type="submit" class="btn">Save Address</button>
+      {% endform %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main Addresses",
+  "settings": [
+    { "type": "range", "id": "padding_y", "label": "Vertical padding", "min": 24, "max": 100, "step": 4, "unit": "px", "default": 56 }
+  ]
+}
+{% endschema %}

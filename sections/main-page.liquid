@@ -1,1 +1,116 @@
-<h1>{{ page.title }}</h1>{{ page.content }}{% schema %}{"name":"Main Page"}{% endschema %}
+{% style %}
+  #shopify-section-{{ section.id }} .vv-page-sec {
+    {% if section.settings.bg_color != blank and section.settings.bg_color != 'rgba(0,0,0,0)' %}
+      background: {{ section.settings.bg_color }};
+    {% endif %}
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  #shopify-section-{{ section.id }} .vv-page-inner {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    color: {{ section.settings.text_color }};
+  }
+{% endstyle %}
+
+<section class="vv-page-sec">
+  <div class="wrap">
+    <div class="vv-page-inner">
+      {% if section.settings.show_title %}
+        <div class="section-head section-head--{{ section.settings.title_align }}">
+          <h1 style="font-size: {{ section.settings.title_size }}px; color: {{ section.settings.heading_color }};">{{ page.title }}</h1>
+        </div>
+      {% endif %}
+      <div class="rte" style="font-size: {{ section.settings.body_size }}px; line-height: 1.75;">
+        {{ page.content }}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main Page",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show page title",
+      "default": true
+    },
+    {
+      "type": "text_alignment",
+      "id": "title_align",
+      "label": "Title alignment",
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title font size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Body font size",
+      "min": 13,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Content max width",
+      "min": 600,
+      "max": 1360,
+      "step": 20,
+      "unit": "px",
+      "default": 860
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color (optional)"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Title color",
+      "default": "#1C1C1C"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#2A2A2A"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    }
+  ]
+}
+{% endschema %}

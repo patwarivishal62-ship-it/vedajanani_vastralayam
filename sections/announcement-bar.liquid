@@ -1,4 +1,231 @@
-<div class="announcement" role="region" aria-label="Announcement">
-  <p>{{ section.settings.announcement | default: 'Free shipping above ₹999 · Festive Collection Live · COD Available' }}</p>
-</div>
-{% schema %}{"name":"Announcement Bar","settings":[{"type":"text","id":"announcement","label":"Announcement text","default":"Free shipping above ₹999 · Festive Collection Live · COD Available"}],"presets":[{"name":"Announcement Bar"}]}{% endschema %}
+{% if section.settings.show_bar %}
+  {% style %}
+    #shopify-section-{{ section.id }} .announcement {
+      background: {{ section.settings.bg_color }};
+      color: {{ section.settings.text_color }};
+      padding-top: {{ section.settings.padding_y }}px;
+      padding-bottom: {{ section.settings.padding_y }}px;
+      font-size: {{ section.settings.font_size }}px;
+      letter-spacing: {{ section.settings.letter_spacing }}px;
+      text-transform: {{ section.settings.text_transform }};
+      text-align: {{ section.settings.text_alignment }};
+    }
+    {% if section.settings.border_bottom %}
+      #shopify-section-{{ section.id }} .announcement {
+        border-bottom: 1px solid {{ section.settings.border_color }};
+      }
+    {% endif %}
+  {% endstyle %}
+
+  <div
+    class="announcement"
+    role="region"
+    aria-label="Announcement"
+    data-announcement-bar
+    data-autoplay="{{ section.settings.auto_rotate }}"
+    data-speed="{{ section.settings.rotate_seconds | times: 1000 }}"
+  >
+    <div class="announcement-inner">
+      {% if section.settings.show_arrows and section.blocks.size > 1 %}
+        <button type="button" class="announcement-nav" data-announcement-prev aria-label="Previous announcement">‹</button>
+      {% endif %}
+
+      <div class="announcement-slides">
+        {% if section.blocks.size > 0 %}
+          {% for block in section.blocks %}
+            <p
+              class="announcement-slide{% if forloop.first %} is-active{% endif %}"
+              {{ block.shopify_attributes }}
+              {% if block.settings.text_color != blank and block.settings.text_color != 'rgba(0,0,0,0)' %}
+                style="color: {{ block.settings.text_color }};"
+              {% endif %}
+            >
+              {% if block.settings.link != blank %}
+                <a href="{{ block.settings.link }}">{{ block.settings.text }}</a>
+              {% else %}
+                {{ block.settings.text }}
+              {% endif %}
+            </p>
+          {% endfor %}
+        {% else %}
+          <p class="announcement-slide is-active">{{ section.settings.announcement }}</p>
+        {% endif %}
+      </div>
+
+      {% if section.settings.show_arrows and section.blocks.size > 1 %}
+        <button type="button" class="announcement-nav" data-announcement-next aria-label="Next announcement">›</button>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_bar",
+      "label": "Show announcement bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "announcement",
+      "label": "Fallback message (used if all blocks are removed)",
+      "default": "Free shipping above ₹999 · Festive Collection Live · COD Available"
+    },
+    {
+      "type": "header",
+      "content": "Rotation"
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_rotate",
+      "label": "Auto-rotate messages",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "rotate_seconds",
+      "label": "Change slide every",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show previous / next arrows",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "border_bottom",
+      "label": "Show bottom border",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#2A2A2A"
+    },
+    {
+      "type": "header",
+      "content": "Typography & Spacing"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size",
+      "min": 9,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "Letter spacing",
+      "min": 0,
+      "max": 6,
+      "step": 0.5,
+      "unit": "px",
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "text_transform",
+      "label": "Text case",
+      "options": [
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "capitalize", "label": "Capitalize" },
+        { "value": "none", "label": "Normal" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "text_alignment",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "padding_y",
+      "label": "Vertical padding",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 10
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Announcement",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Message",
+          "default": "Free shipping above ₹999 · Festive Collection Live · COD Available"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Optional link"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Custom text color (optional)"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "announcement",
+        "settings": {
+          "text": "Free shipping above ₹999 · Festive Collection Live · COD Available"
+        }
+      },
+      {
+        "type": "announcement",
+        "settings": {
+          "text": "Woven with Grace, Worn with Pride · Handpicked Sarees from Anantapur"
+        }
+      },
+      {
+        "type": "announcement",
+        "settings": {
+          "text": "New Wedding & Festive Silks Now Available · Shop the Edit"
+        }
+      }
+    ]
+  }
+}
+{% endschema %}

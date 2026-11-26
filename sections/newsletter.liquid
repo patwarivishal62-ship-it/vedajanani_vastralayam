@@ -1,1 +1,320 @@
-<section class="newsletter"><h2>Get 10% Off Your First Order</h2>{% form 'customer' %}<input type="email" name="contact[email]" placeholder="Your email"><button>Subscribe</button>{% endform %}</section>{% schema %}{"name":"Newsletter","presets":[{"name":"Newsletter"}]}{% endschema %}
+{%- assign ov_alpha = section.settings.overlay_opacity | divided_by: 100.0 -%}
+
+{% style %}
+  #shopify-section-{{ section.id }} .vv-news-sec {
+    {% if section.settings.outer_bg != blank and section.settings.outer_bg != 'rgba(0,0,0,0)' %}
+      background: {{ section.settings.outer_bg }};
+    {% endif %}
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  #shopify-section-{{ section.id }} .newsletter-box {
+    background: {{ section.settings.box_bg }};
+    color: {{ section.settings.text_color }};
+    border-radius: {% if section.settings.layout == 'full' %}0px{% else %}{{ section.settings.box_radius }}px{% endif %};
+    padding: {{ section.settings.inner_pad_y }}px {{ section.settings.inner_pad_x }}px;
+    text-align: {{ section.settings.text_align }};
+  }
+  #shopify-section-{{ section.id }} .newsletter-inner {
+    position: relative;
+    z-index: 2;
+    max-width: {{ section.settings.content_max_width }}px;
+    {% if section.settings.text_align == 'center' %}margin: 0 auto;{% elsif section.settings.text_align == 'right' %}margin-left: auto;{% endif %}
+  }
+  #shopify-section-{{ section.id }} .newsletter-heading {
+    color: {{ section.settings.heading_color }};
+    font-size: {{ section.settings.heading_size_desktop }}px;
+    margin: 10px 0 12px;
+  }
+  #shopify-section-{{ section.id }} .newsletter-btn {
+    background: {{ section.settings.btn_bg }};
+    border-color: {{ section.settings.btn_bg }};
+    color: {{ section.settings.btn_text }};
+  }
+  @media (max-width: 900px) {
+    #shopify-section-{{ section.id }} .newsletter-box {
+      padding: {{ section.settings.inner_pad_y | times: 0.7 | round }}px 20px;
+    }
+    #shopify-section-{{ section.id }} .newsletter-heading {
+      font-size: {{ section.settings.heading_size_mobile }}px;
+    }
+  }
+{% endstyle %}
+
+<section class="vv-news-sec">
+  <div class="{% unless section.settings.layout == 'full' %}wrap{% endunless %}">
+    <div class="newsletter-box">
+      {% if section.settings.bg_image != blank %}
+        <div class="vv-banner-media">
+          <img src="{{ section.settings.bg_image | image_url: width: 1600 }}" alt="" style="object-fit: cover;" width="1600" height="700" loading="lazy">
+        </div>
+        <div class="vv-banner-overlay" style="background: {{ section.settings.overlay_color }}; opacity: {{ ov_alpha }};"></div>
+      {% endif %}
+
+      <div class="newsletter-inner">
+        {% if section.settings.eyebrow != blank %}
+          <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+        {% endif %}
+        {% if section.settings.heading != blank %}
+          <h2 class="newsletter-heading">{{ section.settings.heading }}</h2>
+        {% endif %}
+        {% if section.settings.subheading != blank %}
+          <p style="font-size: {{ section.settings.sub_size }}px; opacity: 0.88;">{{ section.settings.subheading }}</p>
+        {% endif %}
+
+        {% form 'customer' %}
+          {% if form.posted_successfully? %}
+            <div class="form-success">{{ section.settings.success_message }}</div>
+          {% endif %}
+          {% if form.errors %}
+            <div class="errors">{{ form.errors | default_errors }}</div>
+          {% endif %}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="newsletter-form-row newsletter-form-row--{{ section.settings.text_align }}">
+            <input
+              type="email"
+              name="contact[email]"
+              placeholder="{{ section.settings.placeholder }}"
+              aria-label="Email address"
+              required
+            >
+            <button type="submit" class="btn newsletter-btn">{{ section.settings.button_label }}</button>
+          </div>
+        {% endform %}
+
+        {% if section.settings.note != blank %}
+          <p style="font-size: 12px; opacity: 0.7; margin-top: 12px;">{{ section.settings.note }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Container style",
+      "options": [
+        { "value": "boxed", "label": "Rounded editorial card (inside page width)" },
+        { "value": "full", "label": "Full-bleed band" }
+      ],
+      "default": "boxed"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background image (optional)"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Image overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Image overlay opacity",
+      "min": 0,
+      "max": 85,
+      "step": 5,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "The Vedajanani Circle"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Get 10% Off Your First Order"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Be the first to know about new weaves, festive edits and private trunk shows."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Email input placeholder",
+      "default": "Enter your email address"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Subscribe button label",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Thank you for subscribing to Vedajanani Vastralayam!"
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Small privacy note (optional)",
+      "default": "Unsubscribe anytime. We respect your inbox."
+    },
+    {
+      "type": "header",
+      "content": "Typography & Placement"
+    },
+    {
+      "type": "text_alignment",
+      "id": "text_align",
+      "label": "Alignment",
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Content max width",
+      "min": 400,
+      "max": 1000,
+      "step": 20,
+      "unit": "px",
+      "default": 640
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "label": "Heading size (desktop)",
+      "min": 22,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading size (mobile)",
+      "min": 20,
+      "max": 42,
+      "step": 2,
+      "unit": "px",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "sub_size",
+      "label": "Subheading size",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Colors & Spacing"
+    },
+    {
+      "type": "color",
+      "id": "outer_bg",
+      "label": "Outer section background (optional)"
+    },
+    {
+      "type": "color",
+      "id": "box_bg",
+      "label": "Newsletter card background",
+      "default": "#F3EDE3"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1C1C1C"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Body text color",
+      "default": "#444444"
+    },
+    {
+      "type": "color",
+      "id": "btn_bg",
+      "label": "Button background",
+      "default": "#5C1A24"
+    },
+    {
+      "type": "color",
+      "id": "btn_text",
+      "label": "Button text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "box_radius",
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "inner_pad_y",
+      "label": "Inner vertical padding",
+      "min": 24,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "inner_pad_x",
+      "label": "Inner horizontal padding",
+      "min": 16,
+      "max": 96,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Outer top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Outer bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter"
+    }
+  ]
+}
+{% endschema %}

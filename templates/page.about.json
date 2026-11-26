@@ -2,9 +2,13 @@
   "sections": {
     "main": {
       "type": "main-page"
+    },
+    "founder": {
+      "type": "founder-letter"
     }
   },
   "order": [
-    "main"
+    "main",
+    "founder"
   ]
 }

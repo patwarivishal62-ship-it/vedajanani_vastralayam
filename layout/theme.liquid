@@ -1,25 +1,135 @@
 <!doctype html>
 <html lang="{{ request.locale.iso_code }}">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ page_title }}{% if current_page_handle %} – {{ current_page_handle }}{% endif %} | {{ shop.name }}</title>
-<meta name="description" content="{{ page_description | escape }}">
-{{ content_for_header }}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-{{ 'base.css' | asset_url | stylesheet_tag }}
-{{ 'editorial.css' | asset_url | stylesheet_tag }}
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'header.css' | asset_url | stylesheet_tag }}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page_title }}{% if current_page != 1 %} – Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} | {{ shop.name }}{% endunless %}</title>
+  {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
+  {% if settings.favicon != blank %}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+  {% endif %}
+  {{ content_for_header }}
+
+  {%- liquid
+    assign heading_font = settings.font_heading
+    assign heading_font_bold = heading_font | font_modify: 'weight', 'bolder'
+    assign heading_font_italic = heading_font | font_modify: 'style', 'italic'
+    assign heading_font_bold_italic = heading_font_bold | font_modify: 'style', 'italic'
+
+    assign accent_font = settings.font_accent
+    assign accent_font_bold = accent_font | font_modify: 'weight', 'bolder'
+    assign accent_font_italic = accent_font | font_modify: 'style', 'italic'
+
+    assign body_font = settings.font_body
+    assign body_font_bold = body_font | font_modify: 'weight', 'bolder'
+    assign body_font_italic = body_font | font_modify: 'style', 'italic'
+    assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+
+    case settings.card_shadow
+      when 'none'
+        assign card_shadow_val = 'none'
+      when 'medium'
+        assign card_shadow_val = '0 10px 28px rgba(28, 28, 28, 0.09)'
+      when 'lifted'
+        assign card_shadow_val = '0 18px 42px rgba(28, 28, 28, 0.14)'
+      else
+        assign card_shadow_val = '0 4px 16px rgba(28, 28, 28, 0.05)'
+    endcase
+  -%}
+
+  <style>
+    {{ heading_font | font_face: font_display: 'swap' }}
+    {% if heading_font_bold %}{{ heading_font_bold | font_face: font_display: 'swap' }}{% endif %}
+    {% if heading_font_italic %}{{ heading_font_italic | font_face: font_display: 'swap' }}{% endif %}
+    {% if heading_font_bold_italic %}{{ heading_font_bold_italic | font_face: font_display: 'swap' }}{% endif %}
+
+    {{ accent_font | font_face: font_display: 'swap' }}
+    {% if accent_font_bold %}{{ accent_font_bold | font_face: font_display: 'swap' }}{% endif %}
+    {% if accent_font_italic %}{{ accent_font_italic | font_face: font_display: 'swap' }}{% endif %}
+
+    {{ body_font | font_face: font_display: 'swap' }}
+    {% if body_font_bold %}{{ body_font_bold | font_face: font_display: 'swap' }}{% endif %}
+    {% if body_font_italic %}{{ body_font_italic | font_face: font_display: 'swap' }}{% endif %}
+    {% if body_font_bold_italic %}{{ body_font_bold_italic | font_face: font_display: 'swap' }}{% endif %}
+
+    :root {
+      /* Palette */
+      --ivory: {{ settings.color_ivory | default: '#F9F6F1' }};
+      --surface: {{ settings.color_surface | default: '#FFFFFF' }};
+      --surface-soft: {{ settings.color_surface_soft | default: '#F3EDE3' }};
+      --maroon: {{ settings.color_maroon | default: '#5C1A24' }};
+      --gold: {{ settings.color_gold | default: '#B9975B' }};
+      --char: {{ settings.color_charcoal | default: '#1C1C1C' }};
+      --text-muted: {{ settings.color_text_muted | default: '#666666' }};
+      --border-color: {{ settings.color_border | default: '#E5DFD5' }};
+      --btn-bg: {{ settings.color_btn_bg | default: '#5C1A24' }};
+      --btn-text: {{ settings.color_btn_text | default: '#FFFFFF' }};
+      --btn-hover-bg: {{ settings.color_btn_hover_bg | default: '#3E1018' }};
+      --btn-dark-bg: {{ settings.color_btn_dark_bg | default: '#1C1C1C' }};
+      --btn-dark-text: {{ settings.color_btn_dark_text | default: '#FFFFFF' }};
+      --sale-color: {{ settings.color_sale_price | default: '#5C1A24' }};
+      --compare-color: {{ settings.color_compare_price | default: '#999999' }};
+
+      /* Typography */
+      --font-heading: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+      --font-heading-weight: {{ heading_font.weight }};
+      --font-heading-style: {{ heading_font.style }};
+      --heading-scale: {{ settings.heading_scale | default: 100 | divided_by: 100.0 }};
+      --heading-lh: {{ settings.heading_line_height | default: 110 | divided_by: 100.0 }};
+      --heading-ls: {{ settings.heading_letter_spacing | default: 0 }}px;
+      --heading-transform: {{ settings.heading_transform | default: 'none' }};
+
+      --font-accent: {{ accent_font.family }}, {{ accent_font.fallback_families }};
+      --font-accent-weight: {{ accent_font.weight }};
+      --font-accent-style: {{ accent_font.style }};
+      --product-title-size: {{ settings.product_title_size | default: 15 }}px;
+      --product-title-ls: {{ settings.product_title_spacing | default: 1 }}px;
+      --product-title-transform: {{ settings.product_title_transform | default: 'uppercase' }};
+
+      --font-body: {{ body_font.family }}, {{ body_font.fallback_families }};
+      --font-body-weight: {{ body_font.weight }};
+      --font-body-style: {{ body_font.style }};
+      --body-size: {{ settings.body_font_size | default: 15 }}px;
+      --body-lh: {{ settings.body_line_height | default: 160 | divided_by: 100.0 }};
+      --eyebrow-size: {{ settings.eyebrow_font_size | default: 11 }}px;
+      --eyebrow-ls: {{ settings.eyebrow_letter_spacing | default: 3 }}px;
+
+      --btn-size: {{ settings.button_font_size | default: 11 }}px;
+      --btn-ls: {{ settings.button_letter_spacing | default: 2 }}px;
+      --btn-transform: {{ settings.button_transform | default: 'uppercase' }};
+      --btn-radius: {{ settings.button_radius | default: 50 }}px;
+      --btn-py: {{ settings.button_padding_y | default: 14 }}px;
+      --btn-px: {{ settings.button_padding_x | default: 28 }}px;
+
+      /* Layout & Cards */
+      --page-width: {{ settings.page_width | default: 1360 }}px;
+      --page-pad-desktop: {{ settings.page_padding_desktop | default: 32 }}px;
+      --page-pad-mobile: {{ settings.page_padding_mobile | default: 16 }}px;
+      --section-space: {{ settings.section_spacing | default: 64 }}px;
+      --grid-gap: {{ settings.grid_gap | default: 20 }}px;
+      --radius: {{ settings.card_radius | default: 20 }}px;
+      --img-radius: {{ settings.image_radius | default: 16 }}px;
+      --card-border-w: {{ settings.card_border_width | default: 0 }}px;
+      --card-shadow: {{ card_shadow_val }};
+      --product-ratio: {{ settings.product_aspect_ratio | default: '3 / 4' }};
+      --product-align: {{ settings.product_card_align | default: 'left' }};
+    }
+  </style>
+
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+  {{ 'editorial.css' | asset_url | stylesheet_tag }}
+  {{ 'component-card.css' | asset_url | stylesheet_tag }}
+  {{ 'header.css' | asset_url | stylesheet_tag }}
 </head>
-<body>
-<a class="skip-link" href="#MainContent">Skip to content</a>
-{% section 'announcement-bar' %}
-{% section 'header' %}
-<main id="MainContent">{{ content_for_layout }}</main>
-{% section 'footer' %}
-{% section 'cart-drawer' %}
-{{ 'theme.js' | asset_url | script_tag }}
+<body data-cart-drawer="{{ settings.enable_cart_drawer | default: true }}">
+  <a class="skip-link" href="#MainContent">Skip to content</a>
+  {% section 'announcement-bar' %}
+  {% section 'header' %}
+  <main id="MainContent" role="main">{{ content_for_layout }}</main>
+  {% section 'footer' %}
+  {% section 'cart-drawer' %}
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
 </body>
 </html>

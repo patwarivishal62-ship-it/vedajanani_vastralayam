@@ -1,0 +1,325 @@
+{%- liquid
+  assign h_desktop = section.settings.height_px_desktop | append: 'px'
+  assign h_mobile = section.settings.height_px_mobile | append: 'px'
+  if section.settings.height_mode == 'vh'
+    assign h_desktop = section.settings.height_vh_desktop | append: 'vh'
+    assign h_mobile = section.settings.height_vh_mobile | append: 'vh'
+  endif
+
+  assign overlay_alpha = section.settings.overlay_opacity | divided_by: 100.0
+-%}
+
+{% style %}
+  #shopify-section-{{ section.id }} .vv-img-banner-sec {
+    {% if section.settings.outer_bg != blank and section.settings.outer_bg != 'rgba(0,0,0,0)' %}
+      background: {{ section.settings.outer_bg }};
+    {% endif %}
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  #shopify-section-{{ section.id }} .vv-banner {
+    background: {{ section.settings.fallback_bg }};
+    border-radius: {{ section.settings.banner_radius }}px;
+    {% unless section.settings.height_mode == 'adapt' %}
+      min-height: {{ h_desktop }};
+    {% endunless %}
+  }
+  #shopify-section-{{ section.id }} .vv-banner-media img {
+    object-fit: {{ section.settings.image_fit }};
+    object-position: {{ section.settings.image_position_desktop }};
+  }
+  #shopify-section-{{ section.id }} .vv-banner-overlay {
+    background: {{ section.settings.overlay_color }};
+    opacity: {{ overlay_alpha }};
+  }
+  #shopify-section-{{ section.id }} .vv-banner-inner {
+    align-items: {{ section.settings.align_vertical }};
+    justify-content: {{ section.settings.align_horizontal }};
+    padding: {{ section.settings.content_pad_y }}px {{ section.settings.content_pad_x }}px;
+  }
+  #shopify-section-{{ section.id }} .vv-banner-content {
+    max-width: {{ section.settings.content_max_width }}px;
+    text-align: {{ section.settings.text_align }};
+  }
+  #shopify-section-{{ section.id }} .vv-banner-actions {
+    justify-content: {% if section.settings.text_align == 'center' %}center{% elsif section.settings.text_align == 'right' %}flex-end{% else %}flex-start{% endif %};
+  }
+  {% for block in section.blocks %}
+    {% if block.type == 'heading' %}
+      {%- liquid
+        case block.settings.font_family
+          when 'accent'
+            assign bh_font = 'var(--font-accent)'
+          when 'body'
+            assign bh_font = 'var(--font-body)'
+          else
+            assign bh_font = 'var(--font-heading)'
+        endcase
+      -%}
+      #vv-ib-block-{{ block.id }} {
+        font-family: {{ bh_font }};
+        color: {{ block.settings.color }};
+        font-size: {{ block.settings.size_desktop }}px;
+        line-height: {{ block.settings.line_height | divided_by: 100.0 }};
+        letter-spacing: {{ block.settings.letter_spacing }}px;
+        margin: 0 0 14px;
+      }
+      @media (max-width: 900px) {
+        #vv-ib-block-{{ block.id }} { font-size: {{ block.settings.size_mobile }}px; }
+      }
+    {% endif %}
+  {% endfor %}
+  @media (max-width: 900px) {
+    #shopify-section-{{ section.id }} .vv-banner {
+      {% unless section.settings.height_mode == 'adapt' %}
+        min-height: {{ h_mobile }};
+      {% endunless %}
+    }
+    #shopify-section-{{ section.id }} .vv-banner-media img {
+      object-position: {{ section.settings.image_position_mobile }};
+    }
+  }
+{% endstyle %}
+
+<section class="vv-img-banner-sec">
+  <div class="{% if section.settings.banner_width == 'contained' %}vv-banner-wrap--contained{% elsif section.settings.banner_width == 'inset' %}vv-banner-wrap--inset{% endif %}">
+    <div class="vv-banner{% if section.settings.height_mode == 'adapt' %} vv-banner--adapt{% endif %}">
+      {% if section.settings.image_desktop != blank or section.settings.image_mobile != blank %}
+        <div class="vv-banner-media">
+          {% if section.settings.image_desktop != blank %}
+            <img
+              class="img-desktop{% if section.settings.image_mobile != blank %} has-mobile{% endif %}"
+              src="{{ section.settings.image_desktop | image_url: width: 2000 }}"
+              alt="{{ section.settings.image_desktop.alt | default: shop.name | escape }}"
+              width="{{ section.settings.image_desktop.width }}"
+              height="{{ section.settings.image_desktop.height }}"
+              loading="lazy"
+            >
+          {% endif %}
+          {% if section.settings.image_mobile != blank %}
+            <img
+              class="img-mobile"
+              src="{{ section.settings.image_mobile | image_url: width: 1000 }}"
+              alt="{{ section.settings.image_mobile.alt | default: shop.name | escape }}"
+              width="{{ section.settings.image_mobile.width }}"
+              height="{{ section.settings.image_mobile.height }}"
+              loading="lazy"
+            >
+          {% endif %}
+        </div>
+      {% endif %}
+      <div class="vv-banner-overlay"></div>
+      <div class="vv-banner-inner">
+        <div class="vv-banner-content">
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when 'kicker' %}
+                <span class="kicker" style="color: {{ block.settings.color }}; font-size: {{ block.settings.size }}px; letter-spacing: {{ block.settings.letter_spacing }}px; margin-bottom: 10px;" {{ block.shopify_attributes }}>
+                  {{ block.settings.text }}
+                </span>
+              {% when 'heading' %}
+                <h2 id="vv-ib-block-{{ block.id }}" {{ block.shopify_attributes }}>{{ block.settings.text }}</h2>
+              {% when 'body' %}
+                <div style="color: {{ block.settings.color }}; font-size: {{ block.settings.size }}px; margin: 0 0 22px;" {{ block.shopify_attributes }}>
+                  {{ block.settings.text }}
+                </div>
+              {% when 'button' %}
+                {% if block.settings.label != blank %}
+                  <div class="vv-banner-actions" {{ block.shopify_attributes }}>
+                    <a
+                      class="{% if block.settings.style == 'underline' %}link-cta{% elsif block.settings.style == 'outline' %}btn outline{% else %}btn{% endif %}"
+                      href="{{ block.settings.url | default: routes.all_products_collection_url }}"
+                      style="color: {{ block.settings.text_color }}; {% if block.settings.style == 'solid' %}background: {{ block.settings.bg_color }}; border-color: {{ block.settings.bg_color }};{% endif %}"
+                    >
+                      {{ block.settings.label }}{% if block.settings.style == 'underline' %} →{% endif %}
+                    </a>
+                  </div>
+                {% endif %}
+            {% endcase %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image Banner",
+  "settings": [
+    { "type": "header", "content": "Images & Banner Size" },
+    { "type": "image_picker", "id": "image_desktop", "label": "Desktop image" },
+    { "type": "image_picker", "id": "image_mobile", "label": "Mobile image (optional)" },
+    {
+      "type": "select",
+      "id": "banner_width",
+      "label": "Banner width",
+      "options": [
+        { "value": "contained", "label": "Contained to page width" },
+        { "value": "inset", "label": "Full width with side inset" },
+        { "value": "full", "label": "Full bleed" }
+      ],
+      "default": "contained"
+    },
+    {
+      "type": "select",
+      "id": "height_mode",
+      "label": "Banner height mode",
+      "options": [
+        { "value": "px", "label": "Fixed height (pixels)" },
+        { "value": "vh", "label": "Screen height (% of viewport)" },
+        { "value": "adapt", "label": "Adapt to uploaded image" }
+      ],
+      "default": "px"
+    },
+    { "type": "range", "id": "height_px_desktop", "label": "Desktop height (px)", "min": 200, "max": 900, "step": 20, "unit": "px", "default": 480 },
+    { "type": "range", "id": "height_vh_desktop", "label": "Desktop height (% of screen)", "min": 24, "max": 100, "step": 2, "unit": "vh", "default": 60 },
+    { "type": "range", "id": "height_px_mobile", "label": "Mobile height (px)", "min": 200, "max": 760, "step": 20, "unit": "px", "default": 360 },
+    { "type": "range", "id": "height_vh_mobile", "label": "Mobile height (% of screen)", "min": 24, "max": 100, "step": 2, "unit": "vh", "default": 54 },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "options": [
+        { "value": "cover", "label": "Cover" },
+        { "value": "contain", "label": "Contain" }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "select",
+      "id": "image_position_desktop",
+      "label": "Focal point (desktop)",
+      "options": [
+        { "value": "center center", "label": "Center" },
+        { "value": "top center", "label": "Top" },
+        { "value": "bottom center", "label": "Bottom" },
+        { "value": "center left", "label": "Left" },
+        { "value": "center right", "label": "Right" }
+      ],
+      "default": "center center"
+    },
+    {
+      "type": "select",
+      "id": "image_position_mobile",
+      "label": "Focal point (mobile)",
+      "options": [
+        { "value": "center center", "label": "Center" },
+        { "value": "top center", "label": "Top" },
+        { "value": "bottom center", "label": "Bottom" }
+      ],
+      "default": "center center"
+    },
+    { "type": "range", "id": "banner_radius", "label": "Banner corner radius", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 24 },
+    { "type": "color_background", "id": "fallback_bg", "label": "Fallback background / gradient", "default": "linear-gradient(135deg, #5C1A24, #2B0E14)" },
+    { "type": "color", "id": "overlay_color", "label": "Overlay color", "default": "#000000" },
+    { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 35 },
+    { "type": "header", "content": "Placement & Spacing" },
+    {
+      "type": "select",
+      "id": "align_vertical",
+      "label": "Vertical placement",
+      "options": [
+        { "value": "flex-start", "label": "Top" },
+        { "value": "center", "label": "Middle" },
+        { "value": "flex-end", "label": "Bottom" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "align_horizontal",
+      "label": "Horizontal placement",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    { "type": "text_alignment", "id": "text_align", "label": "Text alignment", "default": "center" },
+    { "type": "range", "id": "content_max_width", "label": "Content max width", "min": 320, "max": 1100, "step": 20, "unit": "px", "default": 680 },
+    { "type": "range", "id": "content_pad_y", "label": "Inner vertical padding", "min": 16, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "content_pad_x", "label": "Inner horizontal padding", "min": 16, "max": 100, "step": 4, "unit": "px", "default": 36 },
+    { "type": "color", "id": "outer_bg", "label": "Section background (optional)" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 32 }
+  ],
+  "blocks": [
+    {
+      "type": "kicker",
+      "name": "Kicker",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Limited Edition" },
+        { "type": "color", "id": "color", "label": "Color", "default": "#D9C7A5" },
+        { "type": "range", "id": "size", "label": "Font size", "min": 9, "max": 20, "step": 1, "unit": "px", "default": 11 },
+        { "type": "range", "id": "letter_spacing", "label": "Letter spacing", "min": 0, "max": 6, "step": 0.5, "unit": "px", "default": 3 }
+      ]
+    },
+    {
+      "type": "heading",
+      "name": "Heading",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Heading", "default": "Handloom Heritage Edit" },
+        {
+          "type": "select",
+          "id": "font_family",
+          "label": "Font family",
+          "options": [
+            { "value": "heading", "label": "Theme Heading Font" },
+            { "value": "accent", "label": "Theme Editorial Font" },
+            { "value": "body", "label": "Theme Body Font" }
+          ],
+          "default": "heading"
+        },
+        { "type": "color", "id": "color", "label": "Color", "default": "#FFFFFF" },
+        { "type": "range", "id": "size_desktop", "label": "Size (desktop)", "min": 24, "max": 88, "step": 2, "unit": "px", "default": 48 },
+        { "type": "range", "id": "size_mobile", "label": "Size (mobile)", "min": 22, "max": 52, "step": 2, "unit": "px", "default": 32 },
+        { "type": "range", "id": "line_height", "label": "Line height", "min": 90, "max": 150, "step": 5, "unit": "%", "default": 105 },
+        { "type": "range", "id": "letter_spacing", "label": "Letter spacing", "min": -2, "max": 6, "step": 0.5, "unit": "px", "default": 0 }
+      ]
+    },
+    {
+      "type": "body",
+      "name": "Description",
+      "settings": [
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Timeless weaves curated directly from artisan looms across India.</p>" },
+        { "type": "color", "id": "color", "label": "Color", "default": "#F3EDE3" },
+        { "type": "range", "id": "size", "label": "Font size", "min": 12, "max": 24, "step": 1, "unit": "px", "default": 16 }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Explore Collection" },
+        { "type": "url", "id": "url", "label": "Link" },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Style",
+          "options": [
+            { "value": "solid", "label": "Solid Button" },
+            { "value": "outline", "label": "Outline Button" },
+            { "value": "underline", "label": "Editorial Underline" }
+          ],
+          "default": "solid"
+        },
+        { "type": "color", "id": "bg_color", "label": "Background color", "default": "#5C1A24" },
+        { "type": "color", "id": "text_color", "label": "Text color", "default": "#FFFFFF" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image Banner",
+      "blocks": [
+        { "type": "kicker" },
+        { "type": "heading" },
+        { "type": "body" },
+        { "type": "button" }
+      ]
+    }
+  ]
+}
+{% endschema %}

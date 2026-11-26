@@ -1,46 +1,346 @@
 {
   "sections": {
     "hero": {
-      "type": "hero-editorial"
+      "type": "hero-editorial",
+      "blocks": {
+        "kicker": {
+          "type": "kicker",
+          "settings": {
+            "text": "Vedajanani Vastralayam · Festive 2026"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "text": "Drape the story you carry."
+          }
+        },
+        "subheading": {
+          "type": "subheading",
+          "settings": {
+            "text": "Cotton, Silk, Chiffon & Georgette — handpicked from master weavers."
+          }
+        },
+        "buttons": {
+          "type": "buttons",
+          "settings": {
+            "cta_label": "Shop New Arrivals"
+          }
+        }
+      },
+      "block_order": [
+        "kicker",
+        "heading",
+        "subheading",
+        "buttons"
+      ]
+    },
+    "category": {
+      "type": "category-tabs",
+      "blocks": {
+        "tab_women": {
+          "type": "tab",
+          "settings": {
+            "label": "Women",
+            "filter_key": "women"
+          }
+        },
+        "tab_men": {
+          "type": "tab",
+          "settings": {
+            "label": "Men",
+            "filter_key": "men"
+          }
+        },
+        "tab_all": {
+          "type": "tab",
+          "settings": {
+            "label": "Shop All",
+            "filter_key": "all"
+          }
+        },
+        "card_cotton": {
+          "type": "card",
+          "settings": {
+            "tab_group": "women",
+            "badge": "9 Weaves",
+            "title": "Cotton",
+            "subtitle": "Mul · Madurai · Kanchi · Jamdhani",
+            "fallback_path": "/collections/cotton"
+          }
+        },
+        "card_silk": {
+          "type": "card",
+          "settings": {
+            "tab_group": "women",
+            "badge": "8 Weaves",
+            "title": "Silk",
+            "subtitle": "Banarasi · Soft · Crepe · Kota",
+            "fallback_path": "/collections/silk"
+          }
+        },
+        "card_chiffon": {
+          "type": "card",
+          "settings": {
+            "tab_group": "women",
+            "badge": "5 Styles",
+            "title": "Chiffon",
+            "subtitle": "Printed · Embroidered · Bandhani",
+            "fallback_path": "/collections/chiffon"
+          }
+        },
+        "card_georgette": {
+          "type": "card",
+          "settings": {
+            "tab_group": "women",
+            "badge": "5 Styles",
+            "title": "Georgette",
+            "subtitle": "Satin · Printed · Floral",
+            "fallback_path": "/collections/georgette"
+          }
+        }
+      },
+      "block_order": [
+        "tab_women",
+        "tab_men",
+        "tab_all",
+        "card_cotton",
+        "card_silk",
+        "card_chiffon",
+        "card_georgette"
+      ]
+    },
+    "campaigns": {
+      "type": "campaign-blocks",
+      "blocks": {
+        "festive": {
+          "type": "campaign",
+          "settings": {
+            "bg_gradient": "linear-gradient(160deg, #B9975B, #8A6D3B)",
+            "kicker": "Festive 2026",
+            "heading": "The Festive Edit",
+            "description": "Zari cottons, soft silks and Bandhani chiffons.",
+            "cta_label": "Shop Festive",
+            "fallback_path": "/collections/festive"
+          }
+        },
+        "wedding": {
+          "type": "campaign",
+          "settings": {
+            "bg_gradient": "linear-gradient(160deg, #7A2230, #2B0E14)",
+            "kicker": "Wedding Season",
+            "heading": "The Wedding Edit",
+            "description": "Brides, bridesmaids and guests.",
+            "cta_label": "Shop Wedding",
+            "fallback_path": "/collections/wedding"
+          }
+        }
+      },
+      "block_order": [
+        "festive",
+        "wedding"
+      ]
     },
     "lookbook": {
-      "type": "lookbook-grid"
+      "type": "lookbook-grid",
+      "blocks": {
+        "look_1": {
+          "type": "look",
+          "settings": {
+            "tag": "Look 01",
+            "title": "Morning Mul Cotton"
+          }
+        },
+        "look_2": {
+          "type": "look",
+          "settings": {
+            "tag": "Look 02",
+            "title": "Banarasi Heirloom"
+          }
+        },
+        "look_3": {
+          "type": "look",
+          "settings": {
+            "tag": "Look 03",
+            "title": "Bandhani Chiffon"
+          }
+        },
+        "look_4": {
+          "type": "look",
+          "settings": {
+            "tag": "Look 04",
+            "title": "Satin Georgette"
+          }
+        }
+      },
+      "block_order": [
+        "look_1",
+        "look_2",
+        "look_3",
+        "look_4"
+      ]
     },
     "collections": {
-      "type": "featured-collections"
+      "type": "featured-collections",
+      "blocks": {
+        "col_cotton": {
+          "type": "collection_card",
+          "settings": {
+            "badge": "9 Weaves",
+            "title": "Cotton",
+            "subtitle": "Mul, Madurai, Kanchi, Kota & Jamdhani",
+            "fallback_path": "/collections/cotton"
+          }
+        },
+        "col_silk": {
+          "type": "collection_card",
+          "settings": {
+            "badge": "8 Weaves",
+            "title": "Silk",
+            "subtitle": "Banarasi, Soft, Crepe & Viscose Silk",
+            "fallback_path": "/collections/silk"
+          }
+        },
+        "col_chiffon": {
+          "type": "collection_card",
+          "settings": {
+            "badge": "5 Styles",
+            "title": "Chiffon",
+            "subtitle": "Printed, Embroidered, Bandhani & Floral",
+            "fallback_path": "/collections/chiffon"
+          }
+        },
+        "col_georgette": {
+          "type": "collection_card",
+          "settings": {
+            "badge": "5 Styles",
+            "title": "Georgette",
+            "subtitle": "Satin, Printed, Bandhani & Plain",
+            "fallback_path": "/collections/georgette"
+          }
+        }
+      },
+      "block_order": [
+        "col_cotton",
+        "col_silk",
+        "col_chiffon",
+        "col_georgette"
+      ]
     },
     "price": {
-      "type": "shop-by-price"
+      "type": "shop-by-price",
+      "blocks": {
+        "tier_1": {
+          "type": "tier",
+          "settings": {
+            "badge": "Daily Use",
+            "title": "Affordable",
+            "price_range": "₹500 – ₹1,500",
+            "description": "Breathable cottons & effortless everyday drapes.",
+            "fallback_path": "/collections/affordable"
+          }
+        },
+        "tier_2": {
+          "type": "tier",
+          "settings": {
+            "badge": "Most Loved",
+            "title": "Mid Range",
+            "price_range": "₹1,500 – ₹3,000",
+            "description": "Office-ready weaves, printed chiffons & soft silks.",
+            "fallback_path": "/collections/mid-range"
+          }
+        },
+        "tier_3": {
+          "type": "tier",
+          "settings": {
+            "badge": "Heirloom & Festive",
+            "title": "Premium",
+            "price_range": "₹3,000 – ₹5,000",
+            "description": "Banarasi, Kanchi & wedding celebration drapes.",
+            "fallback_path": "/collections/premium"
+          }
+        }
+      },
+      "block_order": [
+        "tier_1",
+        "tier_2",
+        "tier_3"
+      ]
     },
     "occasion": {
-      "type": "shop-by-occasion"
+      "type": "shop-by-occasion",
+      "blocks": {
+        "occ_1": { "type": "occasion", "settings": { "title": "Daily Use", "fallback_path": "/collections/daily-use" } },
+        "occ_2": { "type": "occasion", "settings": { "title": "Office", "fallback_path": "/collections/office" } },
+        "occ_3": { "type": "occasion", "settings": { "title": "Festive", "fallback_path": "/collections/festive" } },
+        "occ_4": { "type": "occasion", "settings": { "title": "Brides", "fallback_path": "/collections/wedding" } },
+        "occ_5": { "type": "occasion", "settings": { "title": "Bridesmaids", "fallback_path": "/collections/wedding" } },
+        "occ_6": { "type": "occasion", "settings": { "title": "Guests", "fallback_path": "/collections/wedding" } }
+      },
+      "block_order": [
+        "occ_1",
+        "occ_2",
+        "occ_3",
+        "occ_4",
+        "occ_5",
+        "occ_6"
+      ]
     },
     "bestsellers": {
       "type": "featured-products",
       "settings": {
-        "collection": "best-sellers"
+        "collection": "best-sellers",
+        "eyebrow": "Most Loved",
+        "heading": "Best Sellers"
       }
     },
     "new": {
       "type": "featured-products",
       "settings": {
-        "collection": "new-arrivals"
+        "collection": "new-arrivals",
+        "eyebrow": "Fresh From The Loom",
+        "heading": "New Arrivals"
       }
     },
     "testimonials": {
-      "type": "testimonials"
+      "type": "testimonials",
+      "blocks": {
+        "t_1": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Beautiful drape and honest quality. The Banarasi silk felt like an heirloom the moment I opened the box.",
+            "author": "Padma Reddy",
+            "meta": "Hyderabad · Banarasi Silk"
+          }
+        },
+        "t_2": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "My Mul Cotton saree is my absolute favourite for workdays — breathable, graceful and holds its pleats all day.",
+            "author": "Meghana S.",
+            "meta": "Bengaluru · Mul Cotton"
+          }
+        },
+        "t_3": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Ordered three sarees for my sister's wedding and every single weave exceeded expectations.",
+            "author": "Kavitha Rao",
+            "meta": "Anantapur · Wedding Edit"
+          }
+        }
+      },
+      "block_order": [
+        "t_1",
+        "t_2",
+        "t_3"
+      ]
     },
     "blog": {
       "type": "blog-preview"
     },
     "newsletter": {
       "type": "newsletter"
-    },
-    "category": {
-      "type": "category-tabs"
-    },
-    "campaigns": {
-      "type": "campaign-blocks"
     }
   },
   "order": [

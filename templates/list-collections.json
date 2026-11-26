@@ -1,7 +1,7 @@
 {
   "sections": {
     "main": {
-      "type": "main-list-blog"
+      "type": "main-list-collections"
     }
   },
   "order": [

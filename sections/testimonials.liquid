@@ -1,1 +1,332 @@
-<section><h2>What Our Customers Say</h2><blockquote>Beautiful drape and honest quality.</blockquote></section>{% schema %}{"name":"Testimonials","presets":[{"name":"Testimonials"}]}{% endschema %}
+{%- liquid
+  case section.settings.quote_font
+    when 'heading'
+      assign q_font = 'var(--font-heading)'
+    when 'body'
+      assign q_font = 'var(--font-body)'
+    else
+      assign q_font = 'var(--font-accent)'
+  endcase
+-%}
+
+{% style %}
+  #shopify-section-{{ section.id }} .vv-test-sec {
+    {% if section.settings.bg_color != blank and section.settings.bg_color != 'rgba(0,0,0,0)' %}
+      background: {{ section.settings.bg_color }};
+    {% endif %}
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  #shopify-section-{{ section.id }} .vv-grid {
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr));
+    gap: {{ section.settings.grid_gap }}px;
+  }
+  #shopify-section-{{ section.id }} .testimonial-card {
+    background: {{ section.settings.card_bg }};
+    color: {{ section.settings.card_text }};
+    border-color: {{ section.settings.card_border }};
+    border-radius: {{ section.settings.card_radius }}px;
+    padding: {{ section.settings.card_pad }}px;
+    text-align: {{ section.settings.card_align }};
+  }
+  #shopify-section-{{ section.id }} .testimonial-stars {
+    color: {{ section.settings.star_color }};
+  }
+  #shopify-section-{{ section.id }} .testimonial-quote {
+    font-family: {{ q_font }};
+    font-size: {{ section.settings.quote_size }}px;
+  }
+  #shopify-section-{{ section.id }} .testimonial-author {
+    justify-content: {% if section.settings.card_align == 'center' %}center{% elsif section.settings.card_align == 'right' %}flex-end{% else %}flex-start{% endif %};
+  }
+  @media (max-width: 900px) {
+    #shopify-section-{{ section.id }} .vv-grid {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, minmax(0, 1fr));
+    }
+  }
+{% endstyle %}
+
+<section class="vv-test-sec">
+  <div class="wrap">
+    {% if section.settings.eyebrow != blank or section.settings.heading != blank %}
+      <div class="section-head section-head--{{ section.settings.heading_align }}">
+        {% if section.settings.eyebrow != blank %}
+          <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+        {% endif %}
+        {% if section.settings.heading != blank %}
+          <h2 style="font-size: {{ section.settings.heading_size }}px; color: {{ section.settings.heading_color }};">
+            {{ section.settings.heading }}
+          </h2>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="vv-grid">
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+          <article class="testimonial-card" {{ block.shopify_attributes }}>
+            <div>
+              {% if section.settings.show_stars %}
+                <div class="testimonial-stars" aria-label="{{ block.settings.rating }} out of 5 stars">
+                  {% for i in (1..block.settings.rating) %}★{% endfor %}
+                </div>
+              {% endif %}
+              <blockquote class="testimonial-quote" style="margin-top: 10px;">
+                “{{ block.settings.quote }}”
+              </blockquote>
+            </div>
+            <div class="testimonial-author">
+              {% if block.settings.avatar != blank %}
+                <img class="testimonial-avatar" src="{{ block.settings.avatar | image_url: width: 120 }}" alt="{{ block.settings.author | escape }}" width="44" height="44" loading="lazy">
+              {% endif %}
+              <div class="testimonial-meta">
+                <strong>{{ block.settings.author }}</strong>
+                {% if block.settings.meta != blank %}
+                  <span>{{ block.settings.meta }}</span>
+                {% endif %}
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      {% else %}
+        <article class="testimonial-card">
+          <div>
+            <div class="testimonial-stars">★★★★★</div>
+            <blockquote class="testimonial-quote" style="margin-top: 10px;">“Beautiful drape and honest quality. Truly felt like wearing an heirloom.”</blockquote>
+          </div>
+          <div class="testimonial-author"><div class="testimonial-meta"><strong>Lakshmi Narayana</strong><span>Anantapur · Soft Silk</span></div></div>
+        </article>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Kind Words"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "text_alignment",
+      "id": "heading_align",
+      "label": "Header alignment",
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 34
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1C1C1C"
+    },
+    {
+      "type": "header",
+      "content": "Cards & Typography"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns (desktop)",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "label": "Columns (mobile)",
+      "min": 1,
+      "max": 2,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid gap",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stars",
+      "label": "Show star ratings",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "quote_font",
+      "label": "Quote font family",
+      "options": [
+        { "value": "accent", "label": "Theme Editorial / Product Font" },
+        { "value": "heading", "label": "Theme Heading Font" },
+        { "value": "body", "label": "Theme Body Font" }
+      ],
+      "default": "accent"
+    },
+    {
+      "type": "range",
+      "id": "quote_size",
+      "label": "Quote font size",
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 21
+    },
+    {
+      "type": "text_alignment",
+      "id": "card_align",
+      "label": "Card alignment",
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "card_pad",
+      "label": "Card padding",
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_text",
+      "label": "Card text color",
+      "default": "#1C1C1C"
+    },
+    {
+      "type": "color",
+      "id": "card_border",
+      "label": "Card border color",
+      "default": "#E5DFD5"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star color",
+      "default": "#B9975B"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section background (optional)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Customer quote",
+          "default": "Beautiful drape and honest quality. The fabric felt effortless all evening."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Customer name",
+          "default": "Ananya R."
+        },
+        {
+          "type": "text",
+          "id": "meta",
+          "label": "City / Saree purchased",
+          "default": "Hyderabad · Banarasi Silk"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Customer photo (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        { "type": "testimonial", "settings": { "quote": "Beautiful drape and honest quality. The Banarasi silk felt like an heirloom the moment I opened the box.", "author": "Padma Reddy", "meta": "Hyderabad · Banarasi Silk" } },
+        { "type": "testimonial", "settings": { "quote": "My Mul Cotton saree is my absolute favourite for workdays — breathable, graceful and holds its pleats all day.", "author": "Meghana S.", "meta": "Bengaluru · Mul Cotton" } },
+        { "type": "testimonial", "settings": { "quote": "Ordered three sarees for my sister's wedding and every single weave exceeded expectations.", "author": "Kavitha Rao", "meta": "Anantapur · Wedding Edit" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,1 +1,29 @@
-<div class="wrap" style="padding:48px 20px"><h1>Order {{ order.name }}</h1><p>{{ order.total_price | money }}</p></div>{% schema %}{"name":"Main Order"}{% endschema %}
+<section style="padding: {{ section.settings.padding_y }}px 0;">
+  <div class="wrap" style="max-width: 880px;">
+    <p><a href="{{ routes.account_url }}">← Back to Account</a></p>
+    <h1>Order {{ order.name }}</h1>
+    <p style="color: var(--text-muted); margin-bottom: 24px;">Placed on {{ order.created_at | date: '%B %d, %Y' }}</p>
+
+    <div style="background: var(--surface); border-radius: var(--radius); padding: 28px; border: 1px solid var(--border-color);">
+      {% for item in order.line_items %}
+        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border-color);">
+          <div>{{ item.title }} × {{ item.quantity }}</div>
+          <strong>{{ item.final_line_price | money }}</strong>
+        </div>
+      {% endfor %}
+      <div style="display: flex; justify-content: space-between; padding-top: 18px; font-size: 18px;">
+        <span>Total</span>
+        <strong>{{ order.total_price | money }}</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main Order",
+  "settings": [
+    { "type": "range", "id": "padding_y", "label": "Vertical padding", "min": 24, "max": 100, "step": 4, "unit": "px", "default": 56 }
+  ]
+}
+{% endschema %}

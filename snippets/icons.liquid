@@ -1,1 +1,11 @@
-<!-- icons -->
+{% comment %}
+  Reusable minimal icons for Vedajanani Editorial
+{% endcomment %}
+{% case icon %}
+  {% when 'chevron-down' %}
+    <span aria-hidden="true">▾</span>
+  {% when 'close' %}
+    <span aria-hidden="true">✕</span>
+  {% when 'menu' %}
+    <span aria-hidden="true">☰</span>
+{% endcase %}

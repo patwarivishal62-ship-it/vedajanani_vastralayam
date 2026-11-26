@@ -1,1 +1,422 @@
-<footer><p>© {{ 'now' | date: '%Y' }} {{ shop.name }}</p><nav><a href="/collections/all">Shop All</a><a href="/pages/about">About</a><a href="/blogs/journal">Journal</a></nav></footer>{% schema %}{"name":"Footer","presets":[{"name":"Footer"}]}{% endschema %}
+{% style %}
+  #shopify-section-{{ section.id }} .site-footer {
+    background: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    font-size: {{ section.settings.font_size }}px;
+    text-align: {{ section.settings.text_alignment }};
+  }
+  #shopify-section-{{ section.id }} .footer-grid {
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr));
+    gap: {{ section.settings.column_gap }}px;
+  }
+  #shopify-section-{{ section.id }} .footer-col h4 {
+    color: {{ section.settings.heading_color }};
+    font-size: {{ section.settings.heading_size }}px;
+    letter-spacing: {{ section.settings.heading_spacing }}px;
+  }
+  #shopify-section-{{ section.id }} .footer-col a:hover,
+  #shopify-section-{{ section.id }} .footer-socials a:hover {
+    color: {{ section.settings.hover_color }};
+  }
+  #shopify-section-{{ section.id }} .footer-bottom {
+    border-top-color: {{ section.settings.border_color }};
+  }
+  @media (max-width: 900px) {
+    #shopify-section-{{ section.id }} .footer-grid {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, minmax(0, 1fr));
+    }
+  }
+{% endstyle %}
+
+<footer class="site-footer">
+  <div class="wrap">
+    {% if section.blocks.size > 0 %}
+      <div class="footer-grid">
+        {% for block in section.blocks %}
+          <div class="footer-col" {{ block.shopify_attributes }}>
+            {% case block.type %}
+              {% when 'brand_info' %}
+                {% if block.settings.logo != blank %}
+                  <img
+                    src="{{ block.settings.logo | image_url: width: 400 }}"
+                    alt="{{ block.settings.heading | default: shop.name | escape }}"
+                    width="{{ block.settings.logo_width }}"
+                    height="{{ block.settings.logo_width | divided_by: block.settings.logo.aspect_ratio | round }}"
+                    style="width: {{ block.settings.logo_width }}px; margin-bottom: 14px; border-radius: 0;"
+                    loading="lazy"
+                  >
+                {% elsif block.settings.heading != blank %}
+                  <h4>{{ block.settings.heading }}</h4>
+                {% endif %}
+                {% if block.settings.tagline != blank %}
+                  <p style="font-family: var(--font-accent); font-style: italic; font-size: 18px; color: {{ section.settings.heading_color }}; margin-bottom: 10px;">
+                    {{ block.settings.tagline }}
+                  </p>
+                {% endif %}
+                {% if block.settings.description != blank %}
+                  <div class="footer-richtext">{{ block.settings.description }}</div>
+                {% endif %}
+
+              {% when 'link_column' %}
+                {% if block.settings.heading != blank %}
+                  <h4>{{ block.settings.heading }}</h4>
+                {% endif %}
+                <ul>
+                  {% if block.settings.menu != blank and block.settings.menu.links.size > 0 %}
+                    {% for link in block.settings.menu.links %}
+                      <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                    {% endfor %}
+                  {% else %}
+                    {% assign lines = block.settings.links_list | newline_to_br | split: '<br />' %}
+                    {% for line in lines %}
+                      {% assign clean_line = line | strip %}
+                      {% if clean_line != blank %}
+                        {% assign parts = clean_line | split: '|' %}
+                        {% assign lbl = parts[0] | strip %}
+                        {% assign href = parts[1] | strip | default: '/collections/all' %}
+                        <li><a href="{{ href }}">{{ lbl }}</a></li>
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                </ul>
+
+              {% when 'contact_info' %}
+                {% if block.settings.heading != blank %}
+                  <h4>{{ block.settings.heading }}</h4>
+                {% endif %}
+                {% if block.settings.address != blank %}
+                  <p>{{ block.settings.address }}</p>
+                {% endif %}
+                {% if block.settings.phone != blank %}
+                  <p><a href="tel:{{ block.settings.phone | remove: ' ' }}">{{ block.settings.phone }}</a></p>
+                {% endif %}
+                {% if block.settings.email != blank %}
+                  <p><a href="mailto:{{ block.settings.email }}">{{ block.settings.email }}</a></p>
+                {% endif %}
+                {% if block.settings.hours != blank %}
+                  <p style="opacity: 0.78;">{{ block.settings.hours }}</p>
+                {% endif %}
+            {% endcase %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <div class="footer-bottom">
+      <p style="margin: 0;">
+        © {{ 'now' | date: '%Y' }} {{ section.settings.copyright_text | default: shop.name }}
+      </p>
+
+      {% if section.settings.show_social %}
+        <div class="footer-socials">
+          {% if settings.social_instagram != blank %}<a href="{{ settings.social_instagram }}" target="_blank" rel="noopener">Instagram</a>{% endif %}
+          {% if settings.social_facebook != blank %}<a href="{{ settings.social_facebook }}" target="_blank" rel="noopener">Facebook</a>{% endif %}
+          {% if settings.social_whatsapp != blank %}<a href="{{ settings.social_whatsapp }}" target="_blank" rel="noopener">WhatsApp</a>{% endif %}
+          {% if settings.social_pinterest != blank %}<a href="{{ settings.social_pinterest }}" target="_blank" rel="noopener">Pinterest</a>{% endif %}
+          {% if settings.social_youtube != blank %}<a href="{{ settings.social_youtube }}" target="_blank" rel="noopener">YouTube</a>{% endif %}
+        </div>
+      {% endif %}
+
+      {% if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 %}
+        <div class="footer-payments">
+          {% for type in shop.enabled_payment_types %}
+            {{ type | payment_type_svg_tag }}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout & Spacing"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns (desktop)",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "label": "Columns (mobile)",
+      "min": 1,
+      "max": 2,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Gap between columns",
+      "min": 16,
+      "max": 64,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "text_alignment",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 24,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 24,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#1C1C1C"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Column heading color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text & link color",
+      "default": "#BDBDBD"
+    },
+    {
+      "type": "color",
+      "id": "hover_color",
+      "label": "Link hover color",
+      "default": "#B9975B"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Divider color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Column heading size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "label": "Column heading letter spacing",
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "unit": "px",
+      "default": 2.5
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Body & link font size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Bottom Bar"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright label",
+      "default": "Vedajanani Vastralayam · All rights reserved."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "Show social links (configured in Theme Settings)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment method icons",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "brand_info",
+      "name": "Brand Info",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Footer logo image (optional)"
+        },
+        {
+          "type": "range",
+          "id": "logo_width",
+          "label": "Logo width",
+          "min": 60,
+          "max": 260,
+          "step": 10,
+          "unit": "px",
+          "default": 140
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Brand name",
+          "default": "Vedajanani Vastralayam"
+        },
+        {
+          "type": "text",
+          "id": "tagline",
+          "label": "Tagline",
+          "default": "Woven with Grace, Worn with Pride"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Short description",
+          "default": "<p>Handpicked Cotton, Silk, Chiffon & Georgette sarees curated in Anantapur, Andhra Pradesh.</p>"
+        }
+      ]
+    },
+    {
+      "type": "link_column",
+      "name": "Link Column",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Column heading",
+          "default": "Shop"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Shopify Menu (optional — overrides custom links)"
+        },
+        {
+          "type": "textarea",
+          "id": "links_list",
+          "label": "Custom links (one per line: Label | /path)",
+          "default": "Cotton Sarees | /collections/cotton\nSilk Sarees | /collections/silk\nChiffon Sarees | /collections/chiffon\nGeorgette Sarees | /collections/georgette"
+        }
+      ]
+    },
+    {
+      "type": "contact_info",
+      "name": "Contact & Location",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Column heading",
+          "default": "Visit & Connect"
+        },
+        {
+          "type": "text",
+          "id": "address",
+          "label": "Store location",
+          "default": "Anantapur, Andhra Pradesh, India"
+        },
+        {
+          "type": "text",
+          "id": "phone",
+          "label": "Phone / WhatsApp"
+        },
+        {
+          "type": "text",
+          "id": "email",
+          "label": "Support email"
+        },
+        {
+          "type": "text",
+          "id": "hours",
+          "label": "Store hours",
+          "default": "Mon – Sat · 10:00 AM – 8:00 PM IST"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "brand_info",
+        "settings": {
+          "heading": "Vedajanani Vastralayam",
+          "tagline": "Woven with Grace, Worn with Pride",
+          "description": "<p>Handpicked Cotton, Silk, Chiffon & Georgette sarees curated in Anantapur, Andhra Pradesh.</p>"
+        }
+      },
+      {
+        "type": "link_column",
+        "settings": {
+          "heading": "Collections",
+          "links_list": "Shop All | /collections/all\nCotton Sarees | /collections/cotton\nSilk Sarees | /collections/silk\nChiffon Sarees | /collections/chiffon\nGeorgette Sarees | /collections/georgette"
+        }
+      },
+      {
+        "type": "link_column",
+        "settings": {
+          "heading": "Explore",
+          "links_list": "Festive Edit | /collections/festive\nWedding Edit | /collections/wedding\nAbout Us | /pages/about\nJournal | /blogs/journal\nContact | /pages/contact"
+        }
+      },
+      {
+        "type": "contact_info",
+        "settings": {
+          "heading": "Visit & Connect",
+          "address": "Anantapur, Andhra Pradesh, India",
+          "hours": "Mon – Sat · 10:00 AM – 8:00 PM IST"
+        }
+      }
+    ]
+  }
+}
+{% endschema %}

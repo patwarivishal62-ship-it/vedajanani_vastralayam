@@ -1,3 +1,23 @@
 {
-  "current": {}
+  "current": {
+    "color_ivory": "#F9F6F1",
+    "color_surface": "#FFFFFF",
+    "color_surface_soft": "#F3EDE3",
+    "color_maroon": "#5C1A24",
+    "color_gold": "#B9975B",
+    "color_charcoal": "#1C1C1C",
+    "color_text_muted": "#666666",
+    "color_border": "#E5DFD5",
+    "color_btn_bg": "#5C1A24",
+    "color_btn_text": "#FFFFFF",
+    "color_btn_hover_bg": "#3E1018",
+    "color_btn_dark_bg": "#1C1C1C",
+    "color_btn_dark_text": "#FFFFFF",
+    "font_heading": "playfair_display_n5",
+    "font_accent": "cormorant_n5",
+    "font_body": "jost_n4",
+    "card_radius": 20,
+    "image_radius": 16,
+    "button_radius": 50
+  }
 }

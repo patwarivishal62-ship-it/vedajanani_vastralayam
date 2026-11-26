@@ -1,1 +1,536 @@
-<section><h2>Women & Men</h2><div class="cat-tabs"><button class="cat-tab active">Women</button><button class="cat-tab">Men</button><button class="cat-tab">Shop All</button></div><div class="collections-grid"><a href="/collections/cotton">Cotton</a><a href="/collections/silk">Silk</a><a href="/collections/chiffon">Chiffon</a><a href="/collections/georgette">Georgette</a></div></section>{% schema %}{"name":"Category Tabs (Prada)","presets":[{"name":"Category Tabs"}]}{% endschema %}
+{%- liquid
+  assign tab_blocks = section.blocks | where: 'type', 'tab'
+  assign card_blocks = section.blocks | where: 'type', 'card'
+-%}
+
+{% style %}
+  #shopify-section-{{ section.id }} .vv-cattabs-sec {
+    {% if section.settings.bg_color != blank and section.settings.bg_color != 'rgba(0,0,0,0)' %}
+      background: {{ section.settings.bg_color }};
+    {% endif %}
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  #shopify-section-{{ section.id }} .cat-tabs {
+    justify-content: {% if section.settings.tabs_align == 'left' %}flex-start{% elsif section.settings.tabs_align == 'right' %}flex-end{% else %}center{% endif %};
+  }
+  #shopify-section-{{ section.id }} .cat-tab {
+    font-size: {{ section.settings.tab_font_size }}px;
+    border-radius: {{ section.settings.tab_radius }}px;
+    background: {{ section.settings.tab_bg }};
+    color: {{ section.settings.tab_text }};
+    border-color: {{ section.settings.tab_border }};
+  }
+  #shopify-section-{{ section.id }} .cat-tab.active {
+    background: {{ section.settings.tab_active_bg }};
+    color: {{ section.settings.tab_active_text }};
+    border-color: {{ section.settings.tab_active_bg }};
+  }
+  #shopify-section-{{ section.id }} .vv-grid {
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr));
+    gap: {{ section.settings.grid_gap }}px;
+  }
+  #shopify-section-{{ section.id }} .vv-tile {
+    border-radius: {{ section.settings.card_radius }}px;
+    min-height: {{ section.settings.card_height_desktop }}px;
+    background: {{ section.settings.card_bg }};
+    color: {{ section.settings.card_text }};
+  }
+  #shopify-section-{{ section.id }} .vv-tile-title {
+    font-size: {{ section.settings.card_title_size }}px;
+  }
+  @media (max-width: 900px) {
+    #shopify-section-{{ section.id }} .vv-grid {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, minmax(0, 1fr));
+    }
+    #shopify-section-{{ section.id }} .vv-tile {
+      min-height: {{ section.settings.card_height_mobile }}px;
+    }
+  }
+{% endstyle %}
+
+<section class="vv-cattabs-sec" data-category-tabs>
+  <div class="wrap">
+    {% if section.settings.eyebrow != blank or section.settings.heading != blank %}
+      <div class="section-head section-head--{{ section.settings.heading_align }}">
+        {% if section.settings.eyebrow != blank %}
+          <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+        {% endif %}
+        {% if section.settings.heading != blank %}
+          <h2 style="font-size: {{ section.settings.heading_size }}px; color: {{ section.settings.heading_color }};">
+            {{ section.settings.heading }}
+          </h2>
+        {% endif %}
+        {% if section.settings.subheading != blank %}
+          <p class="section-sub">{{ section.settings.subheading }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_tabs %}
+      <div class="cat-tabs" role="tablist">
+        {% if tab_blocks.size > 0 %}
+          {% for block in tab_blocks %}
+            <button
+              type="button"
+              class="cat-tab{% if forloop.first %} active{% endif %}"
+              role="tab"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              data-tab-filter="{{ block.settings.filter_key | handleize }}"
+              {{ block.shopify_attributes }}
+            >
+              {{ block.settings.label }}
+            </button>
+          {% endfor %}
+        {% else %}
+          <button type="button" class="cat-tab active" data-tab-filter="women">Women</button>
+          <button type="button" class="cat-tab" data-tab-filter="men">Men</button>
+          <button type="button" class="cat-tab" data-tab-filter="all">Shop All</button>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="vv-grid">
+      {% if card_blocks.size > 0 %}
+        {% for block in card_blocks %}
+          {%- liquid
+            assign col = block.settings.collection
+            assign card_img = block.settings.image
+            if card_img == blank and col != blank
+              assign card_img = col.featured_image
+            endif
+            assign card_title = block.settings.title
+            if card_title == blank and col != blank
+              assign card_title = col.title
+            endif
+            assign card_href = block.settings.url
+            if card_href == blank and col != blank
+              assign card_href = col.url
+            endif
+            if card_href == blank
+              assign card_href = block.settings.fallback_path | default: routes.all_products_collection_url
+            endif
+            assign ov_alpha = block.settings.overlay_opacity | divided_by: 100.0
+          -%}
+          <a
+            class="vv-tile{% if card_img != blank and section.settings.card_style == 'overlay' %} vv-tile--overlay{% endif %}"
+            href="{{ card_href }}"
+            data-tab-group="{{ block.settings.tab_group | handleize }}"
+            style="text-align: {{ section.settings.card_text_align }};"
+            {{ block.shopify_attributes }}
+          >
+            {% if card_img != blank %}
+              <div class="vv-tile-media" style="{% unless section.settings.card_style == 'overlay' %}aspect-ratio: {{ section.settings.image_ratio }};{% endunless %}">
+                <img
+                  src="{{ card_img | image_url: width: 900 }}"
+                  alt="{{ card_img.alt | default: card_title | escape }}"
+                  style="object-position: {{ block.settings.focal_point }};"
+                  width="600"
+                  height="750"
+                  loading="lazy"
+                >
+              </div>
+              {% if section.settings.card_style == 'overlay' %}
+                <div class="vv-tile-overlay" style="background: #000000; opacity: {{ ov_alpha }};"></div>
+              {% endif %}
+            {% endif %}
+            <div class="vv-tile-body" style="padding: {{ section.settings.card_pad }}px;">
+              {% if block.settings.badge != blank %}
+                <span class="vv-tile-badge">{{ block.settings.badge }}</span>
+              {% endif %}
+              <h3 class="vv-tile-title">{{ card_title }}</h3>
+              {% if block.settings.subtitle != blank %}
+                <p class="vv-tile-sub">{{ block.settings.subtitle }}</p>
+              {% endif %}
+            </div>
+          </a>
+        {% endfor %}
+      {% else %}
+        <a class="vv-tile" href="{{ routes.collections_url }}/cotton" data-tab-group="women" style="justify-content:center; text-align:center;">
+          <div class="vv-tile-body"><h3 class="vv-tile-title">Cotton</h3><p class="vv-tile-sub">Mul, Madurai, Kanchi & Jamdhani</p></div>
+        </a>
+        <a class="vv-tile" href="{{ routes.collections_url }}/silk" data-tab-group="women" style="justify-content:center; text-align:center;">
+          <div class="vv-tile-body"><h3 class="vv-tile-title">Silk</h3><p class="vv-tile-sub">Banarasi, Soft, Crepe & Kota</p></div>
+        </a>
+        <a class="vv-tile" href="{{ routes.collections_url }}/chiffon" data-tab-group="women" style="justify-content:center; text-align:center;">
+          <div class="vv-tile-body"><h3 class="vv-tile-title">Chiffon</h3><p class="vv-tile-sub">Printed, Embroidered & Bandhani</p></div>
+        </a>
+        <a class="vv-tile" href="{{ routes.collections_url }}/georgette" data-tab-group="women" style="justify-content:center; text-align:center;">
+          <div class="vv-tile-body"><h3 class="vv-tile-title">Georgette</h3><p class="vv-tile-sub">Satin, Floral & Festive Drapes</p></div>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Category Tabs",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Curated Collections"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Women & Men"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading (optional)"
+    },
+    {
+      "type": "text_alignment",
+      "id": "heading_align",
+      "label": "Header alignment",
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 34
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1C1C1C"
+    },
+    {
+      "type": "header",
+      "content": "Tab Pills"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tabs",
+      "label": "Show filter tabs",
+      "default": true
+    },
+    {
+      "type": "text_alignment",
+      "id": "tabs_align",
+      "label": "Tabs alignment",
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "tab_font_size",
+      "label": "Tab font size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "tab_radius",
+      "label": "Tab corner radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "color",
+      "id": "tab_bg",
+      "label": "Tab background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "tab_text",
+      "label": "Tab text color",
+      "default": "#1C1C1C"
+    },
+    {
+      "type": "color",
+      "id": "tab_border",
+      "label": "Tab border color",
+      "default": "#E5E5E5"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_bg",
+      "label": "Active tab background",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_text",
+      "label": "Active tab text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Cards & Grid"
+    },
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Card layout when image is set",
+      "options": [
+        { "value": "overlay", "label": "Text overlaid on image" },
+        { "value": "below", "label": "Text below image" }
+      ],
+      "default": "overlay"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image aspect ratio (text-below mode)",
+      "options": [
+        { "value": "3 / 4", "label": "Portrait (3:4)" },
+        { "value": "4 / 5", "label": "Editorial (4:5)" },
+        { "value": "1 / 1", "label": "Square (1:1)" },
+        { "value": "4 / 3", "label": "Landscape (4:3)" }
+      ],
+      "default": "3 / 4"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns (desktop)",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "label": "Columns (mobile)",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid gap",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "card_height_desktop",
+      "label": "Card min height (desktop)",
+      "min": 120,
+      "max": 560,
+      "step": 20,
+      "unit": "px",
+      "default": 220
+    },
+    {
+      "type": "range",
+      "id": "card_height_mobile",
+      "label": "Card min height (mobile)",
+      "min": 100,
+      "max": 420,
+      "step": 20,
+      "unit": "px",
+      "default": 160
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "card_pad",
+      "label": "Card padding",
+      "min": 12,
+      "max": 44,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "card_title_size",
+      "label": "Card title size",
+      "min": 14,
+      "max": 34,
+      "step": 1,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "text_alignment",
+      "id": "card_text_align",
+      "label": "Card text alignment",
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card background (no image)",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_text",
+      "label": "Card text color (no image)",
+      "default": "#1C1C1C"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section background (optional)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Category Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Tab label",
+          "default": "Women"
+        },
+        {
+          "type": "text",
+          "id": "filter_key",
+          "label": "Filter key (use 'all' to show every card)",
+          "default": "women"
+        }
+      ]
+    },
+    {
+      "type": "card",
+      "name": "Category Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_group",
+          "label": "Belongs to tab key (e.g. women, men, or all)",
+          "default": "women"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection (optional)"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom card image (optional)"
+        },
+        {
+          "type": "select",
+          "id": "focal_point",
+          "label": "Image focal point",
+          "options": [
+            { "value": "center center", "label": "Center" },
+            { "value": "top center", "label": "Top" },
+            { "value": "bottom center", "label": "Bottom" }
+          ],
+          "default": "center center"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "label": "Image overlay opacity",
+          "min": 0,
+          "max": 85,
+          "step": 5,
+          "unit": "%",
+          "default": 35
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Small eyebrow badge (optional)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Cotton"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle (optional)"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Custom link (overrides collection link)"
+        },
+        {
+          "type": "text",
+          "id": "fallback_path",
+          "label": "Fallback path",
+          "default": "/collections/all"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category Tabs",
+      "blocks": [
+        { "type": "tab", "settings": { "label": "Women", "filter_key": "women" } },
+        { "type": "tab", "settings": { "label": "Men", "filter_key": "men" } },
+        { "type": "tab", "settings": { "label": "Shop All", "filter_key": "all" } },
+        { "type": "card", "settings": { "tab_group": "women", "title": "Cotton", "subtitle": "Mul · Madurai · Kanchi · Jamdhani", "fallback_path": "/collections/cotton" } },
+        { "type": "card", "settings": { "tab_group": "women", "title": "Silk", "subtitle": "Banarasi · Soft · Crepe · Kota", "fallback_path": "/collections/silk" } },
+        { "type": "card", "settings": { "tab_group": "women", "title": "Chiffon", "subtitle": "Printed · Embroidered · Bandhani", "fallback_path": "/collections/chiffon" } },
+        { "type": "card", "settings": { "tab_group": "women", "title": "Georgette", "subtitle": "Satin · Printed · Floral", "fallback_path": "/collections/georgette" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

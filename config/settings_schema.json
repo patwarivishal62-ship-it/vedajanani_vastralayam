@@ -1,65 +1,559 @@
 [
   {
     "name": "theme_info",
+    "theme_name": "Vedajanani Editorial",
+    "theme_version": "2.0.0",
+    "theme_author": "Vedajanani Vastralayam",
+    "theme_documentation_url": "https://github.com/patwarivishal62-ship-it/vedajanani_vastralayam",
+    "theme_support_url": "https://github.com/patwarivishal62-ship-it/vedajanani_vastralayam"
+  },
+  {
+    "name": "Logo & Favicon",
     "settings": [
       {
-        "type": "text",
-        "id": "theme_name",
-        "label": "Theme name",
-        "default": "Vedajanani Editorial"
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon image",
+        "info": "Scaled down to 32 x 32px"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Default store logo",
+        "info": "Used as fallback if no logo is set in the Header section"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "label": "Default logo width",
+        "min": 60,
+        "max": 320,
+        "step": 10,
+        "unit": "px",
+        "default": 160
       }
     ]
   },
   {
-    "name": "Brand",
+    "name": "Colors",
     "settings": [
+      {
+        "type": "header",
+        "content": "Brand Palette"
+      },
       {
         "type": "color",
         "id": "color_ivory",
-        "label": "Ivory background",
+        "label": "Page background (Ivory)",
         "default": "#F9F6F1"
       },
       {
         "type": "color",
+        "id": "color_surface",
+        "label": "Card & surface background",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_surface_soft",
+        "label": "Secondary soft background",
+        "default": "#F3EDE3"
+      },
+      {
+        "type": "color",
         "id": "color_maroon",
-        "label": "Deep maroon",
+        "label": "Primary accent (Deep Maroon)",
         "default": "#5C1A24"
       },
       {
         "type": "color",
         "id": "color_gold",
-        "label": "Antique gold",
+        "label": "Secondary accent (Antique Gold)",
         "default": "#B9975B"
+      },
+      {
+        "type": "header",
+        "content": "Text & Borders"
       },
       {
         "type": "color",
         "id": "color_charcoal",
-        "label": "Charcoal",
+        "label": "Primary text (Charcoal)",
         "default": "#1C1C1C"
       },
       {
+        "type": "color",
+        "id": "color_text_muted",
+        "label": "Muted / secondary text",
+        "default": "#666666"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Borders & dividers",
+        "default": "#E5DFD5"
+      },
+      {
+        "type": "header",
+        "content": "Buttons & Pricing"
+      },
+      {
+        "type": "color",
+        "id": "color_btn_bg",
+        "label": "Primary button background",
+        "default": "#5C1A24"
+      },
+      {
+        "type": "color",
+        "id": "color_btn_text",
+        "label": "Primary button text",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_btn_hover_bg",
+        "label": "Primary button hover background",
+        "default": "#3E1018"
+      },
+      {
+        "type": "color",
+        "id": "color_btn_dark_bg",
+        "label": "Dark button background",
+        "default": "#1C1C1C"
+      },
+      {
+        "type": "color",
+        "id": "color_btn_dark_text",
+        "label": "Dark button text",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_sale_price",
+        "label": "Sale price & badge color",
+        "default": "#5C1A24"
+      },
+      {
+        "type": "color",
+        "id": "color_compare_price",
+        "label": "Compare-at price color",
+        "default": "#999999"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Headings"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "label": "Heading font",
+        "default": "playfair_display_n5"
+      },
+      {
         "type": "range",
-        "id": "card_radius",
-        "label": "Card corner radius (px)",
-        "min": 0,
-        "max": 32,
+        "id": "heading_scale",
+        "label": "Heading size scale",
+        "min": 70,
+        "max": 150,
+        "step": 5,
+        "unit": "%",
+        "default": 100
+      },
+      {
+        "type": "range",
+        "id": "heading_line_height",
+        "label": "Heading line height",
+        "min": 90,
+        "max": 160,
+        "step": 5,
+        "unit": "%",
+        "default": 110
+      },
+      {
+        "type": "range",
+        "id": "heading_letter_spacing",
+        "label": "Heading letter spacing",
+        "min": -2,
+        "max": 8,
+        "step": 0.5,
+        "unit": "px",
+        "default": 0
+      },
+      {
+        "type": "select",
+        "id": "heading_transform",
+        "label": "Heading text case",
+        "options": [
+          { "value": "none", "label": "Normal" },
+          { "value": "uppercase", "label": "Uppercase" },
+          { "value": "capitalize", "label": "Capitalize" }
+        ],
+        "default": "none"
+      },
+      {
+        "type": "header",
+        "content": "Product & Editorial Accent Font"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_accent",
+        "label": "Product & editorial serif font",
+        "default": "cormorant_n5"
+      },
+      {
+        "type": "range",
+        "id": "product_title_size",
+        "label": "Product card title size",
+        "min": 12,
+        "max": 28,
         "step": 1,
+        "unit": "px",
+        "default": 15
+      },
+      {
+        "type": "range",
+        "id": "product_title_spacing",
+        "label": "Product card title letter spacing",
+        "min": 0,
+        "max": 5,
+        "step": 0.5,
+        "unit": "px",
+        "default": 1
+      },
+      {
+        "type": "select",
+        "id": "product_title_transform",
+        "label": "Product card title case",
+        "options": [
+          { "value": "uppercase", "label": "Uppercase (Minimal Luxury)" },
+          { "value": "capitalize", "label": "Capitalize" },
+          { "value": "none", "label": "Normal" }
+        ],
+        "default": "uppercase"
+      },
+      {
+        "type": "header",
+        "content": "Body & Labels"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body font",
+        "default": "jost_n4"
+      },
+      {
+        "type": "range",
+        "id": "body_font_size",
+        "label": "Base body font size",
+        "min": 12,
+        "max": 22,
+        "step": 1,
+        "unit": "px",
+        "default": 15
+      },
+      {
+        "type": "range",
+        "id": "body_line_height",
+        "label": "Body line height",
+        "min": 120,
+        "max": 200,
+        "step": 5,
+        "unit": "%",
+        "default": 160
+      },
+      {
+        "type": "range",
+        "id": "eyebrow_font_size",
+        "label": "Eyebrow / kicker font size",
+        "min": 9,
+        "max": 18,
+        "step": 1,
+        "unit": "px",
+        "default": 11
+      },
+      {
+        "type": "range",
+        "id": "eyebrow_letter_spacing",
+        "label": "Eyebrow / kicker letter spacing",
+        "min": 0,
+        "max": 6,
+        "step": 0.5,
+        "unit": "px",
+        "default": 3
+      },
+      {
+        "type": "header",
+        "content": "Buttons"
+      },
+      {
+        "type": "range",
+        "id": "button_font_size",
+        "label": "Button font size",
+        "min": 10,
+        "max": 18,
+        "step": 1,
+        "unit": "px",
+        "default": 11
+      },
+      {
+        "type": "range",
+        "id": "button_letter_spacing",
+        "label": "Button letter spacing",
+        "min": 0,
+        "max": 5,
+        "step": 0.5,
+        "unit": "px",
+        "default": 2
+      },
+      {
+        "type": "select",
+        "id": "button_transform",
+        "label": "Button text case",
+        "options": [
+          { "value": "uppercase", "label": "Uppercase" },
+          { "value": "capitalize", "label": "Capitalize" },
+          { "value": "none", "label": "Normal" }
+        ],
+        "default": "uppercase"
+      }
+    ]
+  },
+  {
+    "name": "Layout & Spacing",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "label": "Maximum page container width",
+        "min": 1000,
+        "max": 1800,
+        "step": 20,
+        "unit": "px",
+        "default": 1360
+      },
+      {
+        "type": "range",
+        "id": "page_padding_desktop",
+        "label": "Page side padding (desktop)",
+        "min": 12,
+        "max": 80,
+        "step": 4,
+        "unit": "px",
+        "default": 32
+      },
+      {
+        "type": "range",
+        "id": "page_padding_mobile",
+        "label": "Page side padding (mobile)",
+        "min": 10,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "section_spacing",
+        "label": "Default section vertical spacing",
+        "min": 20,
+        "max": 120,
+        "step": 4,
+        "unit": "px",
+        "default": 64
+      },
+      {
+        "type": "range",
+        "id": "grid_gap",
+        "label": "Default grid gap",
+        "min": 8,
+        "max": 48,
+        "step": 2,
+        "unit": "px",
         "default": 20
       }
     ]
   },
   {
-    "name": "Header",
+    "name": "Cards & Buttons",
     "settings": [
       {
-        "type": "text",
-        "id": "announcement",
-        "label": "Announcement bar",
-        "default": "Free shipping above \u20b9999 \u00b7 Festive Collection Live \u00b7 COD Available"
+        "type": "header",
+        "content": "Cards"
+      },
+      {
+        "type": "range",
+        "id": "card_radius",
+        "label": "Card corner radius",
+        "min": 0,
+        "max": 32,
+        "step": 1,
+        "unit": "px",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "image_radius",
+        "label": "Image corner radius",
+        "min": 0,
+        "max": 32,
+        "step": 1,
+        "unit": "px",
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "card_border_width",
+        "label": "Card border thickness",
+        "min": 0,
+        "max": 4,
+        "step": 1,
+        "unit": "px",
+        "default": 0
+      },
+      {
+        "type": "select",
+        "id": "card_shadow",
+        "label": "Card shadow",
+        "options": [
+          { "value": "none", "label": "None" },
+          { "value": "subtle", "label": "Subtle" },
+          { "value": "medium", "label": "Medium" },
+          { "value": "lifted", "label": "Lifted" }
+        ],
+        "default": "subtle"
       },
       {
         "type": "header",
-        "content": "Header right corner: Search | Account | Bag. Menu: Shop All (By Fabric + By Occasion) | Weddings | Women | Men | About | Journal"
+        "content": "Product Cards"
+      },
+      {
+        "type": "select",
+        "id": "product_aspect_ratio",
+        "label": "Product image ratio",
+        "options": [
+          { "value": "3 / 4", "label": "Portrait (3:4)" },
+          { "value": "4 / 5", "label": "Editorial (4:5)" },
+          { "value": "2 / 3", "label": "Tall (2:3)" },
+          { "value": "1 / 1", "label": "Square (1:1)" }
+        ],
+        "default": "3 / 4"
+      },
+      {
+        "type": "text_alignment",
+        "id": "product_card_align",
+        "label": "Product card text alignment",
+        "default": "left"
+      },
+      {
+        "type": "checkbox",
+        "id": "product_show_vendor",
+        "label": "Show vendor on product cards",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "product_show_sale_badge",
+        "label": "Show sale badge on product cards",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "product_show_quick_add",
+        "label": "Show Quick Add button on product cards",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Buttons"
+      },
+      {
+        "type": "range",
+        "id": "button_radius",
+        "label": "Button corner radius",
+        "min": 0,
+        "max": 50,
+        "step": 2,
+        "unit": "px",
+        "default": 50,
+        "info": "Set to 50px for rounded pill buttons or 0px for sharp corners"
+      },
+      {
+        "type": "range",
+        "id": "button_padding_y",
+        "label": "Button vertical padding",
+        "min": 8,
+        "max": 24,
+        "step": 1,
+        "unit": "px",
+        "default": 14
+      },
+      {
+        "type": "range",
+        "id": "button_padding_x",
+        "label": "Button horizontal padding",
+        "min": 16,
+        "max": 56,
+        "step": 2,
+        "unit": "px",
+        "default": 28
+      }
+    ]
+  },
+  {
+    "name": "Cart & Shipping",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_cart_drawer",
+        "label": "Open slide-out cart drawer on Add to Cart",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "free_shipping_threshold",
+        "label": "Free shipping threshold (in store currency)",
+        "default": 999
+      },
+      {
+        "type": "text",
+        "id": "shipping_note",
+        "label": "Cart shipping note",
+        "default": "Shipping & taxes calculated at checkout. Free shipping above ₹999."
+      }
+    ]
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "text",
+        "id": "social_whatsapp",
+        "label": "WhatsApp URL"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest",
+        "label": "Pinterest URL"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube",
+        "label": "YouTube URL"
       }
     ]
   }

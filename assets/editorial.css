@@ -1,43 +1,536 @@
-.hero-editorial{padding:64px 24px;max-width:1280px;margin:0 auto}
-.masthead{display:flex;justify-content:space-between;border-top:1px solid var(--char);border-bottom:1px solid var(--char);padding:12px 0;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:32px;flex-wrap:wrap;gap:8px}
-.editorial-title{font-family:'Playfair Display',serif;font-size:72px;line-height:.95;margin:16px 0}
-.editorial-title em{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--maroon)}
-.lookbook-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.lookbook-grid a{background:var(--ivory);border-radius:20px;padding:40px;text-align:center;text-decoration:none;color:var(--char)}
-.collections-grid,.price-grid,.occasion-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:24px}
-.collections-grid a,.price-grid a,.occasion-grid a{background:#fff;border-radius:20px;padding:32px;text-align:center;text-decoration:none;color:var(--char)}
-.founder-letter{max-width:760px;margin:0 auto;padding:48px 24px;font-family:'Cormorant Garamond',serif;font-size:22px;line-height:1.6}
-.newsletter{background:#F3EDE3;border-radius:28px;margin:24px;padding:48px;text-align:center}
-@media(max-width:768px){.editorial-title{font-size:44px}.collections-grid,.price-grid,.occasion-grid,.lookbook-grid{grid-template-columns:1fr 1fr}}
+/* Vedajanani Editorial — Prada x Ralph Lauren Layout & Section Primitives */
 
-/* V3 Prada x Ralph Lauren */
-.hero-lux{min-height:88vh;display:flex;align-items:flex-end;color:#fff;background:linear-gradient(160deg,#1A0A0E,#5C1A24 55%,#8A3A2E);padding:64px 24px;border-radius:0}
-.hero-lux h1{font-family:'Playfair Display',serif;font-size:76px;line-height:.95;max-width:720px}
-.hero-lux .kicker{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#D9C7A5}
-.link-cta{color:#fff;border-bottom:1px solid #fff;padding-bottom:6px;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none}
-.campaigns{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:24px}
-.campaign{min-height:520px;display:flex;align-items:flex-end;color:#fff;border-radius:24px;padding:32px}
-.cat-tabs{display:flex;gap:8px;justify-content:center}
-.cat-tab{padding:10px 22px;border:1px solid #E5E5E5;border-radius:999px;background:#fff}
-.cat-tab.active{background:#111;color:#fff}
-.product-card{border:none;background:transparent}
-.product-card img{border-radius:16px}
-@media(max-width:768px){.hero-lux h1{font-size:44px}.campaigns{grid-template-columns:1fr}.campaign{min-height:380px}}
+/* Generic Editorial Banner Engine (Hero & Image Banner) */
+.vv-banner-wrap--contained {
+  max-width: var(--page-width, 1360px);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--page-pad-desktop, 32px);
+  padding-right: var(--page-pad-desktop, 32px);
+}
+.vv-banner-wrap--inset {
+  padding-left: var(--page-pad-desktop, 32px);
+  padding-right: var(--page-pad-desktop, 32px);
+}
 
-/* V4 Desktop menubar vs Mobile drawer */
-.desktop-menubar{display:none;background:#fff;border-top:1px solid #E5E5E5;border-bottom:1px solid #E5E5E5;justify-content:center;gap:4px;flex-wrap:wrap}
-.desktop-menubar a{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#111;padding:14px 16px;text-decoration:none}
-@media(min-width:1101px){.desktop-menubar{display:flex}.burger{display:none}}
-.mobile-drawer{position:fixed;top:0;left:-320px;width:300px;height:100vh;background:#fff;z-index:200;transition:.3s;padding:24px;overflow:auto}
-.mobile-drawer.open{left:0}
-.mobile-drawer a{display:block;padding:12px 0;border-bottom:1px solid #eee;text-decoration:none;color:#111}
-@media(min-width:1101px){.mobile-drawer{display:none}}
+.vv-banner {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+}
 
-.shopall-wrap{position:relative;display:inline-block}
-.shopall-dropdown{display:none;position:absolute;left:50%;transform:translateX(-50%);top:100%;background:#fff;border:1px solid #E5E5E5;border-radius:16px;box-shadow:0 20px 40px rgba(0,0,0,.14);padding:24px;min-width:560px;z-index:130}
-.shopall-dropdown .dd-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px}
-.shopall-dropdown h4{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#B9975B;margin-bottom:10px}
-.shopall-dropdown a{display:block;font-size:13px;color:#555;padding:6px 0;text-decoration:none}
-@media(min-width:1101px){.shopall-wrap:hover .shopall-dropdown{display:block}}
-.mm-shopall-sub{padding-left:16px;border-left:2px solid #F3EDE3;margin:4px 0 8px 8px}
-.mm-shopall-sub .mm-subhead{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#B9975B;margin:10px 0 4px}
+.vv-banner-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.vv-banner-media img {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+.vv-banner-media .img-mobile { display: none; }
+
+.vv-banner--adapt {
+  display: grid;
+}
+.vv-banner--adapt .vv-banner-media {
+  position: relative;
+  grid-area: 1 / 1;
+}
+.vv-banner--adapt .vv-banner-media img {
+  height: auto;
+}
+.vv-banner--adapt .vv-banner-overlay {
+  grid-area: 1 / 1;
+}
+.vv-banner--adapt .vv-banner-inner {
+  grid-area: 1 / 1;
+}
+
+.vv-banner-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.vv-banner-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--page-width, 1360px);
+  margin: 0 auto;
+  display: flex;
+}
+
+.vv-banner-content {
+  width: 100%;
+  border-radius: var(--radius, 20px);
+}
+
+.vv-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+/* Campaign Blocks (Ralph Lauren Lifestyle) */
+.campaigns-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--grid-gap, 20px);
+}
+.campaign-card {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  border-radius: var(--radius, 20px);
+  color: #FFFFFF;
+}
+.campaign-card-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.campaign-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+  transition: transform 0.6s ease;
+}
+.campaign-card:hover .campaign-card-media img {
+  transform: scale(1.03);
+}
+.campaign-card-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.campaign-card-body {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+/* Category Tabs */
+.cat-tabs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+.cat-tab {
+  padding: 10px 22px;
+  border: 1px solid var(--border-color, #E5DFD5);
+  border-radius: 999px;
+  background: var(--surface, #FFFFFF);
+  color: var(--char, #1C1C1C);
+  font-family: var(--font-body, 'Jost', sans-serif);
+  font-size: 12px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.cat-tab.active {
+  background: var(--char, #1C1C1C);
+  color: #FFFFFF;
+  border-color: var(--char, #1C1C1C);
+}
+
+/* Editorial Media Cards (Collections, Lookbook, Occasion, Category Cards) */
+.vv-grid {
+  display: grid;
+  gap: var(--grid-gap, 20px);
+}
+
+.vv-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  background: var(--surface, #FFFFFF);
+  border-radius: var(--radius, 20px);
+  border: var(--card-border-w, 0px) solid var(--border-color, #E5DFD5);
+  box-shadow: var(--card-shadow, none);
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.vv-tile:hover {
+  transform: translateY(-3px);
+}
+.vv-tile--hidden { display: none !important; }
+
+.vv-tile-media {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--surface-soft, #F3EDE3);
+}
+.vv-tile-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+  transition: transform 0.55s ease;
+}
+.vv-tile:hover .vv-tile-media img {
+  transform: scale(1.04);
+}
+.vv-tile--overlay {
+  justify-content: flex-end;
+  color: #FFFFFF;
+}
+.vv-tile--overlay .vv-tile-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.vv-tile--overlay .vv-tile-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.vv-tile--overlay .vv-tile-body {
+  position: relative;
+  z-index: 2;
+}
+.vv-tile-body {
+  padding: 20px;
+}
+.vv-tile-badge {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold, #B9975B);
+  margin-bottom: 6px;
+}
+.vv-tile-title {
+  font-family: var(--font-heading, 'Playfair Display', serif);
+  margin: 0 0 4px;
+}
+.vv-tile-sub {
+  font-size: 13px;
+  opacity: 0.82;
+  margin: 0;
+}
+
+/* Price Tier Cards */
+.price-tier-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-decoration: none;
+  color: inherit;
+  background: var(--surface, #FFFFFF);
+  border-radius: var(--radius, 20px);
+  border: 1px solid var(--border-color, #E5DFD5);
+  box-shadow: var(--card-shadow, none);
+  overflow: hidden;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+.price-tier-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--gold, #B9975B);
+}
+
+/* Testimonials */
+.testimonial-card {
+  background: var(--surface, #FFFFFF);
+  border-radius: var(--radius, 20px);
+  border: 1px solid var(--border-color, #E5DFD5);
+  box-shadow: var(--card-shadow, none);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+}
+.testimonial-stars {
+  color: var(--gold, #B9975B);
+  letter-spacing: 3px;
+  font-size: 14px;
+}
+.testimonial-quote {
+  margin: 0;
+  font-family: var(--font-accent, 'Cormorant', serif);
+  font-size: 20px;
+  line-height: 1.5;
+}
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.testimonial-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.testimonial-meta strong {
+  display: block;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.testimonial-meta span {
+  font-size: 12px;
+  color: var(--text-muted, #666666);
+}
+
+/* Blog Cards */
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  background: var(--surface, #FFFFFF);
+  border-radius: var(--radius, 20px);
+  border: var(--card-border-w, 0px) solid var(--border-color, #E5DFD5);
+  box-shadow: var(--card-shadow, none);
+  overflow: hidden;
+  transition: transform 0.25s ease;
+}
+.blog-card:hover { transform: translateY(-3px); }
+.blog-card-media {
+  overflow: hidden;
+  background: var(--surface-soft, #F3EDE3);
+}
+.blog-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+}
+.blog-card-body { padding: 20px; }
+.blog-card-meta {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted, #777777);
+  margin-bottom: 8px;
+}
+.blog-card-title { margin: 0 0 8px; }
+.blog-card-excerpt {
+  font-size: 14px;
+  color: var(--text-muted, #666666);
+  margin: 0 0 14px;
+}
+
+/* Newsletter */
+.newsletter-box {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius, 28px);
+}
+.newsletter-form-row {
+  display: flex;
+  gap: 10px;
+  max-width: 520px;
+  margin-top: 20px;
+}
+.newsletter-form-row--center { margin-left: auto; margin-right: auto; }
+.newsletter-form-row--right { margin-left: auto; }
+.newsletter-form-row input {
+  flex: 1;
+  border-radius: 999px;
+}
+.newsletter-form-row button { flex-shrink: 0; }
+
+/* Founder Letter */
+.founder-grid {
+  display: grid;
+  gap: 40px;
+  align-items: center;
+}
+.founder-grid--split {
+  grid-template-columns: 1fr 1.15fr;
+}
+.founder-grid--reverse .founder-media { order: 2; }
+.founder-body {
+  font-family: var(--font-accent, 'Cormorant', serif);
+  font-size: 22px;
+  line-height: 1.65;
+}
+.founder-sig {
+  margin-top: 20px;
+  font-style: italic;
+  color: var(--maroon, #5C1A24);
+  font-size: 20px;
+}
+
+/* Main Product Page */
+.product-layout {
+  display: grid;
+  gap: 44px;
+  align-items: start;
+}
+.product-gallery-main {
+  overflow: hidden;
+  background: var(--surface-soft, #F3EDE3);
+  border-radius: var(--radius, 20px);
+}
+.product-gallery-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+}
+.product-thumbs {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+.product-thumb-btn {
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  overflow: hidden;
+  background: none;
+  cursor: pointer;
+}
+.product-thumb-btn.is-active {
+  border-color: var(--maroon, #5C1A24);
+}
+.product-thumb-btn img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.product-info-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.variant-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.variant-pill {
+  padding: 9px 16px;
+  border: 1px solid var(--border-color, #E5DFD5);
+  border-radius: 999px;
+  background: var(--surface, #FFFFFF);
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+.variant-pill.is-selected {
+  background: var(--maroon, #5C1A24);
+  color: #FFFFFF;
+  border-color: var(--maroon, #5C1A24);
+}
+.vv-accordion {
+  border-top: 1px solid var(--border-color, #E5DFD5);
+  border-bottom: 1px solid var(--border-color, #E5DFD5);
+}
+.vv-accordion summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 15px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.vv-accordion summary::-webkit-details-marker { display: none; }
+.vv-accordion-body {
+  padding-bottom: 16px;
+  font-size: 14px;
+  color: var(--text-muted, #555555);
+}
+
+/* Footer */
+.site-footer {
+  background: var(--char, #1C1C1C);
+  color: #BDBDBD;
+}
+.footer-grid {
+  display: grid;
+  gap: 32px;
+}
+.footer-col h4 {
+  font-family: var(--font-body, 'Jost', sans-serif);
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  margin: 0 0 14px;
+  font-weight: 600;
+}
+.footer-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.footer-col li { margin-bottom: 9px; }
+.footer-col a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.2s ease;
+}
+.footer-col a:hover { color: var(--gold, #B9975B); }
+.footer-bottom {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+}
+.footer-socials {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.footer-socials a {
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+}
+.footer-payments {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.footer-payments svg { height: 22px; width: auto; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .vv-banner-wrap--contained,
+  .vv-banner-wrap--inset {
+    padding-left: var(--page-pad-mobile, 16px);
+    padding-right: var(--page-pad-mobile, 16px);
+  }
+  .vv-banner-media .img-desktop.has-mobile { display: none; }
+  .vv-banner-media .img-mobile { display: block; }
+  .founder-grid--split,
+  .product-layout {
+    grid-template-columns: 1fr !important;
+  }
+  .founder-grid--reverse .founder-media { order: 0; }
+  .newsletter-form-row { flex-direction: column; }
+}
