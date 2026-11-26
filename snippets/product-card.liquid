@@ -1,0 +1,5 @@
+<div class="product-card">
+  <a href="{{ product.url }}"><img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.title }}" loading="lazy"></a>
+  <h3><a href="{{ product.url }}">{{ product.title }}</a></h3>
+  {% render 'price', product: product %}
+</div>

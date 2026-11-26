@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vedajanani Vastralayam — Premium Sarees | Cotton, Silk, Chiffon & Georgette</title>
+<meta name="description" content="Handpicked premium sarees in Cotton, Silk, Chiffon & Georgette. Woven with grace, worn with pride.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ivory:#F9F6F1;--cream:#F3EDE3;--maroon:#5C1A24;--maroon2:#7A2230;--gold:#B9975B;--gold2:#D9C7A5;--char:#1C1C1C;--grey:#6B6B6B;--line:#E8E0D3;--white:#fff}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',system-ui,sans-serif;background:var(--ivory);color:var(--char);line-height:1.6;-webkit-font-smoothing:antialiased}
+.serif{font-family:'Cormorant Garamond',Georgia,serif}.display{font-family:'Playfair Display',Georgia,serif}
+a{color:inherit;text-decoration:none;cursor:pointer}button{font-family:inherit;cursor:pointer}
+.wrap{max-width:1280px;margin:0 auto;padding:0 48px}
+@media(max-width:768px){.wrap{padding:0 20px}}
+/* Announcement */
+.announce{background:var(--maroon);color:#F3EDE3;text-align:center;padding:9px 16px;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;position:relative}
+.announce b{color:var(--gold2)}
+/* Header */
+header{position:sticky;top:0;z-index:100;background:rgba(249,246,241,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.header-in{display:flex;align-items:center;justify-content:space-between;padding:16px 0;gap:20px}
+.logo{text-align:center;line-height:1}
+.logo .name{font-family:'Playfair Display',serif;font-size:24px;letter-spacing:1px;color:var(--maroon)}
+.logo .sub{font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-top:3px}
+nav.main{display:flex;gap:26px;font-size:12px;letter-spacing:1.8px;text-transform:uppercase;font-weight:500}
+nav.main a{padding:8px 0;position:relative}
+nav.main a.active{color:var(--maroon)}nav.main a.active::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--gold)}
+nav.main a:hover{color:var(--maroon)}
+.icons{display:flex;gap:18px;align-items:center;font-size:19px}
+.icons span{cursor:pointer;position:relative}
+.cart-count{position:absolute;top:-7px;right:-10px;background:var(--maroon);color:#fff;font-size:10px;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-weight:600}
+.burger{display:none;font-size:22px;background:none;border:none}
+@media(max-width:1100px){nav.main{display:none}.burger{display:block}}
+/* Mega menu */
+.mega{position:absolute;left:0;right:0;top:100%;background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line);box-shadow:0 20px 40px rgba(0,0,0,.08);display:none;padding:36px 0}
+.has-mega:hover .mega,.has-mega:focus-within .mega{display:block}
+.mega-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+.mega h4{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.mega a{display:block;font-size:14px;color:var(--grey);padding:5px 0;text-transform:none;letter-spacing:0}
+.mega a:hover{color:var(--maroon);padding-left:4px}
+.mega a::after{display:none!important}
+/* Buttons */
+.btn{display:inline-block;background:var(--maroon);color:#fff;padding:14px 28px;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;font-weight:600;border:1px solid var(--maroon);transition:.25s}
+.btn:hover{background:var(--char);border-color:var(--char)}
+.btn.light{background:#fff;color:var(--char);border-color:#fff}
+.btn.light:hover{background:var(--gold2)}
+.btn.outline{background:transparent;color:#fff;border-color:rgba(255,255,255,.7)}
+.btn.outline:hover{background:#fff;color:var(--char)}
+.btn.dark{background:var(--char);border-color:var(--char)}
+.btn.gold{background:var(--gold);border-color:var(--gold)}
+.btn.full{width:100%;text-align:center}
+.eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.sec{padding:88px 0}
+.sec.white{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.sec-head{text-align:center;margin-bottom:48px}
+.sec-head h2{font-family:'Playfair Display',serif;font-size:40px;line-height:1.15;font-weight:600}
+.sec-head p{color:var(--grey);max-width:640px;margin:12px auto 0;font-weight:300;font-size:16px}
+@media(max-width:768px){.sec{padding:56px 0}.sec-head h2{font-size:30px}}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+@media(max-width:1000px){.grid4{grid-template-columns:1fr 1fr}.grid3{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.grid2,.grid3,.grid4{grid-template-columns:1fr 1fr}}
+/* Hero */
+.hero{background:linear-gradient(120deg,#2B0E14 0%,#5C1A24 42%,#8A3A2E 72%,#B9975B 130%);color:#fff;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 78% 30%,rgba(217,199,165,.35),transparent 42%),radial-gradient(circle at 20% 80%,rgba(255,255,255,.08),transparent 40%)}
+.hero-in{position:relative;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;padding:80px 0;align-items:center;min-height:560px}
+@media(max-width:900px){.hero-in{grid-template-columns:1fr;padding:48px 0;min-height:auto}}
+.hero h1{font-family:'Playfair Display',serif;font-size:62px;line-height:1.05;font-weight:600}
+.hero h1 em{font-family:'Cormorant Garamond',serif;font-weight:500;font-style:italic;color:var(--gold2)}
+.hero p{font-weight:300;opacity:.92;font-size:17px;max-width:520px;margin:18px 0 28px}
+.hero-stats{display:flex;gap:32px;margin-top:36px;flex-wrap:wrap}
+.hero-stats div b{font-family:'Playfair Display',serif;font-size:26px;display:block}
+.hero-stats div span{font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:.75}
+.hero-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);padding:28px;backdrop-filter:blur(6px)}
+.hero-card .big{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;line-height:1.3}
+.hero-card .small{font-size:13px;opacity:.85;font-weight:300;margin-top:10px}
+.trust{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-bottom:1px solid var(--line)}
+.trust div{padding:18px;text-align:center;font-size:11px;letter-spacing:1.8px;text-transform:uppercase;border-right:1px solid var(--line)}
+.trust div:last-child{border:none}.trust span{display:block;font-size:20px;margin-bottom:6px;color:var(--gold)}
+@media(max-width:700px){.trust{grid-template-columns:1fr 1fr}.trust div{border-bottom:1px solid var(--line)}}
+/* Cards */
+.coll-card{aspect-ratio:3/4;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;color:#fff;cursor:pointer}
+.coll-card::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.62),transparent 55%)}
+.coll-card>*{position:relative;z-index:2}
+.coll-card h3{font-family:'Playfair Display',serif;font-size:26px}
+.coll-card p{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;opacity:.9;margin:6px 0 12px}
+.coll-card .go{font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:var(--gold2)}
+.coll-card:hover{transform:translateY(-4px);transition:.3s}
+.price-card{background:#fff;border:1px solid var(--line);padding:32px 24px;text-align:center;cursor:pointer;transition:.25s}
+.price-card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 16px 32px rgba(0,0,0,.06)}
+.price-card.featured{border:1.5px solid var(--gold);background:linear-gradient(180deg,#FFFDF8,#F9F6F1)}
+.price-card .range{font-family:'Playfair Display',serif;font-size:30px;color:var(--maroon);margin:10px 0}
+.occ-card{aspect-ratio:4/3;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:22px;color:#fff;cursor:pointer}
+.occ-card::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6),transparent 55%)}
+.occ-card>*{position:relative;z-index:2}.occ-card h3{font-family:'Playfair Display',serif;font-size:22px}.occ-card p{font-size:12px;opacity:.9;letter-spacing:1px;text-transform:uppercase;margin-top:4px}
+/* Product */
+.prod{background:#fff;border:1px solid var(--line);overflow:hidden;transition:.25s;cursor:pointer}
+.prod:hover{transform:translateY(-4px);box-shadow:0 18px 36px rgba(0,0,0,.08)}
+.prod-img{aspect-ratio:3/4;position:relative;display:grid;place-items:center;overflow:hidden}
+.prod-img .motif{font-family:'Cormorant Garamond',serif;font-size:72px;color:rgba(255,255,255,.85);text-shadow:0 2px 12px rgba(0,0,0,.15)}
+.prod-img .pattern{position:absolute;inset:0;opacity:.18;background-image:radial-gradient(circle at 20% 30%,#fff 1.5px,transparent 1.6px),radial-gradient(circle at 70% 60%,#fff 1.5px,transparent 1.6px);background-size:36px 36px}
+.badge{position:absolute;top:12px;left:12px;background:var(--maroon);color:#fff;font-size:9px;letter-spacing:1.8px;text-transform:uppercase;padding:5px 9px;z-index:3}
+.badge.gold{background:var(--gold)}.badge.char{background:var(--char)}
+.wish{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:16px;z-index:3;border:1px solid var(--line)}
+.wish.active{color:var(--maroon);background:#FFF0F0}
+.quick{position:absolute;left:12px;right:12px;bottom:12px;background:#fff;padding:11px;text-align:center;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:600;opacity:0;transform:translateY(8px);transition:.25s;z-index:3}
+.prod:hover .quick{opacity:1;transform:none}
+.prod-body{padding:16px}
+.prod-body .cat{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
+.prod-body h4{font-family:'Cormorant Garamond',serif;font-size:19px;line-height:1.25;margin:5px 0}
+.prod-body .price{font-weight:600;font-size:15px}.prod-body .price s{color:#999;font-weight:300;margin-left:6px;font-size:13px}
+.prod-body .meta{font-size:12px;color:var(--grey);margin-top:4px}
+.stars{color:var(--gold);font-size:12px;letter-spacing:1px}
+/* Split */
+.split{display:grid;grid-template-columns:1fr 1fr;background:#fff;border:1px solid var(--line)}
+.split-img{padding:48px;color:#fff;display:flex;flex-direction:column;justify-content:center;min-height:320px}
+.split-img h3{font-family:'Playfair Display',serif;font-size:32px;line-height:1.2}
+.split-txt{padding:48px}
+.split-txt h3{font-family:'Playfair Display',serif;font-size:28px;margin-bottom:12px}
+.split-txt p{color:var(--grey);font-weight:300}
+@media(max-width:800px){.split{grid-template-columns:1fr}.split-img,.split-txt{padding:28px}}
+/* Page */
+.page{display:none}.page.active{display:block}
+.breadcrumb{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey);padding:20px 0}
+.breadcrumb b{color:var(--maroon)}
+.page-head{text-align:center;padding:32px 0 36px;border-bottom:1px solid var(--line);margin-bottom:32px}
+.page-head h1{font-family:'Playfair Display',serif;font-size:44px}
+.page-head p{color:var(--grey);max-width:620px;margin:10px auto 0;font-weight:300}
+/* Collection layout */
+.shop-layout{display:grid;grid-template-columns:260px 1fr;gap:32px;align-items:start}
+@media(max-width:900px){.shop-layout{grid-template-columns:1fr}.filters{display:none}.filters.open{display:block}}
+.filters{background:#fff;border:1px solid var(--line);padding:24px;position:sticky;top:110px}
+.filters h3{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:16px}
+.filters h4{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin:20px 0 8px}
+.filters label{display:block;font-size:14px;color:var(--grey);padding:5px 0;cursor:pointer}
+.filters input{accent-color:var(--maroon);margin-right:8px}
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:12px}
+.toolbar select{padding:10px 14px;border:1px solid var(--line);background:#fff;font-family:inherit;font-size:13px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.chip{border:1px solid var(--line);background:#fff;padding:8px 14px;font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
+.chip.active{background:var(--maroon);color:#fff;border-color:var(--maroon)}
+/* PDP */
+.pdp{display:grid;grid-template-columns:1.05fr 1fr;gap:40px}
+@media(max-width:900px){.pdp{grid-template-columns:1fr}}
+.gallery-main{aspect-ratio:3/4;display:grid;place-items:center;position:relative;overflow:hidden}
+.gallery-main .motif{font-family:'Cormorant Garamond',serif;font-size:110px;color:rgba(255,255,255,.9)}
+.thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
+.thumb{aspect-ratio:1;display:grid;place-items:center;font-size:22px;color:#fff;cursor:pointer;border:2px solid transparent}
+.thumb.active{border-color:var(--gold)}
+.colour-dot{width:36px;height:36px;border-radius:50%;cursor:pointer;border:2px solid #fff;box-shadow:0 0 0 1px var(--line)}
+.colour-dot.active{box-shadow:0 0 0 2px var(--gold)}
+.qty{display:flex;align-items:center;border:1px solid var(--line);background:#fff}
+.qty button{width:44px;height:48px;background:none;border:none;font-size:18px}
+.qty span{width:36px;text-align:center;font-weight:600}
+.accordion{border:1px solid var(--line);background:#fff;margin-top:16px}
+.acc-item{border-bottom:1px solid var(--line)}.acc-item:last-child{border:none}
+.acc-head{width:100%;background:none;border:none;padding:16px;display:flex;justify-content:space-between;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;text-align:left}
+.acc-body{padding:0 16px 16px;font-size:14px;color:var(--grey);display:none}
+.acc-item.open .acc-body{display:block}
+/* Cart / Checkout */
+.cart-layout{display:grid;grid-template-columns:1.4fr 1fr;gap:32px;align-items:start}
+@media(max-width:900px){.cart-layout{grid-template-columns:1fr}}
+.cart-item{display:flex;gap:16px;background:#fff;border:1px solid var(--line);padding:16px;margin-bottom:12px}
+.cart-thumb{width:80px;height:100px;flex-shrink:0;display:grid;place-items:center;font-size:28px;color:#fff}
+.summary{background:#fff;border:1px solid var(--line);padding:24px;position:sticky;top:110px}
+.summary h3{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:16px}
+.summary .row{display:flex;justify-content:space-between;padding:8px 0;font-size:14px;color:var(--grey)}
+.summary .row.total{border-top:1px solid var(--line);margin-top:10px;padding-top:14px;color:var(--char);font-weight:600;font-size:16px}
+.progress{height:8px;background:var(--cream);overflow:hidden;margin:10px 0}
+.progress div{height:100%;background:var(--gold);transition:.4s}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-grid .full{grid-column:1/-1}
+.field label{display:block;font-size:11px;letter-spacing:1.8px;text-transform:uppercase;color:var(--grey);margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;padding:13px 14px;border:1px solid var(--line);background:#fff;font-family:inherit;font-size:14px;outline:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold)}
+.pay-opt{display:flex;gap:12px;border:1px solid var(--line);background:#fff;padding:16px;margin-bottom:10px;cursor:pointer;align-items:flex-start}
+.pay-opt.active{border-color:var(--maroon);background:#FFFDF8}
+.pay-opt input{accent-color:var(--maroon);margin-top:4px}
+/* Thank you */
+.thank{text-align:center;padding:64px 24px;background:#fff;border:1px solid var(--line);max-width:720px;margin:0 auto}
+.check{width:84px;height:84px;border-radius:50%;background:var(--maroon);color:#fff;font-size:38px;display:grid;place-items:center;margin:0 auto 20px}
+.timeline{display:flex;justify-content:space-between;margin:28px 0;position:relative}
+.timeline::before{content:"";position:absolute;top:16px;left:10%;right:10%;height:2px;background:var(--line)}
+.timeline div{position:relative;z-index:2;text-align:center;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--grey);flex:1}
+.timeline div i{display:block;width:32px;height:32px;border-radius:50%;background:#fff;border:2px solid var(--gold);margin:0 auto 8px;font-style:normal;line-height:28px;color:var(--maroon)}
+.timeline div.done{color:var(--maroon);font-weight:600}
+/* Blog */
+.blog-card{background:#fff;border:1px solid var(--line);overflow:hidden;cursor:pointer;transition:.25s}
+.blog-card:hover{transform:translateY(-4px);box-shadow:0 16px 32px rgba(0,0,0,.07)}
+.blog-img{aspect-ratio:16/10;display:grid;place-items:center;color:#fff;font-size:40px}
+.blog-body{padding:22px}
+.blog-body .date{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
+.blog-body h3{font-family:'Playfair Display',serif;font-size:22px;line-height:1.3;margin:8px 0}
+.blog-body p{color:var(--grey);font-size:14px;font-weight:300}
+.article{max-width:760px;margin:0 auto}
+.article h2{font-family:'Playfair Display',serif;font-size:38px;line-height:1.2;margin:16px 0}
+.article p{color:#444;font-weight:300;font-size:17px;margin:16px 0;line-height:1.8}
+.article h3{font-family:'Playfair Display',serif;font-size:24px;margin:28px 0 8px}
+/* Testimonial */
+.testi{background:#fff;border:1px solid var(--line);padding:32px;text-align:center}
+.testi .stars{font-size:18px}
+.testi p{font-family:'Cormorant Garamond',serif;font-size:21px;font-style:italic;line-height:1.5;margin:14px 0}
+.insta-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.insta-strip div{aspect-ratio:1;display:grid;place-items:center;color:#fff;font-size:22px}
+@media(max-width:700px){.insta-strip{grid-template-columns:repeat(3,1fr)}}
+/* Footer */
+footer{background:var(--char);color:#AAA;padding:64px 0 0;margin-top:0}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:32px;padding-bottom:40px}
+@media(max-width:900px){.footer-grid{grid-template-columns:1fr 1fr}}
+footer h4{color:#fff;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:14px}
+footer a{display:block;padding:5px 0;font-size:14px;font-weight:300}
+footer a:hover{color:var(--gold2)}
+.footer-bottom{border-top:1px solid #333;padding:20px 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px}
+/* Drawer / Search / Toast */
+.drawer{position:fixed;top:0;right:-420px;width:400px;max-width:92vw;height:100vh;background:#fff;z-index:200;box-shadow:-10px 0 40px rgba(0,0,0,.15);transition:.35s;display:flex;flex-direction:column}
+.drawer.open{right:0}
+.drawer-head{padding:18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.drawer-body{flex:1;overflow:auto;padding:16px}
+.drawer-foot{padding:18px;border-top:1px solid var(--line)}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:190;display:none}
+.overlay.show{display:block}
+.search-box{position:fixed;top:0;left:0;right:0;background:#fff;z-index:210;padding:28px 0;box-shadow:0 20px 40px rgba(0,0,0,.12);display:none}
+.search-box.open{display:block}
+.search-in{display:flex;gap:12px}
+.search-in input{flex:1;padding:16px;border:1px solid var(--line);font-size:16px;font-family:inherit;outline:none}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--char);color:#fff;padding:14px 22px;font-size:13px;letter-spacing:.5px;z-index:300;transition:.35s;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.toast.show{transform:translateX(-50%)}
+.mobile-menu{position:fixed;top:0;left:-340px;width:320px;max-width:88vw;height:100vh;background:#fff;z-index:200;transition:.35s;overflow:auto;padding:24px}
+.mobile-menu.open{left:0}
+.mobile-menu a{display:block;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;letter-spacing:1px;text-transform:uppercase}
+.mobile-menu .sub{padding-left:16px;text-transform:none;letter-spacing:0;color:var(--grey);font-size:13px}
+.newsletter{background:var(--cream);padding:48px 24px;text-align:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.newsletter form{display:flex;max-width:480px;margin:18px auto 0;border:1px solid var(--line);background:#fff}
+.newsletter input{flex:1;border:none;padding:14px;outline:none;font-family:inherit;min-width:0}
+.newsletter button{background:var(--maroon);color:#fff;border:none;padding:0 22px;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:600}
+.note{background:#FFF8E6;border:1px solid #E8D9A8;padding:16px 20px;font-size:13px;color:#6B5A2A}
+.empty{text-align:center;padding:64px 20px;color:var(--grey)}
+.empty .big{font-family:'Playfair Display',serif;font-size:28px;color:var(--char);margin-bottom:10px}
+
+/* ===== EDITORIAL THEME + ROUNDED CARDS (v2) ===== */
+:root{--radius:20px;--radius-sm:14px;--radius-lg:28px}
+.prod,.coll-card,.blog-card,.price-card,.occ-card,.testi,.cart-item,.summary,.filters,.pay-opt,.field input,.field select,.field textarea,.thumb,.gallery-main,.prod-img,.blog-img,.hero-card,.split,.accordion,.thank,.note{border-radius:var(--radius)!important}
+.prod-img{border-radius:var(--radius) var(--radius) 0 0!important}
+.coll-card,.occ-card{border-radius:var(--radius-lg)!important}
+.btn{border-radius:999px!important}
+.chip{border-radius:999px!important}
+.qty{border-radius:999px!important;overflow:hidden}
+.quick{border-radius:999px!important}
+.wish{border-radius:50%!important}
+.badge{border-radius:999px!important}
+.cart-thumb{border-radius:12px!important}
+.insta-strip div{border-radius:12px!important}
+.search-in input{border-radius:999px 0 0 999px!important}
+.search-in .btn{border-radius:0 999px 999px 0!important}
+.newsletter form{border-radius:999px!important;overflow:hidden}
+.newsletter button{border-radius:0!important}
+.drawer{border-radius:24px 0 0 24px!important}
+.mobile-menu{border-radius:0 24px 24px 0!important}
+.thumb{border-radius:12px!important}
+/* Editorial typography */
+.editorial-kicker{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:12px}
+.editorial-kicker::before{content:"";width:36px;height:1px;background:var(--gold)}
+.editorial-title{font-family:'Playfair Display',serif;font-size:72px;line-height:.95;font-weight:600;letter-spacing:-.5px}
+.editorial-title em{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;color:var(--maroon)}
+@media(max-width:768px){.editorial-title{font-size:44px}.hero-grid,.founder-letter{grid-template-columns:1fr!important}}
+.masthead{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-top:1px solid var(--char);border-bottom:1px solid var(--char);font-size:11px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:28px;flex-wrap:wrap;gap:8px}
+.dropcap::first-letter{font-family:'Playfair Display',serif;font-size:56px;line-height:.85;float:left;padding:6px 10px 0 0;color:var(--maroon)}
+.pullquote{font-family:'Cormorant Garamond',serif;font-size:28px;font-style:italic;line-height:1.4;border-left:3px solid var(--gold);padding-left:20px;color:var(--maroon)}
+.chapter-num{font-family:'Playfair Display',serif;font-size:64px;line-height:1;color:var(--gold2);opacity:.9}
+.lookbook{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:20px}
+.lookbook .big{grid-row:span 2;aspect-ratio:auto;min-height:520px}
+@media(max-width:900px){.lookbook{grid-template-columns:1fr 1fr}.lookbook .big{grid-column:span 2;min-height:340px}}
+@media(max-width:600px){.lookbook{grid-template-columns:1fr}.lookbook .big{grid-column:span 1}}
+.caption{font-size:11px;letter-spacing:1.8px;text-transform:uppercase;color:var(--grey);margin-top:8px}
+.caption b{color:var(--char)}
+/* Clear menu bar */
+nav.main{gap:22px}
+nav.main a{font-size:12.5px;letter-spacing:1.6px;padding:10px 2px}
+nav.main a:hover{color:var(--maroon)}
+.menu-cta{background:var(--maroon);color:#fff!important;padding:10px 18px!important;border-radius:999px;font-size:11px}
+.menu-cta:hover{background:var(--char)!important}
+
+
+/* ===== V3: PRADA x RALPH LAUREN LUXURY EDITORIAL ===== */
+:root{--black:#111111;--white:#FFFFFF;--stone:#F5F2ED}
+body{background:var(--white)}
+.announce{background:var(--black);color:#fff;letter-spacing:3px;font-size:10px;padding:10px}
+header{background:#fff;border-bottom:1px solid #E5E5E5}
+.header-in{padding:18px 0}
+.logo .name{font-family:'Jost',sans-serif;font-weight:600;font-size:20px;letter-spacing:4px;color:var(--black);text-transform:uppercase}
+.logo .sub{font-size:8px;letter-spacing:6px;color:#888;margin-top:4px}
+nav.main a{font-size:11px;letter-spacing:2.2px;color:#111;padding:10px 0}
+nav.main a:hover{color:var(--maroon)}
+.menu-cta{background:var(--black);color:#fff!important;border-radius:4px!important;padding:10px 18px!important}
+.menu-cta:hover{background:var(--maroon)!important}
+/* Prada-style hero: full bleed, minimal text */
+.hero-lux{position:relative;min-height:88vh;display:flex;align-items:flex-end;color:#fff;overflow:hidden;background:linear-gradient(160deg,#1A0A0E 0%,#5C1A24 55%,#8A3A2E 100%)}
+.hero-lux::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 75% 25%,rgba(217,199,165,.28),transparent 45%),linear-gradient(to top,rgba(0,0,0,.55),transparent 55%)}
+.hero-lux-in{position:relative;width:100%;padding:64px 0 56px}
+.hero-lux .kicker{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold2);margin-bottom:14px}
+.hero-lux h1{font-family:'Playfair Display',serif;font-size:76px;line-height:.95;font-weight:500;max-width:720px}
+.hero-lux h1 em{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500}
+.hero-lux p{font-weight:300;font-size:16px;opacity:.92;max-width:520px;margin:16px 0 24px}
+.link-cta{display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;font-weight:600;color:#fff;border-bottom:1px solid #fff;padding-bottom:6px;cursor:pointer}
+.link-cta:hover{color:var(--gold2);border-color:var(--gold2)}
+.link-cta.dark{color:var(--black);border-color:var(--black)}
+.link-cta.dark:hover{color:var(--maroon);border-color:var(--maroon)}
+@media(max-width:768px){.hero-lux h1{font-size:44px}.hero-lux{min-height:70vh}}
+/* Campaign blocks - Ralph Lauren lifestyle */
+.campaign{position:relative;min-height:520px;display:flex;align-items:flex-end;color:#fff;overflow:hidden;border-radius:24px;cursor:pointer}
+.campaign::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6),transparent 55%)}
+.campaign>*{position:relative;z-index:2}
+.campaign h3{font-family:'Playfair Display',serif;font-size:38px;line-height:1.1}
+.campaign p{font-weight:300;opacity:.92;margin:8px 0 16px;max-width:420px}
+@media(max-width:768px){.campaign{min-height:380px}.campaign h3{font-size:28px}}
+/* Prada minimal product cards */
+.prod{border:none;background:transparent;box-shadow:none}
+.prod:hover{box-shadow:none;transform:none}
+.prod-img{border-radius:16px!important;background:#F5F2ED}
+.prod:hover .prod-img{transform:scale(1.02);transition:.4s}
+.prod-body{padding:14px 4px;text-align:left}
+.prod-body .cat{font-size:10px;letter-spacing:2px;color:#888}
+.prod-body h4{font-family:'Jost',sans-serif;font-size:13px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;margin:6px 0}
+.prod-body .price{font-size:13px;font-weight:500}
+.prod-body .meta{font-size:11px;color:#888}
+.quick{background:var(--black);color:#fff;border-radius:999px!important;font-size:10px;padding:10px}
+/* Category tabs - Prada Women/Men */
+.cat-tabs{display:flex;gap:8px;justify-content:center;margin-bottom:24px;flex-wrap:wrap}
+.cat-tab{padding:10px 22px;border:1px solid #E5E5E5;background:#fff;font-size:11px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:999px}
+.cat-tab.active{background:var(--black);color:#fff;border-color:var(--black)}
+/* Heritage split - Ralph Lauren */
+.heritage{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:24px;overflow:hidden;border:1px solid #E8E0D3;background:#fff}
+.heritage-img{min-height:420px;display:flex;align-items:flex-end;padding:32px;color:#fff;position:relative}
+.heritage-img::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.5),transparent 50%)}
+.heritage-img>*{position:relative;z-index:2}
+.heritage-txt{padding:48px}
+@media(max-width:800px){.heritage{grid-template-columns:1fr}.heritage-txt{padding:28px}}
+/* Editorial section titles - Prada minimal */
+.sec-head{text-align:left;margin-bottom:36px}
+.sec-head.center{text-align:center}
+.sec-head h2{font-family:'Playfair Display',serif;font-size:36px;font-weight:500}
+.sec-head .eyebrow{color:#888}
+
+
+/* ===== V4: DESKTOP ONE-CLICK VISIBLE MENU vs MOBILE DRAWER ===== */
+/* Desktop menu bar - always visible, one click */
+.desktop-menubar{display:none;background:#fff;border-top:1px solid #E5E5E5;border-bottom:1px solid #E5E5E5}
+.desktop-menubar-in{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;padding:0 16px}
+.desktop-menubar a{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;font-weight:500;color:#111;padding:16px 22px;position:relative;cursor:pointer;white-space:nowrap}
+.desktop-menubar a:hover{color:var(--maroon)}
+.desktop-menubar a.active{color:var(--maroon)}
+.desktop-menubar a.active::after{content:"";position:absolute;left:16px;right:16px;bottom:8px;height:2px;background:var(--gold)}
+.desktop-menubar .sep{width:1px;height:18px;background:#E5E5E5;margin:0 4px}
+@media(min-width:1101px){.desktop-menubar{display:block} nav.main{display:none!important}}
+@media(max-width:1100px){.desktop-menubar{display:none!important}}
+/* Click dropdown (not hover) */
+.has-mega{position:relative}
+.has-mega .mega{display:none;position:absolute;left:50%;transform:translateX(-50%);top:100%;background:#fff;border:1px solid #E5E5E5;border-radius:16px;box-shadow:0 20px 40px rgba(0,0,0,.12);padding:28px;min-width:720px;z-index:120;text-align:left}
+.has-mega.open .mega{display:block}
+.has-mega:hover .mega{display:none!important}
+.has-mega.open:hover .mega{display:block!important}
+.mega-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.mega h4{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.mega a{display:block;font-size:13px;color:#555;padding:5px 0;text-transform:none;letter-spacing:0}
+.mega a:hover{color:var(--maroon);padding-left:4px}
+/* Mobile drawer distinct */
+.mobile-menu{border-radius:0 24px 24px 0}
+.mobile-menu a{font-size:13px}
+.mobile-menu .mm-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.mobile-menu .mm-section{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin:18px 0 6px}
+
+
+/* ===== Shop All Dropdown: hover (desktop) + click ===== */
+.shopall-wrap{position:relative;display:inline-block}
+.shopall-dropdown{display:none;position:absolute;left:50%;transform:translateX(-50%);top:100%;background:#fff;border:1px solid #E5E5E5;border-radius:16px;box-shadow:0 20px 40px rgba(0,0,0,.14);padding:24px;min-width:560px;z-index:130;text-align:left}
+.shopall-dropdown .dd-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px}
+.shopall-dropdown h4{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.shopall-dropdown a{display:block;font-size:13px;color:#555;padding:6px 0;text-transform:none;letter-spacing:0;white-space:nowrap}
+.shopall-dropdown a:hover{color:var(--maroon);padding-left:4px}
+.shopall-dropdown a::after{display:none!important}
+@media(min-width:1101px){
+  .shopall-wrap:hover .shopall-dropdown{display:block}
+  .shopall-wrap:focus-within .shopall-dropdown{display:block}
+}
+.shopall-wrap.open .shopall-dropdown{display:block}
+.shopall-wrap > a{cursor:pointer}
+.shopall-wrap > a .caret{font-size:9px;margin-left:4px;opacity:.7}
+/* Mobile Shop All accordion */
+.mm-shopall-sub{display:none;padding-left:16px;border-left:2px solid var(--cream);margin:4px 0 8px 8px}
+.mm-shopall-sub.open{display:block}
+.mm-shopall-sub .mm-subhead{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin:10px 0 4px}
+.mm-shopall-sub a{font-size:13px;text-transform:none;letter-spacing:0;color:#555;padding:6px 0;border:none}
+
+</style>
+</head>
+<body>
+
+<div class="announce" id="announce">Free shipping above ₹999 &nbsp;·&nbsp; <b>Festive Collection Live</b> &nbsp;·&nbsp; COD Available &nbsp;·&nbsp; Easy 7-Day Exchange</div>
+
+<header>
+  <div class="wrap header-in">
+    <button class="burger" onclick="toggleMobile(true)">☰</button>
+    <a class="logo" onclick="go('home')"><div class="name">VEDAJANANI</div><div class="sub">Vastralayam</div></a>
+    <nav class="main" aria-label="Main menu">
+      <span class="shopall-wrap has-mega" id="shopAllWrapHeader">
+        <a onclick="toggleShopAll(event,'shopAllWrapHeader')" data-nav="shopall">Shop All <span class="caret">▾</span></a>
+        <span class="shopall-dropdown mega">
+          <span class="dd-grid">
+            <span><h4>By Fabric</h4><a onclick="go('collection',{collection:'Cotton'})">Cotton</a><a onclick="go('collection',{collection:'Chiffon'})">Chiffon</a><a onclick="go('collection',{collection:'Georgette'})">Georgette</a><a onclick="go('collection',{collection:'Silk'})">Silk</a></span>
+            <span><h4>By Occasion</h4><a onclick="go('collection',{occasion:'Festive'})">Festive</a><a onclick="go('collection',{occasion:'Daily Use'})">Daily Use</a><a onclick="go('collection',{occasion:'Office'})">Office</a><a onclick="go('collection',{occasion:'Wedding'})">Wedding</a></span>
+            <span><h4>By Price</h4><a onclick="go('collection',{tier:'Affordable'})">Affordable ₹500–₹1,500</a><a onclick="go('collection',{tier:'Mid Range'})">Mid Range ₹1,500–₹3,000</a><a onclick="go('collection',{tier:'Premium'})">Premium ₹3,000–₹5,000</a></span>
+          </span>
+        </span>
+      </span>
+      <a onclick="go('collection',{occasion:'Wedding'})" data-nav="weddings">Weddings</a>
+      <a onclick="go('collection',{type:'all'})" data-nav="women">Women</a>
+      <a onclick="go('collection',{type:'all'})" data-nav="men">Men</a>
+      <a onclick="go('about')" data-nav="about">About</a>
+      <a onclick="go('blog')" data-nav="blog">Journal</a>
+    </nav>
+    <div class="icons" style="align-items:center">
+      <span onclick="toggleSearch(true)" title="Search" aria-label="Search" style="font-size:20px">⌕</span>
+      <span onclick="go('account')" title="Account" aria-label="Account" style="font-size:18px">◯</span>
+      <span onclick="openCart()" title="Bag — Add to Cart" aria-label="Bag" style="font-size:18px;position:relative">🛍<span class="cart-count" id="cartCount">0</span></span>
+    </div>
+  </div>
+</header>
+<!-- DESKTOP MENU BAR: always visible, one click (hidden on mobile) -->
+<div class="desktop-menubar">
+  <div class="wrap desktop-menubar-in">
+    <span class="shopall-wrap" id="shopAllWrapDesktop">
+      <a onclick="toggleShopAll(event,'shopAllWrapDesktop')">Shop All <span class="caret">▾</span></a>
+      <span class="shopall-dropdown">
+        <span class="dd-grid">
+          <span><h4>By Fabric</h4><a onclick="go('collection',{collection:'Cotton'})">Cotton</a><a onclick="go('collection',{collection:'Chiffon'})">Chiffon</a><a onclick="go('collection',{collection:'Georgette'})">Georgette</a><a onclick="go('collection',{collection:'Silk'})">Silk</a></span>
+          <span><h4>By Occasion</h4><a onclick="go('collection',{occasion:'Festive'})">Festive</a><a onclick="go('collection',{occasion:'Daily Use'})">Daily Use</a><a onclick="go('collection',{occasion:'Office'})">Office</a><a onclick="go('collection',{occasion:'Wedding'})">Wedding</a></span>
+          <span><h4>By Price</h4><a onclick="go('collection',{tier:'Affordable'})">Affordable ₹500–₹1,500</a><a onclick="go('collection',{tier:'Mid Range'})">Mid Range ₹1,500–₹3,000</a><a onclick="go('collection',{tier:'Premium'})">Premium ₹3,000–₹5,000</a></span>
+        </span>
+      </span>
+    </span>
+    <a onclick="go('collection',{occasion:'Wedding'})">Weddings</a>
+    <a onclick="go('collection',{type:'all'})">Women</a>
+    <a onclick="go('collection',{type:'all'})">Men</a>
+    <a onclick="go('about')">About</a>
+    <a onclick="go('blog')">Journal</a>
+  </div>
+</div>
+
+
+<!-- Mobile menu -->
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mm-head"><b class="display" style="font-size:20px;color:var(--maroon)">VEDAJANANI</b><button onclick="closeAll()" style="background:none;border:none;font-size:22px">✕</button></div>
+  <a onclick="toggleMobileShopAll(event)">Shop All <span style="float:right;font-size:11px">▾</span></a>
+  <div class="mm-shopall-sub" id="mmShopAllSub">
+    <div class="mm-subhead">By Fabric</div>
+    <a onclick="go('collection',{collection:'Cotton'})">Cotton</a>
+    <a onclick="go('collection',{collection:'Chiffon'})">Chiffon</a>
+    <a onclick="go('collection',{collection:'Georgette'})">Georgette</a>
+    <a onclick="go('collection',{collection:'Silk'})">Silk</a>
+    <div class="mm-subhead">By Occasion</div>
+    <a onclick="go('collection',{occasion:'Festive'})">Festive</a>
+    <a onclick="go('collection',{occasion:'Daily Use'})">Daily Use</a>
+    <a onclick="go('collection',{occasion:'Office'})">Office</a>
+    <a onclick="go('collection',{occasion:'Wedding'})">Wedding</a>
+    <div class="mm-subhead">By Price</div>
+    <a onclick="go('collection',{tier:'Affordable'})">Affordable ₹500–₹1,500</a>
+    <a onclick="go('collection',{tier:'Mid Range'})">Mid Range ₹1,500–₹3,000</a>
+    <a onclick="go('collection',{tier:'Premium'})">Premium ₹3,000–₹5,000</a>
+    <a onclick="go('collection',{type:'all'})" style="color:var(--maroon);font-weight:600;margin-top:8px">View All Sarees →</a>
+  </div>
+  <a onclick="go('collection',{occasion:'Wedding'})">Weddings</a>
+  <a onclick="go('collection',{type:'all'})">Women</a>
+  <a onclick="go('collection',{type:'all'})">Men</a>
+  <a onclick="go('about')">About</a>
+  <a onclick="go('blog')">Journal</a>
+  <a onclick="go('contact')">Contact</a>
+  <div style="margin-top:20px;background:var(--cream);border-radius:16px;padding:16px;text-align:center"><div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold)">Free Shipping</div><div style="font-size:13px;color:var(--grey);margin-top:4px">Above ₹999 · COD Available</div></div>
+</div>
+
+<!-- Search -->
+<div class="search-box" id="searchBox">
+  <div class="wrap">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><span class="eyebrow" style="margin:0">Search Vedajanani</span><button onclick="toggleSearch(false)" style="background:none;border:none;font-size:22px">✕</button></div>
+    <div class="search-in"><input id="searchInput" placeholder="Try “Banarasi”, “Mul Cotton”, “Festive”, “₹1,500”…" onkeyup="if(event.key==='Enter')doSearch()"><button class="btn" onclick="doSearch()">Search</button></div>
+    <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap"><span style="font-size:12px;color:var(--grey)">Popular:</span><a class="chip" onclick="quickSearch('Silk')">Silk</a><a class="chip" onclick="quickSearch('Cotton')">Cotton</a><a class="chip" onclick="quickSearch('Festive')">Festive</a><a class="chip" onclick="quickSearch('Wedding')">Wedding</a></div>
+    <div id="searchResults" style="margin-top:20px"></div>
+  </div>
+</div>
+
+<!-- Cart drawer -->
+<div class="drawer" id="cartDrawer">
+  <div class="drawer-head"><b class="display" style="font-size:20px">Your Cart <span id="drawerCount" style="color:var(--gold)"></span></b><button onclick="closeAll()" style="background:none;border:none;font-size:22px">✕</button></div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-foot" id="drawerFoot"></div>
+</div>
+
+<!-- ================= HOME ================= -->
+<main class="page active" id="page-home">
+  <section class="hero-lux">
+    <div class="wrap hero-lux-in">
+      <div class="kicker">Vedajanani Vastralayam · Festive 2026</div>
+      <h1>Drape the<br><em>story you</em> carry.</h1>
+      <p>Cotton, Silk, Chiffon &amp; Georgette — handpicked from master weavers. Honest fabric. Fair price. Timeless grace.</p>
+      <div style="display:flex;gap:28px;flex-wrap:wrap;align-items:center">
+        <a class="link-cta" onclick="go('collection',{curated:'new'})">Shop New Arrivals →</a>
+        <a class="link-cta" onclick="go('collection',{occasion:'Wedding'})">The Wedding Edit →</a>
+      </div>
+      <div style="display:flex;gap:32px;margin-top:36px;flex-wrap:wrap;font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:.9">
+        <span>500+ Families</span><span>·</span><span>4.8 ★ Rated</span><span>·</span><span>Free Shipping ₹999+</span>
+      </div>
+    </div>
+  </section>
+  <div class="trust"><div><span>✦</span>Handwoven Quality</div><div><span>✦</span>Premium Fabrics</div><div><span>✦</span>Easy 7-Day Exchange</div><div><span>✦</span>COD Available</div></div>
+
+  <section class="sec" style="padding-top:56px">
+    <div class="wrap">
+      <div class="sec-head center"><div class="eyebrow">Shop by Category</div><h2>Women &amp; Men</h2><p style="color:var(--grey);font-weight:300;margin-top:8px">Sarees for her — and a men's edit coming soon. Tap a category to explore.</p></div>
+      <div class="cat-tabs">
+        <button class="cat-tab active" onclick="filterCatTab(this,'Women')">Women</button>
+        <button class="cat-tab" onclick="filterCatTab(this,'Men')">Men</button>
+        <button class="cat-tab" onclick="filterCatTab(this,'All')">Shop All</button>
+      </div>
+      <div class="grid4" id="catGrid">
+        <div class="coll-card" style="background:linear-gradient(160deg,#8A9A7B,#4A5D3A)" onclick="go('collection',{collection:'Cotton'})"><h3>Cotton</h3><p>Women · Daily Grace</p><span class="go">Shop Now →</span></div>
+        <div class="coll-card" style="background:linear-gradient(160deg,#7A2230,#5C1A24)" onclick="go('collection',{collection:'Silk'})"><h3>Silk</h3><p>Women · Festive Grandeur</p><span class="go">Shop Now →</span></div>
+        <div class="coll-card" style="background:linear-gradient(160deg,#E8B4B8,#C97A7A)" onclick="go('collection',{collection:'Chiffon'})"><h3>Chiffon</h3><p>Women · Floaty Edit</p><span class="go">Shop Now →</span></div>
+        <div class="coll-card" style="background:linear-gradient(160deg,#2E4A3A,#1C3328)" onclick="go('collection',{collection:'Georgette'})"><h3>Georgette</h3><p>Women · Satin Sheen</p><span class="go">Shop Now →</span></div>
+      </div>
+      <div id="menNote" style="display:none;text-align:center;padding:32px;background:var(--stone);border-radius:20px;margin-top:16px"><div class="display" style="font-size:24px">Men's Edit — Coming Soon</div><p style="color:var(--grey);font-weight:300;margin-top:8px">Kurtas &amp; festive wear, handpicked with the same honesty. Join the list below to be first.</p></div>
+    </div>
+  </section>
+
+  <section class="sec white" style="padding-top:56px">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">Campaigns · Lifestyle</div><h2>The Edits</h2></div>
+      <div class="grid2">
+        <div class="campaign" style="background:linear-gradient(160deg,#B9975B,#8A6D3B)" onclick="go('collection',{occasion:'Festive'})">
+          <div style="padding:32px"><div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2)">Festive 2026</div><h3>The Festive Edit</h3><p>Zari cottons, soft silks and Bandhani chiffons — shine for every celebration.</p><span class="link-cta">Shop Festive →</span></div>
+        </div>
+        <div class="campaign" style="background:linear-gradient(160deg,#7A2230,#2B0E14)" onclick="go('collection',{occasion:'Wedding'})">
+          <div style="padding:32px"><div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold2)">Wedding Season</div><h3>The Wedding Edit</h3><p>Brides, bridesmaids and guests — coordinated, comfortable and unforgettable.</p><span class="link-cta">Shop Wedding →</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" style="padding-top:64px">
+    <div class="wrap">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;margin-bottom:28px">
+        <div><div class="editorial-kicker">Lookbook · Festive 2026</div><h2 class="display" style="font-size:40px;margin-top:10px">The Editorial Edit</h2></div>
+        <div class="caption">Styled by Founder · Shot in Anantapur · No. 01 — 06</div>
+      </div>
+      <div class="lookbook">
+        <div class="coll-card big" style="background:linear-gradient(160deg,#B9975B,#8A6D3B)" onclick="go('collection',{occasion:'Festive'})"><span class="badge">Festive Cover</span><h3 style="font-size:32px">Festive Gold</h3><p>Zari Cotton · Diwali Edit</p><span class="go">Shop Festive →</span></div>
+        <div class="coll-card" style="background:linear-gradient(160deg,#2E4A3A,#1C3328);aspect-ratio:4/3" onclick="go('collection',{collection:'Georgette'})"><h3>Georgette</h3><p>Satin Sheen</p><span class="go">Explore →</span></div>
+        <div class="coll-card" style="background:linear-gradient(160deg,#C97A7A,#9A4A4A);aspect-ratio:4/3" onclick="go('collection',{occasion:'Wedding'})"><h3>Bridesmaids</h3><p>Blush Set of 4</p><span class="go">Shop Set →</span></div>
+        <div class="coll-card" style="background:linear-gradient(160deg,#7BA7C9,#4A7A9A);aspect-ratio:4/3" onclick="go('collection',{collection:'Cotton',sub:'Mul Cotton'})"><h3>Mul Cotton</h3><p>Everyday Grace</p><span class="go">Explore →</span></div>
+        <div class="coll-card" style="background:linear-gradient(160deg,#5C1A24,#2B0E14);aspect-ratio:4/3" onclick="go('collection',{curated:'founder'})"><h3>Founder's Picks</h3><p>Handpicked</p><span class="go">View Picks →</span></div>
+      </div>
+      <div class="caption" style="margin-top:12px">Fig. 02 — The Lookbook: one wardrobe, every occasion. Tap any look to shop it.</div>
+    </div>
+  </section>
+
+  
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">Curated For You</div><h2>Shop by Collection</h2><p>Four beloved fabrics, endless ways to drape. Each collection is hand-checked for fall, weave and finish.</p></div>
+      <div class="grid4">
+        <div class="coll-card" style="background:linear-gradient(160deg,#8A9A7B,#4A5D3A)" onclick="go('collection',{collection:'Cotton'})"><h3>Cotton</h3><p>Mul · Kanchi · Jamdhani</p><span class="go">Shop Cotton →</span></div>
+        <div class="coll-card" style="background:linear-gradient(160deg,#7A2230,#5C1A24)" onclick="go('collection',{collection:'Silk'})"><h3>Silk</h3><p>Banarasi · Soft · Crepe</p><span class="go">Shop Silk →</span></div>
+        <div class="coll-card" style="background:linear-gradient(160deg,#E8B4B8,#C97A7A)" onclick="go('collection',{collection:'Chiffon'})"><h3>Chiffon</h3><p>Printed · Embroidered</p><span class="go">Shop Chiffon →</span></div>
+        <div class="coll-card" style="background:linear-gradient(160deg,#2E4A3A,#1C3328)" onclick="go('collection',{collection:'Georgette'})"><h3>Georgette</h3><p>Satin · Printed · Plain</p><span class="go">Shop Georgette →</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec white">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">For Every Budget</div><h2>Shop by Price</h2><p>Three honest tiers. No inflated MRPs — just beautiful sarees at prices you can trust.</p></div>
+      <div class="grid3">
+        <div class="price-card" onclick="go('collection',{tier:'Affordable'})"><div style="font-size:11px;letter-spacing:2.5px;text-transform:uppercase">Affordable</div><div class="range">₹500 – ₹1,500</div><p style="color:var(--grey);font-weight:300">Daily-use elegance — light, breathable, beautiful</p><br><span class="btn">Shop Now</span></div>
+        <div class="price-card featured" onclick="go('collection',{tier:'Mid Range'})"><div style="font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold)">★ Most Loved</div><div class="range">₹1,500 – ₹3,000</div><p style="color:var(--grey);font-weight:300">Office &amp; occasion favourites — our sweet spot</p><br><span class="btn">Shop Now</span></div>
+        <div class="price-card" onclick="go('collection',{tier:'Premium'})"><div style="font-size:11px;letter-spacing:2.5px;text-transform:uppercase">Premium</div><div class="range">₹3,000 – ₹5,000</div><p style="color:var(--grey);font-weight:300">Festive &amp; wedding grandeur — heirloom weaves</p><br><span class="btn">Shop Now</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">Dress for the Moment</div><h2>Shop by Occasion</h2><p>From Monday mornings to the big day — find your drape in seconds.</p></div>
+      <div class="grid3">
+        <div class="occ-card" style="background:linear-gradient(160deg,#A8B5A0,#6B7F5E)" onclick="go('collection',{occasion:'Daily Use'})"><h3>Daily Use</h3><p>Comfort · Cotton · ₹500+</p></div>
+        <div class="occ-card" style="background:linear-gradient(160deg,#5C1A24,#2B0E14)" onclick="go('collection',{occasion:'Office'})"><h3>Office Wear</h3><p>Smart · Subtle · Elegant</p></div>
+        <div class="occ-card" style="background:linear-gradient(160deg,#B9975B,#8A6D3B)" onclick="go('collection',{occasion:'Festive'})"><h3>Festive Collection</h3><p>Shine · Zari · Celebration</p></div>
+        <div class="occ-card" style="background:linear-gradient(160deg,#7A2230,#4A1220)" onclick="go('collection',{occasion:'Wedding'})"><h3>Brides Collection</h3><p>Banarasi · Heirloom · Grand</p></div>
+        <div class="occ-card" style="background:linear-gradient(160deg,#C97A7A,#9A4A4A)" onclick="go('collection',{occasion:'Wedding'})"><h3>Bridesmaids</h3><p>Coordinated · Graceful · Photo-ready</p></div>
+        <div class="occ-card" style="background:linear-gradient(160deg,#2E4A3A,#16281F)" onclick="go('collection',{occasion:'Wedding'})"><h3>Wedding Guests</h3><p>Festive · Refined · Comfortable</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec white">
+    <div class="wrap">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;flex-wrap:wrap;gap:12px">
+        <div><div class="eyebrow">Loved by Many</div><h2 class="display" style="font-size:36px">Best Sellers</h2></div>
+        <a style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--maroon);font-weight:600" onclick="go('collection',{curated:'bestseller'})">View All →</a>
+      </div>
+      <div class="grid4" id="homeBestsellers"></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="heritage">
+        <div class="heritage-img" style="background:linear-gradient(150deg,#5C1A24,#2B0E14)">
+          <div class="eyebrow" style="color:var(--gold2)">Our Soul</div>
+          <h3>Every thread tells<br>a story of tradition</h3>
+          <p style="font-weight:300;opacity:.88;margin-top:14px">Vedajanani Vastralayam began with one belief — a saree is not just clothing. It is memory, identity and grace, passed from mother to daughter.</p>
+          <div style="display:flex;gap:24px;margin-top:24px"><div><b class="display" style="font-size:24px">Direct</b><div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;opacity:.75">From Weavers</div></div><div><b class="display" style="font-size:24px">Honest</b><div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;opacity:.75">Pricing</div></div><div><b class="display" style="font-size:24px">Timeless</b><div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;opacity:.75">Design</div></div></div>
+        </div>
+        <div class="heritage-txt">
+          <h3>Why families trust Vedajanani</h3>
+          <p>We source directly from master weavers, check every weave by hand, and price fairly across three honest tiers — so you never compromise on quality or comfort.</p>
+          <ul style="list-style:none;margin-top:16px;color:var(--grey)">
+            <li style="padding:8px 0;border-bottom:1px dashed var(--line)"><span style="color:var(--gold);font-weight:700">✓</span> &nbsp;Direct from weavers — no middlemen, no compromise</li>
+            <li style="padding:8px 0;border-bottom:1px dashed var(--line)"><span style="color:var(--gold);font-weight:700">✓</span> &nbsp;Quality-checked fabric, fall &amp; blouse piece</li>
+            <li style="padding:8px 0;border-bottom:1px dashed var(--line)"><span style="color:var(--gold);font-weight:700">✓</span> &nbsp;Transparent pricing — ₹500 to ₹5,000, always</li>
+            <li style="padding:8px 0"><span style="color:var(--gold);font-weight:700">✓</span> &nbsp;Easy 7-day exchange &amp; COD across India</li>
+          </ul>
+          <br><a class="btn" onclick="go('about')">Read Our Story</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec white">
+    <div class="wrap">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;flex-wrap:wrap;gap:12px">
+        <div><div class="eyebrow">Just Arrived</div><h2 class="display" style="font-size:36px">New Arrivals</h2></div>
+        <a style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--maroon);font-weight:600" onclick="go('collection',{curated:'new'})">View All →</a>
+      </div>
+      <div class="grid4" id="homeNew"></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">Words of Love</div><h2>What Our Customers Say</h2></div>
+      <div class="grid3">
+        <div class="testi"><div class="stars">★★★★★</div><p>“The Banarasi silk drapes beautifully — quality far beyond the price. My mother loved it!”</p><div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--grey)">Priya S. · Hyderabad</div></div>
+        <div class="testi"><div class="stars">★★★★★</div><p>“Mul Cotton is my daily go-to now. Soft, breathable and the colour hasn't faded after 10 washes.”</p><div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--grey)">Lakshmi R. · Anantapur</div></div>
+        <div class="testi"><div class="stars">★★★★★</div><p>“Ordered for my sister's wedding — the bridesmaid set looked stunning in photos. Thank you!”</p><div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--grey)">Anitha K. · Bengaluru</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec white">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">From Our Journal</div><h2>Stories &amp; Style Notes</h2><p>Fabric guides, draping tips and weaver stories — written with love.</p></div>
+      <div class="grid3" id="homeBlog"></div>
+      <div style="text-align:center;margin-top:28px"><a class="btn dark" onclick="go('blog')">Read All Stories</a></div>
+    </div>
+  </section>
+
+  <section class="sec" style="padding-bottom:0">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">@vedajanani.vastralayam</div><h2>Worn by You</h2></div>
+      <div class="insta-strip">
+        <div style="background:linear-gradient(150deg,#7A2230,#5C1A24)">✦</div><div style="background:linear-gradient(150deg,#8A9A7B,#4A5D3A)">🌸</div><div style="background:linear-gradient(150deg,#B9975B,#8A6D3B)">🪷</div><div style="background:linear-gradient(150deg,#2E4A3A,#1C3328)">🌿</div><div style="background:linear-gradient(150deg,#C97A7A,#9A4A4A)">🦋</div><div style="background:linear-gradient(150deg,#5C1A24,#B9975B)">✧</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="newsletter">
+    <div class="wrap">
+      <div class="eyebrow">Join the Family</div>
+      <h2 class="display" style="font-size:32px">Get 10% Off Your First Order</h2>
+      <p style="color:var(--grey);font-weight:300;margin-top:8px">Early access to new weaves, festive edits &amp; private sales. No spam — only grace.</p>
+      <form onsubmit="subscribe(event)"><input type="email" required placeholder="Your email address"><button>Subscribe</button></form>
+    </div>
+  </div>
+</main>
+
+<!-- ================= COLLECTION ================= -->
+<main class="page" id="page-collection">
+  <div class="wrap">
+    <div class="breadcrumb" id="collCrumb"></div>
+    <div class="page-head"><div class="eyebrow" id="collEyebrow">Collection</div><h1 id="collTitle">All Sarees</h1><p id="collDesc"></p></div>
+    <div class="chips" id="collChips"></div>
+    <div class="shop-layout">
+      <aside class="filters" id="filtersBox">
+        <h3>Filters <a style="float:right;color:var(--maroon);cursor:pointer;font-size:11px" onclick="clearFilters()">Clear all ×</a></h3>
+        <h4>Sub-Category</h4><div id="fSub"></div>
+        <h4>Price</h4>
+        <label><input type="checkbox" class="f-price" value="Affordable"> ₹500 – ₹1,500</label>
+        <label><input type="checkbox" class="f-price" value="Mid Range"> ₹1,500 – ₹3,000</label>
+        <label><input type="checkbox" class="f-price" value="Premium"> ₹3,000 – ₹5,000</label>
+        <h4>Occasion</h4>
+        <label><input type="checkbox" class="f-occ" value="Daily Use"> Daily Use</label>
+        <label><input type="checkbox" class="f-occ" value="Office"> Office</label>
+        <label><input type="checkbox" class="f-occ" value="Festive"> Festive</label>
+        <label><input type="checkbox" class="f-occ" value="Wedding"> Wedding</label>
+        <h4>Colour</h4><div id="fColour" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"></div>
+        <h4>Availability</h4>
+        <label><input type="checkbox" id="fInStock" checked> In Stock</label>
+      </aside>
+      <div>
+        <div class="toolbar">
+          <span style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey)" id="collCount"></span>
+          <div style="display:flex;gap:10px;align-items:center">
+            <button class="chip" onclick="document.getElementById('filtersBox').classList.toggle('open')">Filter</button>
+            <select id="sortSel" onchange="renderCollection()"><option value="featured">Sort: Featured</option><option value="price-low">Price: Low to High</option><option value="price-high">Price: High to Low</option><option value="new">Newest</option><option value="rating">Top Rated</option></select>
+          </div>
+        </div>
+        <div class="grid3" id="collGrid"></div>
+        <div id="collEmpty"></div>
+      </div>
+    </div>
+    <div style="height:64px"></div>
+  </div>
+</main>
+
+<!-- ================= PRODUCT ================= -->
+<main class="page" id="page-product">
+  <div class="wrap">
+    <div class="breadcrumb" id="pdpCrumb"></div>
+    <div class="pdp">
+      <div>
+        <div class="gallery-main" id="pdpGallery"><span class="motif" id="pdpMotif">✦</span><span class="badge" id="pdpBadge"></span></div>
+        <div class="thumbs" id="pdpThumbs"></div>
+        <div class="note" style="margin-top:16px"><b>Styling tip:</b> Pair with oxidised jhumkas for a festive look, or a simple cotton blouse for daily grace. <a style="color:var(--maroon);text-decoration:underline" onclick="go('blog')">Read draping guide →</a></div>
+      </div>
+      <div>
+        <div style="font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold)" id="pdpCat"></div>
+        <h1 class="display" style="font-size:36px;line-height:1.2;margin:8px 0" id="pdpName"></h1>
+        <div><span class="stars" id="pdpStars"></span> <span style="color:var(--grey);font-size:13px" id="pdpReviews"></span></div>
+        <div style="margin:14px 0"><span class="display" style="font-size:30px;color:var(--maroon)" id="pdpPrice"></span> <s style="color:#999" id="pdpCompare"></s> <span style="background:var(--maroon);color:#fff;font-size:10px;padding:4px 8px;letter-spacing:1px" id="pdpSave"></span></div>
+        <p style="font-size:12px;color:var(--grey)">Inclusive of all taxes · Free shipping above ₹999 · COD available · Ships in 24 hrs</p>
+        <div style="margin:20px 0"><div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">Colour: <b id="pdpColourName"></b></div><div style="display:flex;gap:10px" id="pdpColours"></div></div>
+        <div style="display:flex;gap:12px;margin:20px 0;flex-wrap:wrap">
+          <div class="qty"><button onclick="changeQty(-1)">−</button><span id="pdpQty">1</span><button onclick="changeQty(1)">+</button></div>
+          <button class="btn" style="flex:1;min-width:180px" onclick="addToCart(currentProduct.id,currentQty,true)">Add to Cart</button>
+        </div>
+        <button class="btn dark full" onclick="buyNow()">Buy It Now →</button>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;text-align:center;font-size:11px;color:var(--grey)">
+          <div style="border:1px solid var(--line);padding:12px;background:#fff">🚚<br>Free Shipping<br><span style="font-size:10px">above ₹999</span></div>
+          <div style="border:1px solid var(--line);padding:12px;background:#fff">↩<br>7-Day Exchange<br><span style="font-size:10px">easy &amp; free</span></div>
+          <div style="border:1px solid var(--line);padding:12px;background:#fff">💳<br>UPI · COD<br><span style="font-size:10px">secure pay</span></div>
+        </div>
+        <div class="accordion" id="pdpAcc"></div>
+        <div style="margin-top:16px;display:flex;gap:10px"><button class="btn outline dark" style="color:var(--char);border-color:var(--line);flex:1" onclick="toggleWish(currentProduct.id,this)">♡ Add to Wishlist</button><button class="btn outline dark" style="color:var(--char);border-color:var(--line);flex:1" onclick="shareProduct()">↗ Share</button></div>
+      </div>
+    </div>
+    <div style="margin-top:64px">
+      <div style="text-align:center;margin-bottom:24px"><div class="eyebrow">Complete Your Look</div><h2 class="display" style="font-size:30px">You May Also Like</h2></div>
+      <div class="grid4" id="pdpRelated"></div>
+    </div>
+    <div style="height:64px"></div>
+  </div>
+</main>
+
+<!-- ================= CART ================= -->
+<main class="page" id="page-cart">
+  <div class="wrap">
+    <div class="breadcrumb">Home / <b>Cart</b></div>
+    <div class="page-head"><div class="eyebrow">Your Selection</div><h1>Shopping Cart</h1><p>Review your sarees — free shipping above ₹999, easy 7-day exchange.</p></div>
+    <div class="cart-layout">
+      <div id="cartItems"></div>
+      <div class="summary" id="cartSummary"></div>
+    </div>
+    <div style="height:64px"></div>
+  </div>
+</main>
+
+<!-- ================= CHECKOUT ================= -->
+<main class="page" id="page-checkout">
+  <div class="wrap">
+    <div class="breadcrumb">Home / Cart / <b>Checkout</b></div>
+    <div class="page-head"><div class="eyebrow">Almost Yours</div><h1>Checkout</h1><p>Secure checkout · UPI, Cards, NetBanking &amp; Cash on Delivery</p></div>
+    <form class="cart-layout" onsubmit="placeOrder(event)">
+      <div>
+        <div style="background:#fff;border:1px solid var(--line);padding:24px;margin-bottom:16px">
+          <h3 class="display" style="font-size:22px;margin-bottom:16px">1 · Contact</h3>
+          <div class="form-grid">
+            <div class="field full"><label>Email</label><input type="email" required placeholder="you@example.com"></div>
+            <div class="field full"><label>Phone (WhatsApp)</label><input type="tel" required pattern="[0-9]{10}" placeholder="10-digit mobile number"></div>
+          </div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--line);padding:24px;margin-bottom:16px">
+          <h3 class="display" style="font-size:22px;margin-bottom:16px">2 · Shipping Address</h3>
+          <div class="form-grid">
+            <div class="field"><label>First Name</label><input required placeholder="First name"></div>
+            <div class="field"><label>Last Name</label><input required placeholder="Last name"></div>
+            <div class="field full"><label>Address</label><input required placeholder="House no, Street, Area"></div>
+            <div class="field"><label>City</label><input required placeholder="City"></div>
+            <div class="field"><label>PIN Code</label><input required pattern="[0-9]{6}" placeholder="6-digit PIN"></div>
+            <div class="field"><label>State</label><select required><option value="">Select State</option><option>Andhra Pradesh</option><option>Telangana</option><option>Karnataka</option><option>Tamil Nadu</option><option>Maharashtra</option><option>Delhi</option><option>Other</option></select></div>
+            <div class="field"><label>Country</label><select><option>India</option></select></div>
+          </div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--line);padding:24px">
+          <h3 class="display" style="font-size:22px;margin-bottom:16px">3 · Payment</h3>
+          <label class="pay-opt active"><input type="radio" name="pay" checked><span><b>UPI</b> — GPay, PhonePe, Paytm <span style="color:var(--gold);font-size:11px;letter-spacing:1px">· RECOMMENDED</span><br><small style="color:var(--grey)">Instant confirmation, extra 2% off applied at payment</small></span></label>
+          <label class="pay-opt"><input type="radio" name="pay"><span><b>Credit / Debit Card</b><br><small style="color:var(--grey)">Visa, Mastercard, RuPay — secure 3D checkout</small></span></label>
+          <label class="pay-opt"><input type="radio" name="pay"><span><b>NetBanking / Wallets</b><br><small style="color:var(--grey)">All major banks &amp; wallets supported</small></span></label>
+          <label class="pay-opt"><input type="radio" name="pay"><span><b>Cash on Delivery (COD)</b><br><small style="color:var(--grey)">Pay at your doorstep · ₹49 COD fee · Please keep exact change ready</small></span></label>
+        </div>
+      </div>
+      <div class="summary" id="checkoutSummary"></div>
+    </form>
+    <div style="height:64px"></div>
+  </div>
+</main>
+
+<!-- ================= THANK YOU ================= -->
+<main class="page" id="page-thankyou">
+  <div class="wrap" style="padding:48px 20px">
+    <div class="thank">
+      <div class="check">✓</div>
+      <div class="eyebrow">Order Confirmed</div>
+      <h1 class="display" style="font-size:38px">Thank You, Beautiful!</h1>
+      <p style="color:var(--grey);font-weight:300;margin-top:10px">Your saree is being lovingly packed. A confirmation has been sent to your email &amp; WhatsApp.</p>
+      <div style="background:var(--cream);padding:16px;margin:20px 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px"><span>Order ID</span><b id="orderId" style="color:var(--maroon)"></b><span>Estimated Delivery</span><b id="orderDate"></b></div>
+      <div class="timeline"><div class="done"><i>✓</i>Confirmed</div><div><i>2</i>Packed</div><div><i>3</i>Shipped</div><div><i>4</i>Delivered</div></div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:12px">
+        <a class="btn" onclick="go('collection',{curated:'new'})">Continue Shopping</a>
+        <a class="btn dark" onclick="go('blog')">Read Our Journal</a>
+      </div>
+      <p style="font-size:12px;color:var(--grey);margin-top:20px">Need help? WhatsApp us at +91-XXXXXXXXXX · care@vedajanani.in</p>
+    </div>
+  </div>
+</main>
+
+<!-- ================= BLOG ================= -->
+<main class="page" id="page-blog">
+  <div class="wrap">
+    <div class="breadcrumb">Home / <b>Blog</b></div>
+    <div class="page-head"><div class="eyebrow">Vedajanani Journal</div><h1>Stories &amp; Style Notes</h1><p>Fabric guides, draping tips, weaver stories and festive inspiration — written with soul.</p></div>
+    <div class="chips" style="justify-content:center" id="blogChips"></div>
+    <div class="grid3" id="blogGrid" style="margin-top:24px"></div>
+    <div style="height:64px"></div>
+  </div>
+</main>
+
+<main class="page" id="page-blog-detail">
+  <div class="wrap">
+    <div class="breadcrumb"><a onclick="go('blog')">Blog</a> / <b id="blogDetailCrumb"></b></div>
+    <article class="article" id="blogArticle"></article>
+    <div style="text-align:center;margin:32px 0"><a class="btn dark" onclick="go('blog')">← All Stories</a></div>
+    <div style="height:48px"></div>
+  </div>
+</main>
+
+<!-- ================= ABOUT ================= -->
+<main class="page" id="page-about">
+  <section class="hero" style="background:linear-gradient(120deg,#2B0E14,#5C1A24 60%,#B9975B)">
+    <div class="wrap hero-in" style="min-height:420px">
+      <div><div class="eyebrow" style="color:var(--gold2)">Our Story</div><h1 style="font-size:52px">A Saree Is Not Just Clothing.<br><em>It Is Memory.</em></h1><p>Vedajanani Vastralayam was born from a mother's love — and a promise to bring honest, beautiful sarees to every home.</p></div>
+      <div class="hero-card"><div class="big">“My mother taught me: when a woman drapes a saree, she carries her family's grace with her.”</div><div class="small">— Founder's words, the soul of Vedajanani</div></div>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap">
+      <div class="grid2" style="align-items:center">
+        <div><div class="eyebrow">The Beginning</div><h2 class="display" style="font-size:36px;line-height:1.2">From a small shop in Anantapur to homes across India</h2><p style="color:var(--grey);font-weight:300;margin-top:14px">We started with a simple dream: to sell sarees the way our grandmothers bought them — with trust, touch and honest advice. No inflated prices. No compromise on weave. Just beautiful fabrics, fairly priced.</p><p style="color:var(--grey);font-weight:300;margin-top:12px">Today, Vedajanani Vastralayam brings together Cotton, Silk, Chiffon and Georgette sarees from master weavers — each one hand-checked before it reaches you.</p></div>
+        <div style="background:linear-gradient(150deg,#F3EDE3,#E8E0D3);aspect-ratio:4/3;display:grid;place-items:center;font-size:64px;color:var(--gold)">✦</div>
+      </div>
+    </div>
+  </section>
+  <section class="sec white">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">Our Journey</div><h2>Milestones of Grace</h2></div>
+      <div class="grid4">
+        <div class="price-card"><div class="display" style="font-size:32px;color:var(--maroon)">2023</div><h3 style="font-family:'Playfair Display',serif;margin:8px 0">The First Drape</h3><p style="color:var(--grey);font-weight:300;font-size:14px">Opened our first saree counter in Anantapur with 50 handpicked sarees.</p></div>
+        <div class="price-card"><div class="display" style="font-size:32px;color:var(--maroon)">2024</div><h3 style="font-family:'Playfair Display',serif;margin:8px 0">Weaver Direct</h3><p style="color:var(--grey);font-weight:300;font-size:14px">Started sourcing directly from weavers — fairer prices, fresher designs.</p></div>
+        <div class="price-card"><div class="display" style="font-size:32px;color:var(--maroon)">2025</div><h3 style="font-family:'Playfair Display',serif;margin:8px 0">500+ Families</h3><p style="color:var(--grey);font-weight:300;font-size:14px">Crossed 500 happy customers across Andhra, Telangana &amp; Karnataka.</p></div>
+        <div class="price-card featured"><div class="display" style="font-size:32px;color:var(--maroon)">2026</div><h3 style="font-family:'Playfair Display',serif;margin:8px 0">Online Home</h3><p style="color:var(--grey);font-weight:300;font-size:14px">Launched our online store — the same trust, now at your doorstep.</p></div>
+      </div>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><div class="eyebrow">What We Stand For</div><h2>Our Values</h2></div>
+      <div class="grid3">
+        <div class="price-card"><div style="font-size:28px">✦</div><h3 style="font-family:'Playfair Display',serif;margin:10px 0">Honest Weaves</h3><p style="color:var(--grey);font-weight:300;font-size:14px">Every saree is checked for fabric, fall and finish. If we wouldn't drape it, we won't sell it.</p></div>
+        <div class="price-card"><div style="font-size:28px">✧</div><h3 style="font-family:'Playfair Display',serif;margin:10px 0">Fair Prices</h3><p style="color:var(--grey);font-weight:300;font-size:14px">Three transparent tiers — ₹500 to ₹5,000. Beautiful should never mean unaffordable.</p></div>
+        <div class="price-card"><div style="font-size:28px">🪷</div><h3 style="font-family:'Playfair Display',serif;margin:10px 0">Weaver First</h3><p style="color:var(--grey);font-weight:300;font-size:14px">We pay weavers fairly and directly — because their hands create your heirlooms.</p></div>
+      </div>
+      <div style="text-align:center;margin-top:36px"><a class="btn" onclick="go('collection',{type:'all'})">Shop the Collection</a></div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= ACCOUNT ================= -->
+<main class="page" id="page-account">
+  <div class="wrap" style="max-width:520px">
+    <div class="breadcrumb">Home / <b>Account</b></div>
+    <div class="page-head"><div class="eyebrow">Welcome Back</div><h1>Sign In</h1><p>Access your orders, wishlist and faster checkout.</p></div>
+    <div style="background:#fff;border:1px solid var(--line);border-radius:20px;padding:32px">
+      <form onsubmit="event.preventDefault();toast('Signed in! Welcome back 💌');go('home')">
+        <div class="form-grid">
+          <div class="field full"><label>Email</label><input type="email" required placeholder="you@example.com"></div>
+          <div class="field full"><label>Password</label><input type="password" required placeholder="Your password"></div>
+        </div>
+        <button class="btn full" style="margin-top:16px">Sign In</button>
+      </form>
+      <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--grey)">New to Vedajanani? <a style="color:var(--maroon);text-decoration:underline" onclick="toast('Create account — coming soon in Shopify theme')">Create account</a> · <a style="color:var(--maroon);text-decoration:underline" onclick="toast('Password reset link sent')">Forgot password?</a></div>
+    </div>
+    <div style="height:48px"></div>
+  </div>
+</main>
+
+<!-- ================= CONTACT / FAQ ================= -->
+<main class="page" id="page-contact">
+  <div class="wrap">
+    <div class="breadcrumb">Home / <b>Contact</b></div>
+    <div class="page-head"><div class="eyebrow">We'd Love to Hear From You</div><h1>Contact Us</h1><p>Questions about fabric, sizing or your order? We reply within a few hours.</p></div>
+    <div class="grid2" style="align-items:start">
+      <div style="background:#fff;border:1px solid var(--line);padding:28px">
+        <h3 class="display" style="font-size:24px;margin-bottom:16px">Send a Message</h3>
+        <form onsubmit="event.preventDefault();toast('Message sent! We will reply soon 💌');this.reset()">
+          <div class="form-grid">
+            <div class="field"><label>Name</label><input required placeholder="Your name"></div>
+            <div class="field"><label>Phone</label><input required placeholder="Mobile number"></div>
+            <div class="field full"><label>Email</label><input type="email" required placeholder="you@example.com"></div>
+            <div class="field full"><label>Message</label><textarea rows="4" required placeholder="How can we help?"></textarea></div>
+          </div>
+          <button class="btn full" style="margin-top:16px">Send Message</button>
+        </form>
+      </div>
+      <div>
+        <div class="price-card" style="text-align:left;margin-bottom:16px"><h3 style="font-family:'Playfair Display',serif">Visit Our Store</h3><p style="color:var(--grey);font-weight:300;margin-top:8px">📍 Vedajanani Vastralayam, Anantapur, Andhra Pradesh<br>🕙 Open: 10 AM – 9 PM, All Days<br>📞 +91-XXXXXXXXXX<br>✉️ care@vedajanani.in<br>💬 WhatsApp: +91-XXXXXXXXXX</p></div>
+        <div class="price-card" style="text-align:left"><h3 style="font-family:'Playfair Display',serif">Quick Help</h3><p style="color:var(--grey);font-weight:300;margin-top:8px">Shipping: 3–5 days, Free above ₹999<br>Exchange: 7-day easy exchange<br>Payment: UPI, Cards, COD<br>Track Order: enter Order ID at checkout confirmation</p></div>
+      </div>
+    </div>
+    <div style="height:64px"></div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="display" style="color:#fff;font-size:24px">VEDAJANANI</div>
+        <div style="font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin:4px 0 14px">Vastralayam</div>
+        <p style="font-weight:300;font-size:14px;line-height:1.7">Premium sarees in Cotton, Silk, Chiffon &amp; Georgette — woven with grace, priced with honesty. From our family to yours.</p>
+        <p style="margin-top:14px;font-size:13px">📍 Anantapur, Andhra Pradesh<br>📞 +91-XXXXXXXXXX · ✉️ care@vedajanani.in</p>
+      </div>
+      <div><h4>Shop All</h4><a onclick="go('collection',{type:'all'})">Shop All</a><a onclick="go('collection',{collection:'Cotton'})">Cotton</a><a onclick="go('collection',{collection:'Silk'})">Silk</a><a onclick="go('collection',{collection:'Chiffon'})">Chiffon</a><a onclick="go('collection',{collection:'Georgette'})">Georgette</a><a onclick="go('collection',{curated:'new'})">New Arrivals</a><a onclick="go('collection',{curated:'bestseller'})">Best Sellers</a></div>
+      <div><h4>Curated</h4><a onclick="go('collection',{curated:'founder'})">Founder's Picks</a><a onclick="go('collection',{occasion:'Wedding'})">Brides Collection</a><a onclick="go('collection',{occasion:'Wedding'})">Bridesmaids</a><a onclick="go('collection',{occasion:'Festive'})">Festive Edit</a><a onclick="go('collection',{tier:'Affordable'})">Under ₹1,500</a></div>
+      <div><h4>Help</h4><a onclick="go('contact')">Contact Us</a><a onclick="go('contact')">Track Order</a><a onclick="go('contact')">Shipping &amp; Returns</a><a onclick="go('blog')">Fabric Guide</a><a onclick="go('contact')">FAQs</a></div>
+      <div><h4>Company</h4><a onclick="go('about')">Our Story</a><a onclick="go('blog')">Journal / Blog</a><a onclick="go('contact')">Privacy Policy</a><a onclick="go('contact')">Terms of Service</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Vedajanani Vastralayam. All rights reserved.</span><span>UPI · Visa · Mastercard · RuPay · NetBanking · COD</span></div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ DATA ============ */
+const PRODUCTS=[
+{id:1,name:"Ivory Mul Cotton Saree",collection:"Cotton",sub:"Mul Cotton",price:1299,compare:1799,colour:"Ivory",colours:["#F3EDE3","#E8B4B8","#A8B5A0"],occasion:["Daily Use","Office"],tier:"Affordable",badge:"Bestseller",rating:4.8,reviews:124,desc:"Feather-soft mul cotton with a delicate border — your everyday grace, all day long.",fabric:"Mul Cotton · 6.3m + blouse",founder:true,best:true,isNew:false,grad:"linear-gradient(150deg,#EDE6D8,#C9B896)",motif:"🧵"},
+{id:2,name:"Maroon Banarasi Silk Saree",collection:"Silk",sub:"Banarasi Silk",price:4499,compare:5999,colour:"Maroon",colours:["#5C1A24","#B9975B","#2E4A3A"],occasion:["Wedding","Festive"],tier:"Premium",badge:"Founder's Pick",rating:4.9,reviews:98,desc:"Heirloom Banarasi weave with gold zari — made for brides and grand celebrations.",fabric:"Banarasi Silk · Zari border",founder:true,best:true,isNew:true,grad:"linear-gradient(150deg,#7A2230,#5C1A24)",motif:"✦"},
+{id:3,name:"Blush Floral Chiffon Saree",collection:"Chiffon",sub:"Printed Chiffon",price:1899,compare:2499,colour:"Blush Pink",colours:["#E8B4B8","#F3EDE3","#C97A7A"],occasion:["Festive","Office"],tier:"Mid Range",badge:"New",rating:4.7,reviews:56,desc:"Floaty floral chiffon that moves like air — perfect for daytime celebrations.",fabric:"Printed Chiffon · 6.3m",founder:false,best:true,isNew:true,grad:"linear-gradient(150deg,#E8B4B8,#C97A7A)",motif:"🌸"},
+{id:4,name:"Emerald Satin Georgette Saree",collection:"Georgette",sub:"Satin Georgette",price:2299,compare:2999,colour:"Emerald",colours:["#2E4A3A","#5C1A24","#B9975B"],occasion:["Festive","Wedding"],tier:"Mid Range",badge:"",rating:4.6,reviews:43,desc:"Satin-finish georgette with a rich sheen — elegant drape, effortless shine.",fabric:"Satin Georgette · 6.3m",founder:false,best:true,isNew:false,grad:"linear-gradient(150deg,#2E4A3A,#16281F)",motif:"✧"},
+{id:5,name:"Sage Kota Cotton Saree",collection:"Cotton",sub:"Kota Cotton",price:1599,compare:2099,colour:"Sage Green",colours:["#A8B5A0","#F3EDE3","#8A9A7B"],occasion:["Daily Use","Office"],tier:"Mid Range",badge:"New",rating:4.7,reviews:31,desc:"Lightweight Kota cotton with a subtle check — breathable comfort for warm days.",fabric:"Kota Cotton · 6.3m",founder:false,best:false,isNew:true,grad:"linear-gradient(150deg,#A8B5A0,#6B7F5E)",motif:"🌿"},
+{id:6,name:"Rose Soft Silk Saree",collection:"Silk",sub:"Soft Silk",price:3499,compare:4499,colour:"Rose",colours:["#C97A7A","#7A2230","#F3EDE3"],occasion:["Festive","Wedding"],tier:"Premium",badge:"Founder's Pick",rating:4.9,reviews:67,desc:"Buttery soft silk with a gentle glow — festive without the heaviness.",fabric:"Soft Silk · 6.3m + blouse",founder:true,best:true,isNew:true,grad:"linear-gradient(150deg,#C97A7A,#9A4A4A)",motif:"🪷"},
+{id:7,name:"Mustard Bandhani Chiffon Saree",collection:"Chiffon",sub:"Bandhani Chiffon",price:2199,compare:2799,colour:"Mustard",colours:["#D9A441","#7A2230","#F3EDE3"],occasion:["Festive","Daily Use"],tier:"Mid Range",badge:"",rating:4.5,reviews:28,desc:"Traditional Bandhani dots on airy chiffon — heritage in every motif.",fabric:"Bandhani Chiffon · 6.3m",founder:false,best:false,isNew:true,grad:"linear-gradient(150deg,#D9A441,#B97F2A)",motif:"🦋"},
+{id:8,name:"Midnight Crepe Silk Saree",collection:"Silk",sub:"Crepe Silk",price:4999,compare:6499,colour:"Midnight Blue",colours:["#1C2A4A","#5C1A24","#B9975B"],occasion:["Wedding","Festive"],tier:"Premium",badge:"Premium",rating:4.8,reviews:39,desc:"Fluid crepe silk in deep midnight — understated luxury for evening occasions.",fabric:"Crepe Silk · 6.3m",founder:true,best:false,isNew:false,grad:"linear-gradient(150deg,#1C2A4A,#0F1A30)",motif:"🌙"},
+{id:9,name:"Kanchi Cotton Saree — Temple Border",collection:"Cotton",sub:"Kanchi Cotton",price:2799,compare:3499,colour:"Turmeric",colours:["#D9A441","#5C1A24","#2E4A3A"],occasion:["Festive","Daily Use"],tier:"Mid Range",badge:"Bestseller",rating:4.8,reviews:88,desc:"Kanchi cotton with a classic temple border — tradition you can wear daily.",fabric:"Kanchi Cotton · Temple border",founder:true,best:true,isNew:false,grad:"linear-gradient(150deg,#D9A441,#8A6D3B)",motif:"🛕"},
+{id:10,name:"Jamdhani Cotton Saree",collection:"Cotton",sub:"Jamdhani Cotton",price:3299,compare:4299,colour:"Ivory Gold",colours:["#F3EDE3","#B9975B","#E8B4B8"],occasion:["Festive","Office"],tier:"Premium",badge:"Founder's Pick",rating:4.9,reviews:52,desc:"Handwoven Jamdhani motifs — a centuries-old art, light as a feather.",fabric:"Jamdhani Cotton · Handwoven",founder:true,best:false,isNew:true,grad:"linear-gradient(150deg,#EDE6D8,#B9975B)",motif:"✦"},
+{id:11,name:"Madurai Cotton Saree",collection:"Cotton",sub:"Madurai Cotton",price:999,compare:1499,colour:"Sky Blue",colours:["#7BA7C9","#F3EDE3","#A8B5A0"],occasion:["Daily Use"],tier:"Affordable",badge:"",rating:4.6,reviews:71,desc:"Everyday Madurai cotton — soft, sturdy and easy to wash. A true daily companion.",fabric:"Madurai Cotton · 6.3m",founder:false,best:true,isNew:false,grad:"linear-gradient(150deg,#7BA7C9,#4A7A9A)",motif:"🌊"},
+{id:12,name:"Coimbatore Cotton Saree",collection:"Cotton",sub:"Coimbatore Cotton",price:1199,compare:1599,colour:"Peach",colours:["#E8B4A0","#F3EDE3","#C97A7A"],occasion:["Daily Use","Office"],tier:"Affordable",badge:"",rating:4.5,reviews:44,desc:"Coimbatore cotton in a soft peach — breathable, graceful, endlessly wearable.",fabric:"Coimbatore Cotton · 6.3m",founder:false,best:false,isNew:false,grad:"linear-gradient(150deg,#E8B4A0,#C98A6A)",motif:"🌸"},
+{id:13,name:"Zari Cotton Saree — Festive",collection:"Cotton",sub:"Zari Cotton",price:2499,compare:3199,colour:"Gold Maroon",colours:["#B9975B","#5C1A24","#F3EDE3"],occasion:["Festive"],tier:"Mid Range",badge:"Festive",rating:4.7,reviews:36,desc:"Cotton comfort with a festive zari touch — best of both worlds.",fabric:"Zari Cotton · Zari border",founder:false,best:false,isNew:true,grad:"linear-gradient(150deg,#B9975B,#5C1A24)",motif:"✧"},
+{id:14,name:"Lychee Cotton Saree",collection:"Cotton",sub:"Lychee Cotton",price:1399,compare:1899,colour:"Blush",colours:["#E8B4B8","#F3EDE3","#A8B5A0"],occasion:["Daily Use","Office"],tier:"Affordable",badge:"New",rating:4.6,reviews:22,desc:"Lychee cotton with a soft texture and sweet pastel tones.",fabric:"Lychee Cotton · 6.3m",founder:false,best:false,isNew:true,grad:"linear-gradient(150deg,#E8B4B8,#D9A0A8)",motif:"🍃"},
+{id:15,name:"Peru Cotton Saree",collection:"Cotton",sub:"Peru Cotton",price:1499,compare:1999,colour:"Mint",colours:["#A8D8C8","#F3EDE3","#7BA7C9"],occasion:["Daily Use"],tier:"Affordable",badge:"",rating:4.5,reviews:19,desc:"Peru cotton — fine, soft and durable for everyday elegance.",fabric:"Peru Cotton · 6.3m",founder:false,best:false,isNew:false,grad:"linear-gradient(150deg,#A8D8C8,#6BA898)",motif:"🌿"},
+{id:16,name:"Cotton Silk Saree — Ivory",collection:"Silk",sub:"Cotton Silk",price:2799,compare:3599,colour:"Ivory",colours:["#F3EDE3","#B9975B","#A8B5A0"],occasion:["Office","Festive"],tier:"Mid Range",badge:"Bestseller",rating:4.7,reviews:63,desc:"The perfect bridge — cotton comfort, silk sheen. Office to occasion, effortlessly.",fabric:"Cotton Silk · 6.3m + blouse",founder:false,best:true,isNew:false,grad:"linear-gradient(150deg,#F3EDE3,#D9C7A5)",motif:"🧵"},
+{id:17,name:"Kota Silk Saree",collection:"Silk",sub:"Kota Silk",price:2199,compare:2899,colour:"Lavender",colours:["#B8A9D9","#F3EDE3","#C97A7A"],occasion:["Festive","Office"],tier:"Mid Range",badge:"",rating:4.6,reviews:27,desc:"Kota silk with a sheer, graceful fall — light yet luxurious.",fabric:"Kota Silk · 6.3m",founder:false,best:false,isNew:true,grad:"linear-gradient(150deg,#B8A9D9,#8A7AB8)",motif:"✦"},
+{id:18,name:"Viscose Silk Saree — Gold",collection:"Silk",sub:"Viscose Silk",price:3299,compare:4299,colour:"Antique Gold",colours:["#B9975B","#5C1A24","#2E4A3A"],occasion:["Festive","Wedding"],tier:"Premium",badge:"",rating:4.7,reviews:34,desc:"Viscose silk with antique gold tones — rich, warm and photo-ready.",fabric:"Viscose Silk · 6.3m",founder:false,best:false,isNew:false,grad:"linear-gradient(150deg,#B9975B,#8A6D3B)",motif:"✧"},
+{id:19,name:"Mushroom Silk Saree — Natural",collection:"Silk",sub:"Mushroom Silk",price:3999,compare:4999,colour:"Natural Beige",colours:["#D9C7A5","#8A9A7B","#5C1A24"],occasion:["Festive","Office"],tier:"Premium",badge:"Founder's Pick",rating:4.8,reviews:21,desc:"Natural mushroom silk — earthy, elegant and truly one-of-a-kind.",fabric:"Mushroom Silk · Natural",founder:true,best:false,isNew:true,grad:"linear-gradient(150deg,#D9C7A5,#A89878)",motif:"🍄"},
+{id:20,name:"Soft Chenn Silk Saree",collection:"Silk",sub:"Soft Chenn Silk",price:2999,compare:3899,colour:"Teal",colours:["#2A7A7A","#F3EDE3","#5C1A24"],occasion:["Festive","Wedding"],tier:"Mid Range",badge:"",rating:4.6,reviews:25,desc:"Soft Chenn silk with a smooth hand-feel — gentle shine, graceful drape.",fabric:"Soft Chenn Silk · 6.3m",founder:false,best:false,isNew:false,grad:"linear-gradient(150deg,#2A7A7A,#1A4A4A)",motif:"🌊"},
+{id:21,name:"Embroidered Chiffon Saree",collection:"Chiffon",sub:"Embroidered Chiffon",price:2899,compare:3699,colour:"Wine",colours:["#7A2230","#F3EDE3","#B9975B"],occasion:["Festive","Wedding"],tier:"Mid Range",badge:"Festive",rating:4.7,reviews:30,desc:"Delicate embroidery on floaty chiffon — detail that catches the light.",fabric:"Embroidered Chiffon · 6.3m",founder:false,best:false,isNew:true,grad:"linear-gradient(150deg,#7A2230,#4A1220)",motif:"🌸"},
+{id:22,name:"Plain Chiffon Saree — Minimal",collection:"Chiffon",sub:"Plain Chiffon",price:1299,compare:1699,colour:"Pearl White",colours:["#F9F6F1","#E8B4B8","#A8B5A0"],occasion:["Office","Daily Use"],tier:"Affordable",badge:"",rating:4.5,reviews:18,desc:"Minimal plain chiffon — pair with any blouse, own every room.",fabric:"Plain Chiffon · 6.3m",founder:false,best:false,isNew:false,grad:"linear-gradient(150deg,#F9F6F1,#E8E0D3)",motif:"✦"},
+{id:23,name:"Floral Chiffon Saree — Summer",collection:"Chiffon",sub:"Floral Chiffon",price:1699,compare:2199,colour:"Coral",colours:["#E88A7A","#F3EDE3","#A8B5A0"],occasion:["Daily Use","Festive"],tier:"Mid Range",badge:"New",rating:4.6,reviews:24,desc:"Sunny floral chiffon — made for brunches, poojas and happy days.",fabric:"Floral Chiffon · 6.3m",founder:false,best:false,isNew:true,grad:"linear-gradient(150deg,#E88A7A,#C96A5A)",motif:"🌺"},
+{id:24,name:"Printed Georgette Saree",collection:"Georgette",sub:"Printed Georgette",price:1799,compare:2399,colour:"Indigo",colours:["#3A4A7A","#F3EDE3","#C97A7A"],occasion:["Office","Festive"],tier:"Mid Range",badge:"",rating:4.6,reviews:29,desc:"Artistic prints on soft georgette — modern grace, everyday ease.",fabric:"Printed Georgette · 6.3m",founder:false,best:true,isNew:false,grad:"linear-gradient(150deg,#3A4A7A,#1C2A4A)",motif:"🎨"},
+{id:25,name:"Embroidered Georgette Saree",collection:"Georgette",sub:"Embroidered Georgette",price:2599,compare:3399,colour:"Rose Gold",colours:["#D9A0A8","#5C1A24","#B9975B"],occasion:["Festive","Wedding"],tier:"Mid Range",badge:"Festive",rating:4.7,reviews:26,desc:"Rose-gold embroidery on georgette — festive sparkle, feather-light feel.",fabric:"Embroidered Georgette · 6.3m",founder:false,best:false,isNew:true,grad:"linear-gradient(150deg,#D9A0A8,#B97A88)",motif:"✧"},
+{id:26,name:"Bandhani Georgette Saree",collection:"Georgette",sub:"Bandhani Georgette",price:1999,compare:2599,colour:"Rani Pink",colours:["#C94A6A","#F3EDE3","#D9A441"],occasion:["Festive","Daily Use"],tier:"Mid Range",badge:"",rating:4.6,reviews:20,desc:"Bandhani artistry on georgette — vibrant, traditional, joyful.",fabric:"Bandhani Georgette · 6.3m",founder:false,best:false,isNew:false,grad:"linear-gradient(150deg,#C94A6A,#9A2A4A)",motif:"🦋"},
+{id:27,name:"Plain Georgette Saree — Classic",collection:"Georgette",sub:"Plain Georgette",price:1399,compare:1899,colour:"Charcoal",colours:["#2B2B2B","#F3EDE3","#5C1A24"],occasion:["Office","Daily Use"],tier:"Affordable",badge:"",rating:4.5,reviews:16,desc:"Classic plain georgette — the saree every wardrobe deserves.",fabric:"Plain Georgette · 6.3m",founder:false,best:false,isNew:false,grad:"linear-gradient(150deg,#4A4A4A,#1C1C1C)",motif:"✦"},
+{id:28,name:"Bridal Banarasi — Heirloom Red",collection:"Silk",sub:"Banarasi Silk",price:4999,compare:6999,colour:"Heirloom Red",colours:["#8A1A2A","#B9975B","#5C1A24"],occasion:["Wedding"],tier:"Premium",badge:"Bridal",rating:5.0,reviews:42,desc:"Our bridal masterpiece — heirloom red Banarasi with intricate zari jaal. Made to be treasured.",fabric:"Banarasi Silk · Bridal zari",founder:true,best:true,isNew:true,grad:"linear-gradient(150deg,#8A1A2A,#5C1A24)",motif:"👑"},
+{id:29,name:"Bridesmaid Set — Blush Chiffon (Set of 4)",collection:"Chiffon",sub:"Printed Chiffon",price:5999,compare:7999,colour:"Blush Set",colours:["#E8B4B8","#F3EDE3","#C97A7A"],occasion:["Wedding"],tier:"Premium",badge:"Bridesmaid",rating:4.9,reviews:15,desc:"Coordinated blush chiffons for your bridesmaids — photo-ready, comfortable, unforgettable.",fabric:"Chiffon · Set of 4 sarees",founder:true,best:false,isNew:true,grad:"linear-gradient(150deg,#E8B4B8,#D9A0A8)",motif:"💐"},
+{id:30,name:"Festive Zari Cotton — Diwali Edit",collection:"Cotton",sub:"Zari Cotton",price:2299,compare:2999,colour:"Festive Gold",colours:["#B9975B","#7A2230","#F3EDE3"],occasion:["Festive"],tier:"Mid Range",badge:"Festive",rating:4.7,reviews:33,desc:"Our Diwali edit — zari cotton that shines all night, comfortable all day.",fabric:"Zari Cotton · Festive",founder:false,best:true,isNew:true,grad:"linear-gradient(150deg,#B9975B,#7A2230)",motif:"🪔"},
+{id:31,name:"Pooja Special — Marigold Cotton",collection:"Cotton",sub:"Mul Cotton",price:1099,compare:1499,colour:"Marigold",colours:["#E8A83A","#F3EDE3","#7A2230"],occasion:["Festive","Daily Use"],tier:"Affordable",badge:"",rating:4.6,reviews:27,desc:"Marigold mul cotton for poojas and prayers — pure, soft, auspicious.",fabric:"Mul Cotton · 6.3m",founder:false,best:false,isNew:false,grad:"linear-gradient(150deg,#E8A83A,#C98A2A)",motif:"🪔"},
+{id:32,name:"Office Edit — Charcoal Georgette",collection:"Georgette",sub:"Satin Georgette",price:1899,compare:2499,colour:"Charcoal",colours:["#2B2B2B","#5C1A24","#F3EDE3"],occasion:["Office"],tier:"Mid Range",badge:"Office",rating:4.6,reviews:22,desc:"Boardroom-ready georgette — sharp, subtle and endlessly elegant.",fabric:"Satin Georgette · 6.3m",founder:false,best:false,isNew:false,grad:"linear-gradient(150deg,#2B2B2B,#1C1C1C)",motif:"✦"}
+];
+const BLOGS=[
+{id:1,title:"Cotton vs Silk vs Chiffon vs Georgette: Which Saree Is Right for You?",cat:"Fabric Guide",date:"Nov 20, 2026",read:"4 min read",grad:"linear-gradient(150deg,#8A9A7B,#4A5D3A)",emoji:"🧵",excerpt:"Confused between fabrics? Our founder breaks down feel, fall, care and occasion for each — so you choose with confidence.",body:"<p>Every woman asks us the same question: <em>“Which fabric should I choose?”</em> The answer depends on how you want to feel — and where you will wear it.</p><h3>Cotton — Your Everyday Grace</h3><p>Cotton is breathable, soft and forgiving. Mul, Kota and Kanchi cotton sarees are perfect for daily wear, office and warm weather. They wash easily and drape beautifully all day.</p><h3>Silk — Festive Grandeur</h3><p>Silk brings shine and structure. Banarasi and Soft Silk are heirloom choices for weddings and festivals. Cotton Silk is the clever bridge — silk sheen with cotton comfort.</p><h3>Chiffon &amp; Georgette — Floaty Elegance</h3><p>Chiffon and Georgette are light, flowy and forgiving. They suit bridesmaids, daytime functions and anyone who loves a soft, airy drape.</p><p><b>Our advice:</b> Start with one Cotton and one Silk. Your wardrobe will thank you.</p>"},
+{id:2,title:"The Bridesmaid Edit: How to Dress Your Squad in Style",cat:"Wedding",date:"Nov 12, 2026",read:"5 min read",grad:"linear-gradient(150deg,#E8B4B8,#C97A7A)",emoji:"💐",excerpt:"Coordinated colours, comfortable fabrics and photos that look like a dream — our complete bridesmaid guide.",body:"<p>A bride's squad deserves sarees that are <em>coordinated, comfortable and camera-ready</em>. Here is how we style bridesmaid sets at Vedajanani.</p><h3>Pick One Palette</h3><p>Blush, sage or dusty rose work beautifully together. Choose one colour family and let each saree vary slightly in shade — it looks intentional and stunning in photos.</p><h3>Comfort First</h3><p>Chiffon and Georgette are our top picks for bridesmaids — light, floaty and easy to drape for long wedding days.</p><h3>Matching Blouses</h3><p>We offer blouse stitching guidance and can coordinate blouse fabrics across your set. Ask us on WhatsApp before ordering.</p>"},
+{id:3,title:"5 Draping Tips Every Woman Should Know",cat:"Style Tips",date:"Nov 5, 2026",read:"3 min read",grad:"linear-gradient(150deg,#B9975B,#8A6D3B)",emoji:"✦",excerpt:"From pleat secrets to pallu styling — small techniques that make any saree look boutique-perfect.",body:"<p>A beautiful saree deserves a beautiful drape. These five tips will transform how your saree looks and feels.</p><h3>1. Pleat Like a Pro</h3><p>Make 5–7 neat pleats, tuck them securely, and fan them out. Practice once — it becomes muscle memory.</p><h3>2. Pallu Length Matters</h3><p>For daily wear, keep the pallu short. For festive looks, let it fall long over the shoulder.</p><h3>3. Blouse Fit Is Everything</h3><p>A well-fitted blouse makes even an affordable saree look premium. Invest in tailoring.</p><h3>4. Pin Discreetly</h3><p>Two safety pins — one at the shoulder, one at the waist — keep your drape perfect all day.</p><h3>5. Walk, Then Adjust</h3><p>Take a few steps after draping. Sarees settle beautifully after movement.</p>"},
+{id:4,title:"Inside the Weaver's Loom: A Story of Hands & Heritage",cat:"Weaver Stories",date:"Oct 28, 2026",read:"6 min read",grad:"linear-gradient(150deg,#5C1A24,#2B0E14)",emoji:"🪷",excerpt:"We visited the looms behind our Banarasi and Jamdhani sarees. This is what we learned about patience, pride and craft.",body:"<p>Behind every saree is a pair of hands that has woven for decades. When we visited our weavers, one master told us: <em>“A saree takes days. A family takes a lifetime to learn.”</em></p><h3>Patience Woven In</h3><p>Jamdhani motifs are woven by hand, thread by thread — no shortcuts. That is why each piece feels alive.</p><h3>Fairness Matters</h3><p>We pay weavers directly and fairly. When you buy from Vedajanani, you support the hands behind the loom.</p><h3>Your Heirloom</h3><p>Every saree you drape carries this story. That is the soul of our business.</p>"},
+{id:5,title:"Festive Dressing: 7 Looks for Diwali, Pongal & Beyond",cat:"Festive",date:"Oct 15, 2026",read:"4 min read",grad:"linear-gradient(150deg,#D9A441,#8A6D3B)",emoji:"🪔",excerpt:"Zari cottons, soft silks and Bandhani chiffons — our festive edit for every celebration on your calendar.",body:"<p>Festive season is saree season. Here are seven looks we love — from Diwali nights to Pongal mornings.</p><h3>For Diwali Night</h3><p>Zari Cotton or Soft Silk in gold and maroon — shine that matches the diyas.</p><h3>For Pongal Morning</h3><p>Marigold Mul Cotton — pure, auspicious and comfortable for pooja.</p><h3>For Family Gatherings</h3><p>Bandhani Chiffon — vibrant, traditional and endlessly complimented.</p>"},
+{id:6,title:"How to Care for Your Saree: Washing, Storage & Longevity",cat:"Fabric Guide",date:"Oct 2, 2026",read:"4 min read",grad:"linear-gradient(150deg,#2E4A3A,#1C3328)",emoji:"🌿",excerpt:"Cotton, silk, chiffon or georgette — care for each fabric the right way and your saree will last generations.",body:"<p>A well-cared saree can be passed down for generations. Here is how to care for each fabric.</p><h3>Cotton</h3><p>Gentle machine wash or hand wash. Dry in shade. Cotton loves water — wash it freely.</p><h3>Silk</h3><p>Dry clean only. Store in muslin cloth, away from direct sunlight. Never hang silk for long periods.</p><h3>Chiffon &amp; Georgette</h3><p>Hand wash gently or dry clean. Fold, don't hang — these fabrics stretch when hung.</p>"}
+];
+
+/* ============ STATE ============ */
+let cart=JSON.parse(localStorage.getItem('vv_cart')||'[]');
+let wishlist=new Set(JSON.parse(localStorage.getItem('vv_wish')||'[]'));
+let currentProduct=null,currentQty=1,currentColourIdx=0;
+let collFilter={type:'all',collection:null,sub:null,tier:null,occasion:null,curated:null,search:null};
+let blogCat='All';
+const $=id=>document.getElementById(id);
+const fmt=n=>'₹'+n.toLocaleString('en-IN');
+const saveCart=()=>{localStorage.setItem('vv_cart',JSON.stringify(cart));updateCartCount();renderDrawer();};
+const saveWish=()=>localStorage.setItem('vv_wish',JSON.stringify([...wishlist]));
+
+/* ============ HELPERS ============ */
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+function prodCard(p){
+  const off=p.compare?Math.round((1-p.price/p.compare)*100):0;
+  const badge=p.badge?`<span class="badge ${p.badge.includes('Founder')?'gold':p.badge==='New'?'char':''}">${p.badge}</span>`:'';
+  return `<div class="prod" onclick="go('product',{id:${p.id}})">
+    <div class="prod-img" style="background:${p.grad}"><div class="pattern"></div>${badge}<button class="wish ${wishlist.has(p.id)?'active':''}" onclick="event.stopPropagation();toggleWish(${p.id},this)">${wishlist.has(p.id)?'♥':'♡'}</button><span class="motif">${p.motif}</span><span class="quick" onclick="event.stopPropagation();addToCart(${p.id},1)">Quick Add +</span></div>
+    <div class="prod-body"><div class="cat">${p.sub}</div><h4>${p.name}</h4><div class="stars">${'★'.repeat(Math.round(p.rating))} <span style="color:var(--grey);font-size:11px">${p.rating} (${p.reviews})</span></div><div class="price">${fmt(p.price)} ${p.compare?`<s>${fmt(p.compare)}</s>`:''} ${off?`<span style="color:var(--maroon);font-size:11px">-${off}%</span>`:''}</div><div class="meta">${p.colour} · ${p.occasion.join(' · ')}</div></div></div>`;
+}
+function toggleWish(id,el){if(wishlist.has(id)){wishlist.delete(id);toast('Removed from wishlist');}else{wishlist.add(id);toast('Added to wishlist ♥');}saveWish();if(el)el.classList.toggle('active',wishlist.has(id));renderHome();if($('page-collection').classList.contains('active'))renderCollection();}
+function shareProduct(){if(navigator.share){navigator.share({title:currentProduct.name,text:currentProduct.desc,url:location.href});}else{toast('Link copied to share! 🔗');}}
+
+/* ============ ROUTER ============ */
+function go(page,param={}){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const el=$('page-'+page);if(el)el.classList.add('active');
+  document.querySelectorAll('nav.main a').forEach(a=>a.classList.remove('active'));
+  closeAll();window.scrollTo({top:0,behavior:'instant'});
+  if(page==='collection'){collFilter={type:'all',collection:null,sub:null,tier:null,occasion:null,curated:null,search:null,...param};renderCollection();}
+  if(page==='product'){renderProduct(param.id);}
+  if(page==='cart'){renderCartPage();}
+  if(page==='checkout'){renderCheckout();}
+  if(page==='blog'){renderBlog();}
+  if(page==='blog-detail'){renderBlogDetail(param.id);}
+  if(page==='home'){renderHome();}
+}
+function closeAll(){$('cartDrawer').classList.remove('open');$('mobileMenu').classList.remove('open');$('overlay').classList.remove('show');$('searchBox').classList.remove('open');}
+function toggleMobile(o){$('mobileMenu').classList.toggle('open',o);$('overlay').classList.toggle('show',o);}
+function toggleSearch(o){$('searchBox').classList.toggle('open',o);$('overlay').classList.toggle('show',o);if(o)setTimeout(()=>$('searchInput').focus(),100);}
+function openCart(){$('cartDrawer').classList.add('open');$('overlay').classList.add('show');renderDrawer();}
+function subscribe(e){e.preventDefault();toast('Welcome to the family! Code sent to your email 💌');e.target.reset();}
+
+/* ============ HOME ============ */
+function renderHome(){
+  $('homeBestsellers').innerHTML=PRODUCTS.filter(p=>p.best).slice(0,4).map(prodCard).join('');
+  $('homeNew').innerHTML=PRODUCTS.filter(p=>p.isNew).slice(0,4).map(prodCard).join('');
+  $('homeBlog').innerHTML=BLOGS.slice(0,3).map(b=>`<div class="blog-card" onclick="go('blog-detail',{id:${b.id}})"><div class="blog-img" style="background:${b.grad}">${b.emoji}</div><div class="blog-body"><div class="date">${b.cat} · ${b.date}</div><h3>${b.title}</h3><p>${b.excerpt}</p><div style="margin-top:12px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--maroon);font-weight:600">Read Story →</div></div></div>`).join('');
+}
+
+/* ============ COLLECTION ============ */
+function getFiltered(){
+  let list=[...PRODUCTS];
+  const f=collFilter;
+  if(f.collection)list=list.filter(p=>p.collection===f.collection);
+  if(f.sub)list=list.filter(p=>p.sub===f.sub);
+  if(f.tier)list=list.filter(p=>p.tier===f.tier);
+  if(f.occasion)list=list.filter(p=>p.occasion.includes(f.occasion));
+  if(f.curated==='new')list=list.filter(p=>p.isNew);
+  if(f.curated==='bestseller')list=list.filter(p=>p.best);
+  if(f.curated==='founder')list=list.filter(p=>p.founder);
+  if(f.search){const q=f.search.toLowerCase();list=list.filter(p=>(p.name+' '+p.collection+' '+p.sub+' '+p.occasion.join(' ')+' '+p.colour).toLowerCase().includes(q));}
+  // sidebar filters
+  const prices=[...document.querySelectorAll('.f-price:checked')].map(i=>i.value);
+  if(prices.length)list=list.filter(p=>prices.includes(p.tier));
+  const occs=[...document.querySelectorAll('.f-occ:checked')].map(i=>i.value);
+  if(occs.length)list=list.filter(p=>occs.some(o=>p.occasion.includes(o)));
+  const subs=[...document.querySelectorAll('.f-sub:checked')].map(i=>i.value);
+  if(subs.length)list=list.filter(p=>subs.includes(p.sub));
+  const sort=$('sortSel')?$('sortSel').value:'featured';
+  if(sort==='price-low')list.sort((a,b)=>a.price-b.price);
+  if(sort==='price-high')list.sort((a,b)=>b.price-a.price);
+  if(sort==='new')list.sort((a,b)=>(b.isNew-a.isNew));
+  if(sort==='rating')list.sort((a,b)=>b.rating-a.rating);
+  return list;
+}
+function renderCollection(){
+  const f=collFilter;
+  let title='All Sarees',desc='Handpicked sarees across Cotton, Silk, Chiffon & Georgette — quality-checked, fairly priced.',crumb='Shop / All';
+  if(f.collection){title=f.collection+' Sarees';crumb='Shop / '+f.collection;desc={Cotton:'Breathable, soft and graceful — Mul, Kanchi, Jamdhani, Kota & more for everyday elegance.',Silk:'Banarasi, Soft Silk, Crepe & more — festive grandeur and heirloom weaves.',Chiffon:'Floaty, airy and romantic — printed, embroidered and Bandhani chiffons.',Georgette:'Satin sheen and soft drape — printed, embroidered and plain georgettes.'}[f.collection]||'';}
+  if(f.sub){title=f.sub;crumb='Shop / '+(f.collection||'')+' / '+f.sub;}
+  if(f.tier){title=f.tier+' Sarees';crumb='Shop by Price / '+f.tier;desc=f.tier==='Affordable'?'Daily-use elegance from ₹500 — beautiful without the splurge.':f.tier==='Mid Range'?'Our most-loved range — office and occasion favourites.':'Premium heirloom weaves — festive and bridal grandeur.';}
+  if(f.occasion){title=f.occasion==='Wedding'?'Wedding Collection — Brides & Bridesmaids':f.occasion+' Sarees';crumb='Occasions / '+f.occasion;desc=f.occasion==='Wedding'?'Brides, bridesmaids and guests — coordinated, comfortable and unforgettable.':'';}
+  if(f.curated==='new'){title='New Arrivals';crumb='Curated / New Arrivals';desc='Fresh weaves, just arrived — be the first to drape them.';}
+  if(f.curated==='bestseller'){title='Best Sellers';crumb='Curated / Best Sellers';desc='Loved, reordered and recommended — our most-loved sarees.';}
+  if(f.curated==='founder'){title="Founder's Picks";crumb="Curated / Founder's Picks";desc='Handpicked by our founder — the sarees she would drape on her own family.';}
+  if(f.search){title='Results for “'+f.search+'”';crumb='Search / '+f.search;}
+  $('collTitle').textContent=title;$('collDesc').textContent=desc;$('collCrumb').innerHTML=`Home / <b>${crumb}</b>`;$('collEyebrow').textContent=crumb.split('/')[0].trim();
+  // chips
+  const chips=[];
+  if(f.collection)chips.push({label:f.collection+' ×',fn:`collFilter.collection=null;renderCollection()`});
+  if(f.sub)chips.push({label:f.sub+' ×',fn:`collFilter.sub=null;renderCollection()`});
+  if(f.tier)chips.push({label:f.tier+' ×',fn:`collFilter.tier=null;renderCollection()`});
+  if(f.occasion)chips.push({label:f.occasion+' ×',fn:`collFilter.occasion=null;renderCollection()`});
+  if(f.curated)chips.push({label:f.curated+' ×',fn:`collFilter.curated=null;renderCollection()`});
+  if(f.search)chips.push({label:'“'+f.search+'” ×',fn:`collFilter.search=null;renderCollection()`});
+  $('collChips').innerHTML=chips.map(c=>`<span class="chip active" onclick="${c.fn}">${c.label}</span>`).join('')+`<span class="chip" onclick="clearFilters()">Clear All</span>`;
+  // sub filters
+  const subs=[...new Set(PRODUCTS.filter(p=>!f.collection||p.collection===f.collection).map(p=>p.sub))];
+  $('fSub').innerHTML=subs.map(s=>`<label><input type="checkbox" class="f-sub" value="${s}" onchange="renderCollection()"> ${s} (${PRODUCTS.filter(p=>p.sub===s).length})</label>`).join('');
+  const cols=[...new Set(PRODUCTS.map(p=>p.colour))].slice(0,10);
+  $('fColour').innerHTML=cols.map(c=>`<span class="colour-dot" title="${c}" style="width:26px;height:26px;background:${PRODUCTS.find(p=>p.colour===c).colours[0]}" onclick="toast('Colour filter: ${c}')"></span>`).join('');
+  const list=getFiltered();
+  $('collCount').textContent=list.length+' products';
+  $('collGrid').innerHTML=list.map(prodCard).join('');
+  $('collEmpty').innerHTML=list.length?'':`<div class="empty"><div class="big">No sarees found</div><p>Try clearing filters or explore another collection.</p><br><a class="btn" onclick="clearFilters()">View All Sarees</a></div>`;
+}
+function clearFilters(){document.querySelectorAll('.f-price,.f-occ,.f-sub').forEach(i=>i.checked=false);collFilter={type:'all',collection:null,sub:null,tier:null,occasion:null,curated:null,search:null};renderCollection();}
+function doSearch(){const q=$('searchInput').value.trim();if(!q)return;toggleSearch(false);go('collection',{search:q});}
+function quickSearch(q){$('searchInput').value=q;doSearch();}
+
+/* ============ PRODUCT ============ */
+function renderProduct(id){
+  currentProduct=PRODUCTS.find(p=>p.id===id)||PRODUCTS[0];currentQty=1;currentColourIdx=0;
+  const p=currentProduct;
+  $('pdpCrumb').innerHTML=`Home / ${p.collection} / ${p.sub} / <b>${p.name}</b>`;
+  $('pdpCat').textContent=p.sub+' · '+p.occasion.join(' · ');
+  $('pdpName').textContent=p.name;
+  $('pdpStars').textContent='★'.repeat(Math.round(p.rating));
+  $('pdpReviews').textContent=`${p.rating} · ${p.reviews} reviews`;
+  $('pdpPrice').textContent=fmt(p.price);
+  $('pdpCompare').textContent=p.compare?fmt(p.compare):'';
+  $('pdpSave').textContent=p.compare?`SAVE ${Math.round((1-p.price/p.compare)*100)}%`:'';
+  $('pdpBadge').textContent=p.badge||'';
+  $('pdpBadge').style.display=p.badge?'block':'none';
+  updateGallery();
+  $('pdpColours').innerHTML=p.colours.map((c,i)=>`<span class="colour-dot ${i===0?'active':''}" style="background:${c}" onclick="selectColour(${i},this)"></span>`).join('');
+  $('pdpColourName').textContent=p.colour;
+  $('pdpQty').textContent='1';
+  $('pdpAcc').innerHTML=`
+    <div class="acc-item open"><button class="acc-head" onclick="this.parentElement.classList.toggle('open')">Fabric &amp; Details <span>−</span></button><div class="acc-body">${p.fabric} · Length: 6.3 metres + blouse piece · Border: as pictured · Fall &amp; pleats: pre-stitched option available. ${p.desc}</div></div>
+    <div class="acc-item"><button class="acc-head" onclick="this.parentElement.classList.toggle('open')">Shipping &amp; Returns <span>+</span></button><div class="acc-body">Ships in 24 hours. Delivery in 3–5 business days across India. Free shipping above ₹999 (else ₹79). 7-day easy exchange — no questions asked. COD available.</div></div>
+    <div class="acc-item"><button class="acc-head" onclick="this.parentElement.classList.toggle('open')">Care Instructions <span>+</span></button><div class="acc-body">${p.collection==='Silk'?'Dry clean only. Store in muslin cloth away from sunlight.':p.collection==='Cotton'?'Gentle hand or machine wash. Dry in shade.':'Hand wash gently or dry clean. Fold to store — do not hang for long periods.'}</div></div>
+    <div class="acc-item"><button class="acc-head" onclick="this.parentElement.classList.toggle('open')">Reviews (${p.reviews}) <span>+</span></button><div class="acc-body">★★★★★ “Beautiful drape and honest quality. Exactly as pictured!” — Verified Buyer<br><br>★★★★★ “Soft, comfortable and got many compliments.” — Verified Buyer</div></div>`;
+  const related=PRODUCTS.filter(x=>x.id!==p.id&&(x.collection===p.collection||x.occasion.some(o=>p.occasion.includes(o)))).slice(0,4);
+  $('pdpRelated').innerHTML=related.map(prodCard).join('');
+}
+function updateGallery(){
+  const p=currentProduct;const c=p.colours[currentColourIdx];
+  $('pdpGallery').style.background=`linear-gradient(150deg,${c},${p.grad.split(',').pop()}`;
+  $('pdpMotif').textContent=p.motif;
+  $('pdpThumbs').innerHTML=p.colours.map((col,i)=>`<div class="thumb ${i===currentColourIdx?'active':''}" style="background:${col}" onclick="selectColour(${i})">${p.motif}</div>`).join('')+`<div class="thumb" style="background:var(--char)" onclick="toast('Video coming soon 🎬')">▶</div>`;
+}
+function selectColour(i,el){currentColourIdx=i;document.querySelectorAll('#pdpColours .colour-dot').forEach((d,j)=>d.classList.toggle('active',j===i));$('pdpColourName').textContent=currentProduct.colour+(i>0?' (Shade '+(i+1)+')':'');updateGallery();}
+function changeQty(d){currentQty=Math.max(1,currentQty+d);$('pdpQty').textContent=currentQty;}
+function buyNow(){addToCart(currentProduct.id,currentQty,false);go('checkout');}
+
+/* ============ CART ============ */
+function addToCart(id,qty=1,silent=false){
+  const ex=cart.find(i=>i.id===id);
+  if(ex)ex.qty+=qty;else cart.push({id,qty});
+  saveCart();if(!silent)toast('Added to cart 🛍');openCart();
+}
+function cartTotals(){
+  const sub=cart.reduce((s,i)=>{const p=PRODUCTS.find(x=>x.id===i.id);return s+(p?p.price*i.qty:0);},0);
+  const ship=sub===0?0:(sub>=999?0:79);
+  return{sub,ship,total:sub+ship,count:cart.reduce((s,i)=>s+i.qty,0)};
+}
+function updateCartCount(){$('cartCount').textContent=cartTotals().count;}
+function renderDrawer(){
+  const t=cartTotals();
+  $('drawerCount').textContent=t.count?`(${t.count})`:'';
+  if(!cart.length){$('drawerBody').innerHTML=`<div class="empty"><div class="big">Your cart is empty</div><p>Beautiful sarees are waiting for you.</p><br><a class="btn" onclick="closeAll();go('collection',{type:'all'})">Start Shopping</a></div>`;$('drawerFoot').innerHTML='';return;}
+  $('drawerBody').innerHTML=cart.map(i=>{const p=PRODUCTS.find(x=>x.id===i.id);return `<div class="cart-item"><div class="cart-thumb" style="background:${p.grad}">${p.motif}</div><div style="flex:1"><div style="font-size:14px"><b>${p.name}</b></div><div style="font-size:12px;color:var(--grey)">${p.colour} · ${p.sub}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px"><span><b>${fmt(p.price)}</b> &nbsp; Qty: <button onclick="updateQty(${p.id},-1)" style="border:1px solid var(--line);background:#fff;width:26px;height:26px">−</button> ${i.qty} <button onclick="updateQty(${p.id},1)" style="border:1px solid var(--line);background:#fff;width:26px;height:26px">+</button></span><a style="color:var(--maroon);font-size:12px" onclick="removeItem(${p.id})">Remove</a></div></div></div>`;}).join('');
+  const pct=Math.min(100,Math.round(t.sub/999*100));
+  $('drawerFoot').innerHTML=`<div style="font-size:12px;text-align:center;background:var(--cream);padding:10px">${t.sub>=999?'🎉 You’ve unlocked <b>FREE shipping!</b>':`Add <b>${fmt(999-t.sub)}</b> more for FREE shipping`}</div><div class="progress"><div style="width:${pct}%"></div></div><div style="display:flex;justify-content:space-between;margin:10px 0"><span>Subtotal</span><b>${fmt(t.sub)}</b></div><button class="btn full" onclick="closeAll();go('checkout')">Checkout →</button><button class="btn dark full" style="margin-top:8px" onclick="closeAll();go('cart')">View Cart</button><div style="text-align:center;font-size:11px;color:var(--grey);margin-top:8px">UPI · Cards · NetBanking · COD</div>`;
+}
+function updateQty(id,d){const it=cart.find(i=>i.id===id);if(!it)return;it.qty+=d;if(it.qty<=0)cart=cart.filter(i=>i.id!==id);saveCart();if($('page-cart').classList.contains('active'))renderCartPage();}
+function removeItem(id){cart=cart.filter(i=>i.id!==id);saveCart();toast('Removed from cart');if($('page-cart').classList.contains('active'))renderCartPage();}
+function renderCartPage(){
+  const t=cartTotals();
+  if(!cart.length){$('cartItems').innerHTML=`<div class="empty" style="background:#fff;border:1px solid var(--line)"><div class="big">Your cart is empty</div><p>Beautiful sarees are waiting for you.</p><br><a class="btn" onclick="go('collection',{type:'all'})">Start Shopping</a></div>`;$('cartSummary').innerHTML='';return;}
+  $('cartItems').innerHTML=cart.map(i=>{const p=PRODUCTS.find(x=>x.id===i.id);return `<div class="cart-item"><div class="cart-thumb" style="background:${p.grad}">${p.motif}</div><div style="flex:1"><div style="font-size:15px"><b>${p.name}</b></div><div style="font-size:12px;color:var(--grey)">${p.colour} · ${p.sub} · ${p.fabric}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;flex-wrap:wrap;gap:8px"><span><b>${fmt(p.price)}</b> &nbsp; <button onclick="updateQty(${p.id},-1)" style="border:1px solid var(--line);background:#fff;width:28px;height:28px">−</button> ${i.qty} <button onclick="updateQty(${p.id},1)" style="border:1px solid var(--line);background:#fff;width:28px;height:28px">+</button></span><a style="color:var(--maroon);font-size:13px" onclick="removeItem(${p.id})">Remove</a></div></div></div>`;}).join('')+`<a class="btn dark" onclick="go('collection',{type:'all'})">← Continue Shopping</a>`;
+  const pct=Math.min(100,Math.round(t.sub/999*100));
+  $('cartSummary').innerHTML=`<h3>Order Summary</h3><div style="font-size:12px;text-align:center;background:var(--cream);padding:10px">${t.sub>=999?'🎉 FREE shipping unlocked!':`Add <b>${fmt(999-t.sub)}</b> for FREE shipping`}</div><div class="progress"><div style="width:${pct}%"></div></div><div class="row"><span>Subtotal</span><span>${fmt(t.sub)}</span></div><div class="row"><span>Shipping</span><span>${t.ship===0?'FREE':fmt(t.ship)}</span></div><div class="row"><span>Taxes</span><span>Included</span></div><div class="row total"><span>Total</span><span>${fmt(t.total)}</span></div><button class="btn full" style="margin-top:16px" onclick="go('checkout')">Proceed to Checkout →</button><div style="text-align:center;font-size:11px;color:var(--grey);margin-top:10px">🔒 Secure checkout · UPI · Cards · COD</div>`;
+}
+function renderCheckout(){
+  const t=cartTotals();
+  if(!cart.length){go('cart');return;}
+  $('checkoutSummary').innerHTML=`<h3>Your Order</h3>${cart.map(i=>{const p=PRODUCTS.find(x=>x.id===i.id);return `<div class="row" style="align-items:flex-start"><span style="flex:1">${p.name}<br><small>Qty ${i.qty} · ${p.colour}</small></span><span>${fmt(p.price*i.qty)}</span></div>`;}).join('')}<div class="row"><span>Subtotal</span><span>${fmt(t.sub)}</span></div><div class="row"><span>Shipping</span><span>${t.ship===0?'FREE':fmt(t.ship)}</span></div><div class="row total"><span>Total</span><span>${fmt(t.total)}</span></div><button class="btn full" style="margin-top:16px">Place Order · ${fmt(t.total)}</button><div style="text-align:center;font-size:11px;color:var(--grey);margin-top:10px">🔒 256-bit SSL secure · Easy 7-day exchange</div>`;
+  document.querySelectorAll('.pay-opt').forEach(o=>o.addEventListener('click',()=>{document.querySelectorAll('.pay-opt').forEach(x=>x.classList.remove('active'));o.classList.add('active');}));
+}
+function placeOrder(e){
+  e.preventDefault();
+  const oid='VV'+Date.now().toString().slice(-8);
+  $('orderId').textContent='#'+oid;
+  const d=new Date(Date.now()+4*864e5);
+  $('orderDate').textContent=d.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'});
+  cart=[];saveCart();go('thankyou');toast('Order placed successfully! 🎉');
+}
+
+/* ============ BLOG ============ */
+function renderBlog(){
+  const cats=['All',...new Set(BLOGS.map(b=>b.cat))];
+  $('blogChips').innerHTML=cats.map(c=>`<span class="chip ${blogCat===c?'active':''}" onclick="blogCat='${c}';renderBlog()">${c}</span>`).join('');
+  const list=blogCat==='All'?BLOGS:BLOGS.filter(b=>b.cat===blogCat);
+  $('blogGrid').innerHTML=list.map(b=>`<div class="blog-card" onclick="go('blog-detail',{id:${b.id}})"><div class="blog-img" style="background:${b.grad}">${b.emoji}</div><div class="blog-body"><div class="date">${b.cat} · ${b.date} · ${b.read}</div><h3>${b.title}</h3><p>${b.excerpt}</p><div style="margin-top:12px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--maroon);font-weight:600">Read Story →</div></div></div>`).join('');
+}
+function renderBlogDetail(id){
+  const b=BLOGS.find(x=>x.id===id)||BLOGS[0];
+  $('blogDetailCrumb').textContent=b.title.slice(0,40)+'…';
+  $('blogArticle').innerHTML=`<div style="text-align:center"><div class="eyebrow">${b.cat} · ${b.date} · ${b.read}</div><h2>${b.title}</h2><p style="color:var(--grey)">${b.excerpt}</p></div><div style="aspect-ratio:16/8;background:${b.grad};display:grid;place-items:center;font-size:72px;color:#fff;margin:24px 0">${b.emoji}</div>${b.body}<div class="note" style="margin-top:28px"><b>Shop the story:</b> Loved this look? <a style="color:var(--maroon);text-decoration:underline" onclick="go('collection',{type:'all'})">Explore the collection →</a></div>`;
+}
+
+function filterCatTab(el,cat){
+  document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');
+  const grid=document.getElementById('catGrid');const note=document.getElementById('menNote');
+  if(cat==='Men'){grid.style.display='none';note.style.display='block';}
+  else{grid.style.display='grid';note.style.display='none';}
+}
+
+// Desktop one-click dropdowns
+document.addEventListener('click', function(e){
+  const trigger = e.target.closest('.has-mega > a, .has-mega');
+  // If click is on a mega link inside, let it navigate and close
+  if(e.target.closest('.mega a')){ document.querySelectorAll('.has-mega.open').forEach(m=>m.classList.remove('open')); return; }
+  if(trigger && e.target.closest('.has-mega')){
+    // Only toggle if click is on the trigger link itself (not inside mega)
+    if(e.target.closest('.mega')) return;
+    e.preventDefault();
+    const wasOpen = trigger.classList.contains('open');
+    document.querySelectorAll('.has-mega.open').forEach(m=>m.classList.remove('open'));
+    if(!wasOpen) trigger.classList.add('open');
+    return;
+  }
+  // Click outside closes
+  if(!e.target.closest('.has-mega')){
+    document.querySelectorAll('.has-mega.open').forEach(m=>m.classList.remove('open'));
+  }
+});
+
+
+function toggleShopAll(e,id){
+  e.preventDefault();e.stopPropagation();
+  const wrap=document.getElementById(id);
+  const wasOpen=wrap.classList.contains('open');
+  document.querySelectorAll('.shopall-wrap.open').forEach(w=>w.classList.remove('open'));
+  if(!wasOpen) wrap.classList.add('open');
+}
+function toggleMobileShopAll(e){
+  e.preventDefault();
+  document.getElementById('mmShopAllSub').classList.toggle('open');
+}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.shopall-wrap')){
+    document.querySelectorAll('.shopall-wrap.open').forEach(w=>w.classList.remove('open'));
+  }
+});
+
+/* ============ INIT ============ */
+renderHome();updateCartCount();renderDrawer();
+// announcement rotation
+const msgs=['Free shipping above ₹999 · <b>Festive Collection Live</b> · COD Available','Easy 7-Day Exchange · <b>UPI, Cards & COD</b> Accepted','Founder\'s Picks Updated · <b>Shop Handpicked Sarees</b>'];
+let mi=0;setInterval(()=>{mi=(mi+1)%msgs.length;$('announce').innerHTML=msgs[mi];},4000);
+</script>
+</body>
+</html>

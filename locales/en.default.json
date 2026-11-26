@@ -1,0 +1,12 @@
+{
+  "general": {
+    "search": {
+      "placeholder": "Search sarees\u2026"
+    }
+  },
+  "sections": {
+    "header": {
+      "name": "Header"
+    }
+  }
+}

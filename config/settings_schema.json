@@ -1,0 +1,66 @@
+[
+  {
+    "name": "theme_info",
+    "settings": [
+      {
+        "type": "text",
+        "id": "theme_name",
+        "label": "Theme name",
+        "default": "Vedajanani Editorial"
+      }
+    ]
+  },
+  {
+    "name": "Brand",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_ivory",
+        "label": "Ivory background",
+        "default": "#F9F6F1"
+      },
+      {
+        "type": "color",
+        "id": "color_maroon",
+        "label": "Deep maroon",
+        "default": "#5C1A24"
+      },
+      {
+        "type": "color",
+        "id": "color_gold",
+        "label": "Antique gold",
+        "default": "#B9975B"
+      },
+      {
+        "type": "color",
+        "id": "color_charcoal",
+        "label": "Charcoal",
+        "default": "#1C1C1C"
+      },
+      {
+        "type": "range",
+        "id": "card_radius",
+        "label": "Card corner radius (px)",
+        "min": 0,
+        "max": 32,
+        "step": 1,
+        "default": 20
+      }
+    ]
+  },
+  {
+    "name": "Header",
+    "settings": [
+      {
+        "type": "text",
+        "id": "announcement",
+        "label": "Announcement bar",
+        "default": "Free shipping above \u20b9999 \u00b7 Festive Collection Live \u00b7 COD Available"
+      },
+      {
+        "type": "header",
+        "content": "Header right corner: Search | Account | Bag. Menu: Shop All (By Fabric + By Occasion) | Weddings | Women | Men | About | Journal"
+      }
+    ]
+  }
+]

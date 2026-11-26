@@ -1,0 +1,60 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-editorial"
+    },
+    "lookbook": {
+      "type": "lookbook-grid"
+    },
+    "collections": {
+      "type": "featured-collections"
+    },
+    "price": {
+      "type": "shop-by-price"
+    },
+    "occasion": {
+      "type": "shop-by-occasion"
+    },
+    "bestsellers": {
+      "type": "featured-products",
+      "settings": {
+        "collection": "best-sellers"
+      }
+    },
+    "new": {
+      "type": "featured-products",
+      "settings": {
+        "collection": "new-arrivals"
+      }
+    },
+    "testimonials": {
+      "type": "testimonials"
+    },
+    "blog": {
+      "type": "blog-preview"
+    },
+    "newsletter": {
+      "type": "newsletter"
+    },
+    "category": {
+      "type": "category-tabs"
+    },
+    "campaigns": {
+      "type": "campaign-blocks"
+    }
+  },
+  "order": [
+    "hero",
+    "category",
+    "campaigns",
+    "lookbook",
+    "collections",
+    "price",
+    "occasion",
+    "bestsellers",
+    "new",
+    "testimonials",
+    "blog",
+    "newsletter"
+  ]
+}

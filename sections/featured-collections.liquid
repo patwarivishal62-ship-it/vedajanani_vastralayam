@@ -1,0 +1,1 @@
+<section><h2>Shop by Collection</h2><div class="collections-grid">{% for c in section.settings.collections %}<a href="{{ c.url }}">{{ c.title }}</a>{% endfor %}</div></section>{% schema %}{"name":"Featured Collections","settings":[{"type":"collection_list","id":"collections","label":"Collections"}],"presets":[{"name":"Featured Collections"}]}{% endschema %}

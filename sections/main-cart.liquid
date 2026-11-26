@@ -1,0 +1,1 @@
+<h1>Your Cart</h1>{% for i in cart.items %}<p>{{ i.title }} — {{ i.final_price | money }}</p>{% endfor %}<a class="btn" href="/checkout">Checkout</a>{% schema %}{"name":"Main Cart"}{% endschema %}

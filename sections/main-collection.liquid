@@ -1,0 +1,1 @@
+<h1>{{ collection.title }}</h1><div class="product-grid">{% paginate collection.products by 12 %}{% for p in collection.products %}{% render 'product-card', product: p %}{% endfor %}{% endpaginate %}</div>{% schema %}{"name":"Main Collection"}{% endschema %}

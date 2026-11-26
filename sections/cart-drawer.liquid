@@ -1,0 +1,24 @@
+<aside class="cart-drawer" id="cartDrawer" aria-label="Shopping bag">
+  <div class="drawer-head"><span>Your Bag (<span id="cartDrawerCount">{{ cart.item_count }}</span>)</span><button id="cartClose" aria-label="Close bag">✕</button></div>
+  <div class="cart-drawer-body">
+    {% if cart.item_count == 0 %}
+      <div class="empty"><p>Your bag is empty.</p><a class="btn" href="{{ routes.all_collections_collection_url }}">Start Shopping</a></div>
+    {% else %}
+      {% for item in cart.items %}
+        <div class="cart-item">
+          {% if item.image %}<img src="{{ item.image | image_url: width: 160 }}" alt="{{ item.title | escape }}" width="80" height="100">{% endif %}
+          <div><a href="{{ item.url }}">{{ item.title }}</a><div>{{ item.variant.title }}</div><div>{{ item.final_price | money }} × {{ item.quantity }}</div></div>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+  {% if cart.item_count > 0 %}
+  <div class="cart-drawer-foot">
+    <div class="row"><span>Subtotal</span><strong>{{ cart.total_price | money }}</strong></div>
+    <p class="note">Shipping & taxes calculated at checkout. Free shipping above ₹999.</p>
+    <a class="btn full" href="{{ routes.cart_url }}">View Bag</a>
+    <a class="btn dark full" href="/checkout">Checkout</a>
+  </div>
+  {% endif %}
+</aside>
+{% schema %}{"name":"Cart Drawer","presets":[{"name":"Cart Drawer"}]}{% endschema %}

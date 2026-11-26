@@ -1,0 +1,4 @@
+<div class="announcement" role="region" aria-label="Announcement">
+  <p>{{ section.settings.announcement | default: 'Free shipping above ₹999 · Festive Collection Live · COD Available' }}</p>
+</div>
+{% schema %}{"name":"Announcement Bar","settings":[{"type":"text","id":"announcement","label":"Announcement text","default":"Free shipping above ₹999 · Festive Collection Live · COD Available"}],"presets":[{"name":"Announcement Bar"}]}{% endschema %}

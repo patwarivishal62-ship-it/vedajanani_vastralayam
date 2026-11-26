@@ -1,0 +1,43 @@
+.hero-editorial{padding:64px 24px;max-width:1280px;margin:0 auto}
+.masthead{display:flex;justify-content:space-between;border-top:1px solid var(--char);border-bottom:1px solid var(--char);padding:12px 0;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:32px;flex-wrap:wrap;gap:8px}
+.editorial-title{font-family:'Playfair Display',serif;font-size:72px;line-height:.95;margin:16px 0}
+.editorial-title em{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--maroon)}
+.lookbook-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.lookbook-grid a{background:var(--ivory);border-radius:20px;padding:40px;text-align:center;text-decoration:none;color:var(--char)}
+.collections-grid,.price-grid,.occasion-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:24px}
+.collections-grid a,.price-grid a,.occasion-grid a{background:#fff;border-radius:20px;padding:32px;text-align:center;text-decoration:none;color:var(--char)}
+.founder-letter{max-width:760px;margin:0 auto;padding:48px 24px;font-family:'Cormorant Garamond',serif;font-size:22px;line-height:1.6}
+.newsletter{background:#F3EDE3;border-radius:28px;margin:24px;padding:48px;text-align:center}
+@media(max-width:768px){.editorial-title{font-size:44px}.collections-grid,.price-grid,.occasion-grid,.lookbook-grid{grid-template-columns:1fr 1fr}}
+
+/* V3 Prada x Ralph Lauren */
+.hero-lux{min-height:88vh;display:flex;align-items:flex-end;color:#fff;background:linear-gradient(160deg,#1A0A0E,#5C1A24 55%,#8A3A2E);padding:64px 24px;border-radius:0}
+.hero-lux h1{font-family:'Playfair Display',serif;font-size:76px;line-height:.95;max-width:720px}
+.hero-lux .kicker{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#D9C7A5}
+.link-cta{color:#fff;border-bottom:1px solid #fff;padding-bottom:6px;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none}
+.campaigns{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:24px}
+.campaign{min-height:520px;display:flex;align-items:flex-end;color:#fff;border-radius:24px;padding:32px}
+.cat-tabs{display:flex;gap:8px;justify-content:center}
+.cat-tab{padding:10px 22px;border:1px solid #E5E5E5;border-radius:999px;background:#fff}
+.cat-tab.active{background:#111;color:#fff}
+.product-card{border:none;background:transparent}
+.product-card img{border-radius:16px}
+@media(max-width:768px){.hero-lux h1{font-size:44px}.campaigns{grid-template-columns:1fr}.campaign{min-height:380px}}
+
+/* V4 Desktop menubar vs Mobile drawer */
+.desktop-menubar{display:none;background:#fff;border-top:1px solid #E5E5E5;border-bottom:1px solid #E5E5E5;justify-content:center;gap:4px;flex-wrap:wrap}
+.desktop-menubar a{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#111;padding:14px 16px;text-decoration:none}
+@media(min-width:1101px){.desktop-menubar{display:flex}.burger{display:none}}
+.mobile-drawer{position:fixed;top:0;left:-320px;width:300px;height:100vh;background:#fff;z-index:200;transition:.3s;padding:24px;overflow:auto}
+.mobile-drawer.open{left:0}
+.mobile-drawer a{display:block;padding:12px 0;border-bottom:1px solid #eee;text-decoration:none;color:#111}
+@media(min-width:1101px){.mobile-drawer{display:none}}
+
+.shopall-wrap{position:relative;display:inline-block}
+.shopall-dropdown{display:none;position:absolute;left:50%;transform:translateX(-50%);top:100%;background:#fff;border:1px solid #E5E5E5;border-radius:16px;box-shadow:0 20px 40px rgba(0,0,0,.14);padding:24px;min-width:560px;z-index:130}
+.shopall-dropdown .dd-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px}
+.shopall-dropdown h4{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#B9975B;margin-bottom:10px}
+.shopall-dropdown a{display:block;font-size:13px;color:#555;padding:6px 0;text-decoration:none}
+@media(min-width:1101px){.shopall-wrap:hover .shopall-dropdown{display:block}}
+.mm-shopall-sub{padding-left:16px;border-left:2px solid #F3EDE3;margin:4px 0 8px 8px}
+.mm-shopall-sub .mm-subhead{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#B9975B;margin:10px 0 4px}
