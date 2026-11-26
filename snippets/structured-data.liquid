@@ -2,27 +2,33 @@
   Structured Data (JSON-LD): Organization, WebSite, Product (real inventory only), BreadcrumbList
 {%- endcomment -%}
 
-{%- assign org_logo = settings.logo -%}
+{%- liquid
+  assign org_logo = settings.logo
+  assign has_social = false
+  if settings.social_instagram != blank or settings.social_facebook != blank or settings.social_pinterest != blank or settings.social_youtube != blank
+    assign has_social = true
+  endif
+-%}
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": {{ shop.name | json }},
   "url": {{ request.origin | append: routes.root_url | json }}{% if org_logo != blank %},
-  "logo": {{ org_logo | image_url: width: 500 | prepend: 'https:' | json }}{% endif %}
-  {%- assign social_list = '' -%}
-  {%- if settings.social_instagram != blank -%}{%- assign social_list = social_list | append: settings.social_instagram | append: '||' -%}{%- endif -%}
-  {%- if settings.social_facebook != blank -%}{%- assign social_list = social_list | append: settings.social_facebook | append: '||' -%}{%- endif -%}
-  {%- if settings.social_pinterest != blank -%}{%- assign social_list = social_list | append: settings.social_pinterest | append: '||' -%}{%- endif -%}
-  {%- if settings.social_youtube != blank -%}{%- assign social_list = social_list | append: settings.social_youtube | append: '||' -%}{%- endif -%}
-  {%- assign social_arr = social_list | split: '||' -%}
-  {%- if social_arr.size > 0 %},
-  "sameAs": [{% for s in social_arr %}{% if s != blank %}{{ s | json }}{% unless forloop.last %},{% endunless %}{% endif %}{% endfor %}]
-  {%- endif %}
+  "logo": {{ org_logo | image_url: width: 500 | prepend: 'https:' | json }}{% endif %}{% if has_social %},
+  "sameAs": [
+    {%- assign sep = '' -%}
+    {%- if settings.social_instagram != blank -%}{{ sep }}{{ settings.social_instagram | json }}{%- assign sep = ',' -%}{%- endif -%}
+    {%- if settings.social_facebook != blank -%}{{ sep }}{{ settings.social_facebook | json }}{%- assign sep = ',' -%}{%- endif -%}
+    {%- if settings.social_pinterest != blank -%}{{ sep }}{{ settings.social_pinterest | json }}{%- assign sep = ',' -%}{%- endif -%}
+    {%- if settings.social_youtube != blank -%}{{ sep }}{{ settings.social_youtube | json }}{%- assign sep = ',' -%}{%- endif -%}
+  ]{% endif %}
 }
 </script>
 
 {% if request.page_type == 'index' %}
+  {%- capture search_action_target -%}{{ request.origin }}{{ routes.search_url }}?q={search_term_string}{%- endcapture -%}
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -31,7 +37,7 @@
     "url": {{ request.origin | append: routes.root_url | json }},
     "potentialAction": {
       "@type": "SearchAction",
-      "target": {{ request.origin | append: routes.search_url | append: '?q={search_term_string}' | json }},
+      "target": {{ search_action_target | json }},
       "query-input": "required name=search_term_string"
     }
   }
