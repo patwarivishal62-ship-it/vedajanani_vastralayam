@@ -1,0 +1,108 @@
+{% comment %}
+  Vedajanani Header — Menu (desktop menubar + mobile drawer) + Search + Account + Bag
+  Desktop: always-visible one-click menubar. Mobile: hamburger drawer.
+  Right corner: Search | Account | Bag (cart with count)
+{% endcomment %}
+<header class="site-header" id="siteHeader">
+  <div class="header-inner wrap">
+    <button class="burger" id="menuDrawerOpen" aria-label="Open menu" aria-controls="mobileDrawer">☰</button>
+    <a class="logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }} home">
+      <span class="logo-name">{{ section.settings.logo_text | default: shop.name }}</span>
+      <span class="logo-sub">{{ section.settings.logo_subtext | default: 'Vastralayam' }}</span>
+    </a>
+    <nav class="main-nav" aria-label="Main menu">
+      <span class="shopall-wrap">
+        <a href="{{ routes.all_collections_collection_url }}">Shop All <span class="caret">▾</span></a>
+        <span class="shopall-dropdown">
+          <span class="dd-grid">
+            <span><h4>By Fabric</h4>
+              <a href="/collections/cotton">Cotton</a>
+              <a href="/collections/chiffon">Chiffon</a>
+              <a href="/collections/georgette">Georgette</a>
+              <a href="/collections/silk">Silk</a>
+            </span>
+            <span><h4>By Occasion</h4>
+              <a href="/collections/festive">Festive</a>
+              <a href="/collections/daily-use">Daily Use</a>
+              <a href="/collections/office">Office</a>
+              <a href="/collections/wedding">Wedding</a>
+            </span>
+            <span><h4>By Price</h4>
+              <a href="/collections/affordable">Affordable ₹500–₹1,500</a>
+              <a href="/collections/mid-range">Mid Range ₹1,500–₹3,000</a>
+              <a href="/collections/premium">Premium ₹3,000–₹5,000</a>
+            </span>
+          </span>
+        </span>
+      </span>
+      <a href="/collections/wedding">Weddings</a>
+      <a href="/collections/all">Women</a>
+      <a href="/collections/all">Men</a>
+      <a href="/pages/about">About</a>
+      <a href="/blogs/journal">Journal</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" id="searchOpen" aria-label="Search">⌕</button>
+      <a class="icon-btn" href="{{ routes.account_login_url }}" aria-label="Account">◯</a>
+      <button class="icon-btn bag-btn" id="cartOpen" aria-label="Bag, {{ cart.item_count }} items">🛍<span class="cart-count" id="cartCount">{{ cart.item_count }}</span></button>
+    </div>
+  </div>
+  <nav class="desktop-menubar" aria-label="Shop menu">
+    <span class="shopall-wrap">
+      <a href="{{ routes.all_collections_collection_url }}">Shop All <span class="caret">▾</span></a>
+      <span class="shopall-dropdown">
+        <span class="dd-grid">
+          <span><h4>By Fabric</h4><a href="/collections/cotton">Cotton</a><a href="/collections/chiffon">Chiffon</a><a href="/collections/georgette">Georgette</a><a href="/collections/silk">Silk</a></span>
+          <span><h4>By Occasion</h4><a href="/collections/festive">Festive</a><a href="/collections/daily-use">Daily Use</a><a href="/collections/office">Office</a><a href="/collections/wedding">Wedding</a></span>
+          <span><h4>By Price</h4><a href="/collections/affordable">Affordable ₹500–₹1,500</a><a href="/collections/mid-range">Mid Range ₹1,500–₹3,000</a><a href="/collections/premium">Premium ₹3,000–₹5,000</a></span>
+        </span>
+      </span>
+    </span>
+    <a href="/collections/wedding">Weddings</a>
+    <a href="/collections/all">Women</a>
+    <a href="/collections/all">Men</a>
+    <a href="/pages/about">About</a>
+    <a href="/blogs/journal">Journal</a>
+  </nav>
+</header>
+
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<aside class="mobile-drawer" id="mobileDrawer" aria-label="Menu">
+  <div class="drawer-head"><span class="logo-name">VEDAJANANI</span><button id="menuDrawerClose" aria-label="Close menu">✕</button></div>
+  <a href="{{ routes.all_collections_collection_url }}">Shop All ▾</a>
+  <div class="mm-shopall-sub">
+    <div class="mm-subhead">By Fabric</div>
+    <a href="/collections/cotton">Cotton</a><a href="/collections/chiffon">Chiffon</a><a href="/collections/georgette">Georgette</a><a href="/collections/silk">Silk</a>
+    <div class="mm-subhead">By Occasion</div>
+    <a href="/collections/festive">Festive</a><a href="/collections/daily-use">Daily Use</a><a href="/collections/office">Office</a><a href="/collections/wedding">Wedding</a>
+    <div class="mm-subhead">By Price</div>
+    <a href="/collections/affordable">Affordable ₹500–₹1,500</a><a href="/collections/mid-range">Mid Range ₹1,500–₹3,000</a><a href="/collections/premium">Premium ₹3,000–₹5,000</a>
+  </div>
+  <a href="/collections/wedding">Weddings</a>
+  <a href="/collections/all">Women</a>
+  <a href="/collections/all">Men</a>
+  <a href="/pages/about">About</a>
+  <a href="/blogs/journal">Journal</a>
+  <a href="/pages/contact">Contact</a>
+  <a href="{{ routes.account_login_url }}">Account</a>
+</aside>
+
+<div class="search-drawer" id="searchDrawer" role="dialog" aria-label="Search">
+  <div class="wrap">
+    <div class="drawer-head"><span class="eyebrow">Search Vedajanani</span><button id="searchClose" aria-label="Close search">✕</button></div>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-form">
+      <input type="search" name="q" placeholder="Try 'Banarasi', 'Mul Cotton', 'Festive'…" aria-label="Search">
+      <button type="submit" class="btn">Search</button>
+    </form>
+    <div class="search-hints"><span>Popular:</span> <a href="/search?q=Silk">Silk</a> · <a href="/search?q=Cotton">Cotton</a> · <a href="/search?q=Festive">Festive</a> · <a href="/search?q=Wedding">Wedding</a></div>
+  </div>
+</div>
+
+{% schema %}
+{"name":"Header","settings":[
+  {"type":"text","id":"logo_text","label":"Logo text","default":"VEDAJANANI"},
+  {"type":"text","id":"logo_subtext","label":"Logo subtext","default":"Vastralayam"},
+  {"type":"header","content":"Menu is fixed: Shop All (By Fabric + By Occasion) | Weddings | Women | Men | About | Journal"}
+],"presets":[{"name":"Header"}]}
+{% endschema %}

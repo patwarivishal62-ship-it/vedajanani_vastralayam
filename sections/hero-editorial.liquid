@@ -1,0 +1,9 @@
+<section class="hero-lux">
+  <div class="hero-lux-in">
+    <div class="kicker">{{ section.settings.kicker | default: 'Vedajanani Vastralayam · Festive 2026' }}</div>
+    <h1>{{ section.settings.heading | default: 'Drape the story you carry.' }}</h1>
+    <p>{{ section.settings.subheading | default: 'Cotton, Silk, Chiffon & Georgette — handpicked from master weavers.' }}</p>
+    <a class="link-cta" href="{{ section.settings.cta_url | default: '/collections/new-arrivals' }}">{{ section.settings.cta_label | default: 'Shop New Arrivals' }} →</a>
+  </div>
+</section>
+{% schema %}{"name":"Hero Editorial (Prada)","settings":[{"type":"text","id":"kicker","label":"Kicker"},{"type":"text","id":"heading","label":"Heading"},{"type":"text","id":"subheading","label":"Subheading"},{"type":"text","id":"cta_label","label":"CTA label"},{"type":"url","id":"cta_url","label":"CTA URL"}],"presets":[{"name":"Hero Editorial (Prada)"}]}{% endschema %}

@@ -1,0 +1,1 @@
+<section><h2>Stories & Style Notes</h2>{% for a in blogs.journal.articles limit: 3 %}<a href="{{ a.url }}">{{ a.title }}</a>{% endfor %}</section>{% schema %}{"name":"Blog Preview","presets":[{"name":"Blog Preview"}]}{% endschema %}

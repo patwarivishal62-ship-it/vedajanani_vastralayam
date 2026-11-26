@@ -1,0 +1,1 @@
+<div class="wrap" style="padding:48px 20px"><h1>Account</h1><p>Welcome, {{ customer.first_name }}!</p><p><a href="{{ routes.account_logout_url }}">Sign out</a></p><h2>Orders</h2>{% for o in customer.orders %}<p><a href="{{ o.customer_url }}">{{ o.name }}</a> — {{ o.total_price | money }}</p>{% endfor %}</div>{% schema %}{"name":"Main Account"}{% endschema %}
