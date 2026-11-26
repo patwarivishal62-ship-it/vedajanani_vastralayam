@@ -1,8 +1,37 @@
 {%- liquid
   assign raw_wa = section.settings.whatsapp_number | default: settings.whatsapp_number
   assign wa_digits = raw_wa | strip | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')'
+
+  assign map_query_text = section.settings.map_query | strip
+  if map_query_text == blank
+    assign map_query_text = section.settings.address | strip
+  endif
+  if map_query_text == blank
+    assign map_query_text = 'Vedajanani Vastralayam, Anantapur, Andhra Pradesh, India'
+  endif
+
+  assign clean_embed_src = section.settings.map_embed_url | strip
+  if clean_embed_src contains 'src="'
+    assign clean_embed_src = clean_embed_src | split: 'src="' | last | split: '"' | first
+  elsif clean_embed_src contains "src='"
+    assign clean_embed_src = clean_embed_src | split: "src='" | last | split: "'" | first
+  endif
+
+  if clean_embed_src != blank
+    assign map_iframe_src = clean_embed_src
+  else
+    assign encoded_query = map_query_text | url_encode
+    assign map_iframe_src = 'https://maps.google.com/maps?q=' | append: encoded_query | append: '&t=&z=' | append: section.settings.map_zoom | append: '&ie=UTF8&iwloc=&output=embed'
+  endif
+
+  assign directions_href = section.settings.map_url | strip
+  if directions_href == blank
+    assign encoded_dir = map_query_text | url_encode
+    assign directions_href = 'https://www.google.com/maps/search/?api=1&query=' | append: encoded_dir
+  endif
+
   assign has_contact_meta = false
-  if section.settings.address != blank or section.settings.phone != blank or section.settings.email != blank or section.settings.hours != blank or wa_digits != blank or section.settings.map_url != blank or settings.social_instagram != blank
+  if section.settings.address != blank or section.settings.landmark != blank or section.settings.phone != blank or section.settings.email != blank or section.settings.hours != blank or wa_digits != blank or settings.social_instagram != blank or directions_href != blank
     assign has_contact_meta = true
   endif
 -%}
@@ -14,16 +43,54 @@
   }
   #shopify-section-{{ section.id }} .contact-form-card,
   #shopify-section-{{ section.id }} .contact-details-card,
-  #shopify-section-{{ section.id }} .contact-faq-card {
+  #shopify-section-{{ section.id }} .contact-map-card {
     border-radius: {{ section.settings.card_radius }}px;
+  }
+  #shopify-section-{{ section.id }} .contact-map-frame {
+    height: {{ section.settings.map_height }}px;
+    border-radius: {{ section.settings.card_radius | minus: 4 | at_least: 0 }}px;
   }
   @media (max-width: 900px) {
     #shopify-section-{{ section.id }} .vv-contact-sec {
       padding-top: 32px;
       padding-bottom: 52px;
     }
+    #shopify-section-{{ section.id }} .contact-map-frame {
+      height: 280px;
+    }
   }
 {% endstyle %}
+
+{%- capture map_card_markup -%}
+  <div class="contact-map-card" id="store-map">
+    <div class="contact-map-head">
+      <div>
+        <span class="eyebrow">{{ section.settings.map_eyebrow }}</span>
+        <h2>{{ section.settings.map_heading }}</h2>
+      </div>
+      {% if directions_href != blank %}
+        <a class="link-cta" href="{{ directions_href }}" target="_blank" rel="noopener">
+          {% render 'icons', icon: 'map-pin' %}
+          <span>Open in Google Maps</span>
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="contact-map-frame">
+      <iframe
+        src="{{ map_iframe_src }}"
+        title="{{ section.settings.map_title | default: 'Store location map' | escape }}"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen
+      ></iframe>
+    </div>
+
+    {% if section.settings.map_note != blank %}
+      <p class="contact-map-note">{{ section.settings.map_note }}</p>
+    {% endif %}
+  </div>
+{%- endcapture -%}
 
 <section class="vv-contact-sec">
   <div class="wrap">
@@ -107,9 +174,9 @@
                 <label for="ContactTopic-{{ section.id }}">Inquiry topic</label>
                 <select id="ContactTopic-{{ section.id }}" name="contact[topic]">
                   <option value="Saree or Fabric Inquiry">Saree or Fabric Inquiry</option>
+                  <option value="Store Visit or Appointment">Store Visit / Appointment</option>
                   <option value="Order or Delivery Support">Order &amp; Delivery Support</option>
                   <option value="Wedding or Bulk Gifting">Wedding / Bulk Gifting</option>
-                  <option value="Store Visit or General Question">Store Visit / General Question</option>
                 </select>
               </div>
             {% endif %}
@@ -122,7 +189,7 @@
               name="contact[body]"
               rows="5"
               required
-              placeholder="Ask about a saree fabric, pallu photograph, drape advice or order…"
+              placeholder="Ask about a saree fabric, store visit timings, pallu photos or an order…"
             >{{ form.body }}</textarea>
           </div>
 
@@ -143,8 +210,20 @@
             <dl class="contact-details-list">
               {% if section.settings.address != blank %}
                 <div>
-                  <dt>Location</dt>
-                  <dd>{{ section.settings.address }}</dd>
+                  <dt>Store Address</dt>
+                  <dd>{{ section.settings.address | newline_to_br }}</dd>
+                </div>
+              {% endif %}
+              {% if section.settings.landmark != blank %}
+                <div>
+                  <dt>Landmark</dt>
+                  <dd>{{ section.settings.landmark }}</dd>
+                </div>
+              {% endif %}
+              {% if section.settings.hours != blank %}
+                <div>
+                  <dt>Store Hours</dt>
+                  <dd>{{ section.settings.hours }}</dd>
                 </div>
               {% endif %}
               {% if section.settings.phone != blank %}
@@ -159,12 +238,6 @@
                   <dd><a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a></dd>
                 </div>
               {% endif %}
-              {% if section.settings.hours != blank %}
-                <div>
-                  <dt>Hours</dt>
-                  <dd>{{ section.settings.hours }}</dd>
-                </div>
-              {% endif %}
               {% if settings.social_instagram != blank %}
                 <div>
                   <dt>Instagram</dt>
@@ -172,70 +245,50 @@
                 </div>
               {% endif %}
             </dl>
-            {% if wa_digits != blank or section.settings.map_url != blank %}
-              <div class="contact-channel-actions">
-                {% if wa_digits != blank %}
-                  <a
-                    class="btn outline"
-                    href="https://wa.me/{{ wa_digits }}?text={{ 'Hello Vedajanani Vastralayam, I have a question regarding sarees.' | url_encode }}"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    {% render 'icons', icon: 'whatsapp' %}
-                    <span>Message on WhatsApp</span>
-                  </a>
-                {% endif %}
-                {% if section.settings.map_url != blank %}
-                  <a class="btn outline" href="{{ section.settings.map_url }}" target="_blank" rel="noopener">
-                    <span>Get Directions</span>
-                    {% render 'icons', icon: 'arrow-right' %}
-                  </a>
-                {% endif %}
-              </div>
-            {% endif %}
-          </div>
-        {% endif %}
-
-        {% if section.blocks.size > 0 %}
-          <div class="contact-faq-card" id="faq">
-            <span class="eyebrow">Help</span>
-            <h2>{{ section.settings.faq_heading }}</h2>
-            <div class="faq-list">
-              {% for block in section.blocks %}
-                <details class="vv-accordion" {% if forloop.first %}open{% endif %} {{ block.shopify_attributes }}>
-                  <summary>
-                    <span>
-                      {% if block.settings.category != blank %}<em class="faq-cat">{{ block.settings.category }}</em>{% endif %}
-                      {{ block.settings.question }}
-                    </span>
-                    <span class="vv-accordion-icon" aria-hidden="true">{% render 'icons', icon: 'chevron-down' %}</span>
-                  </summary>
-                  <div class="vv-accordion-body rte">
-                    {{ block.settings.answer }}
-                    {% if block.settings.policy_link == 'shipping' and shop.shipping_policy != blank %}
-                      <p style="margin-top: 10px;"><a class="link-cta" href="{{ shop.shipping_policy.url }}"><span>View Shipping Policy</span>{% render 'icons', icon: 'arrow-right' %}</a></p>
-                    {% elsif block.settings.policy_link == 'refund' and shop.refund_policy != blank %}
-                      <p style="margin-top: 10px;"><a class="link-cta" href="{{ shop.refund_policy.url }}"><span>View Returns &amp; Refund Policy</span>{% render 'icons', icon: 'arrow-right' %}</a></p>
-                    {% endif %}
-                  </div>
-                </details>
-              {% endfor %}
+            <div class="contact-channel-actions">
+              {% if wa_digits != blank %}
+                <a
+                  class="btn outline"
+                  href="https://wa.me/{{ wa_digits }}?text={{ 'Hello Vedajanani Vastralayam, I have a question regarding sarees.' | url_encode }}"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {% render 'icons', icon: 'whatsapp' %}
+                  <span>Message on WhatsApp</span>
+                </a>
+              {% endif %}
+              {% if directions_href != blank %}
+                <a class="btn outline" href="{{ directions_href }}" target="_blank" rel="noopener">
+                  {% render 'icons', icon: 'map-pin' %}
+                  <span>Get Directions</span>
+                </a>
+              {% endif %}
             </div>
           </div>
         {% endif %}
+
+        {% if section.settings.show_map and section.settings.map_layout == 'sidebar' %}
+          {{ map_card_markup }}
+        {% endif %}
       </div>
     </div>
+
+    {% if section.settings.show_map and section.settings.map_layout == 'full_width' %}
+      <div class="contact-map-full">
+        {{ map_card_markup }}
+      </div>
+    {% endif %}
   </div>
 </section>
 
 {% schema %}
 {
-  "name": "Contact & FAQ",
+  "name": "Contact & Store Map",
   "settings": [
     { "type": "checkbox", "id": "show_header", "label": "Show section page heading (hide if using Hero above)", "default": true },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Customer Care" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Contact & Frequently Asked Questions" },
-    { "type": "textarea", "id": "intro", "label": "Intro copy", "default": "Have a question about a saree weave, fabric care or an existing order? Send us a note and our team in Anantapur will get back to you." },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Contact & Visit Our Store" },
+    { "type": "textarea", "id": "intro", "label": "Intro copy", "default": "Visit our store in Anantapur or send us a message about sarees, weaves, festive gifting or an order." },
     { "type": "header", "content": "Contact Form" },
     { "type": "text", "id": "form_heading", "label": "Form heading", "default": "Send Us a Message" },
     { "type": "text", "id": "form_subtext", "label": "Form helper note", "default": "Need closer photos of a border or pallu, or guidance on choosing a drape? Write to us below." },
@@ -243,79 +296,55 @@
     { "type": "text", "id": "submit_label", "label": "Submit button label", "default": "Send Message" },
     { "type": "text", "id": "response_note", "label": "Response time note", "default": "We typically reply within 1 business day." },
     { "type": "text", "id": "success_message", "label": "Success confirmation", "default": "Thank you for writing to Vedajanani Vastralayam. We have received your message and will reply shortly." },
-    { "type": "header", "content": "Verified Store Details (Optional)" },
-    { "type": "text", "id": "details_heading", "label": "Details heading", "default": "Visit or Reach Us" },
-    { "type": "text", "id": "address", "label": "Store location", "default": "Anantapur, Andhra Pradesh, India" },
+    { "type": "header", "content": "Physical Store Details" },
+    { "type": "text", "id": "details_heading", "label": "Details heading", "default": "Visit Our Store" },
+    { "type": "textarea", "id": "address", "label": "Full store address", "default": "Vedajanani Vastralayam\nAnantapur, Andhra Pradesh, India" },
+    { "type": "text", "id": "landmark", "label": "Nearby landmark (optional)" },
+    { "type": "text", "id": "hours", "label": "Store hours (e.g. Mon–Sun, 10:00 AM – 8:30 PM)" },
     { "type": "text", "id": "phone", "label": "Phone number (leave blank to hide)" },
     { "type": "text", "id": "whatsapp_number", "label": "WhatsApp number (optional override, e.g. 919876543210)" },
     { "type": "text", "id": "email", "label": "Support email (leave blank to hide)" },
-    { "type": "text", "id": "hours", "label": "Store hours (leave blank to hide)" },
-    { "type": "url", "id": "map_url", "label": "Google Maps directions link (optional)" },
-    { "type": "header", "content": "FAQ & Layout" },
-    { "type": "text", "id": "faq_heading", "label": "FAQ heading", "default": "Frequently Asked Questions" },
+    { "type": "header", "content": "Google Maps Integration" },
+    { "type": "checkbox", "id": "show_map", "label": "Show interactive Google Map", "default": true },
+    {
+      "type": "select",
+      "id": "map_layout",
+      "label": "Map placement",
+      "options": [
+        { "value": "sidebar", "label": "Under Store Details (balanced 2-column)" },
+        { "value": "full_width", "label": "Full width below Contact & Store Details" }
+      ],
+      "default": "sidebar"
+    },
+    { "type": "text", "id": "map_eyebrow", "label": "Map eyebrow", "default": "Store Location" },
+    { "type": "text", "id": "map_heading", "label": "Map heading", "default": "Find Us on Google Maps" },
+    {
+      "type": "text",
+      "id": "map_query",
+      "label": "Map search query (shop name & address)",
+      "default": "Vedajanani Vastralayam, Anantapur, Andhra Pradesh, India",
+      "info": "Automatically generates a live Google Map if no custom embed URL is pasted below."
+    },
+    {
+      "type": "textarea",
+      "id": "map_embed_url",
+      "label": "Or Google Maps Embed URL / iframe code (optional)",
+      "info": "In Google Maps click Share → Embed a map and paste the iframe code or src URL here for an exact pin."
+    },
+    {
+      "type": "url",
+      "id": "map_url",
+      "label": "Google Maps share link for 'Get Directions' (optional)",
+      "info": "Leave blank to open Google Maps using your Map search query automatically."
+    },
+    { "type": "range", "id": "map_zoom", "label": "Default map zoom (when using search query)", "min": 11, "max": 18, "step": 1, "default": 15 },
+    { "type": "range", "id": "map_height", "label": "Map height (desktop)", "min": 240, "max": 480, "step": 20, "unit": "px", "default": 320 },
+    { "type": "text", "id": "map_title", "label": "Accessible map title", "default": "Vedajanani Vastralayam store location on Google Maps" },
+    { "type": "text", "id": "map_note", "label": "Location or parking note (optional)", "default": "Walk-ins are welcome to feel our Cotton, Silk, Chiffon & Georgette drapes in person." },
+    { "type": "header", "content": "Card & Spacing" },
     { "type": "range", "id": "card_radius", "label": "Card corner radius", "min": 0, "max": 24, "step": 2, "unit": "px", "default": 12 },
     { "type": "range", "id": "padding_top", "label": "Top padding", "min": 24, "max": 88, "step": 8, "unit": "px", "default": 40 },
     { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 32, "max": 96, "step": 8, "unit": "px", "default": 72 }
-  ],
-  "blocks": [
-    {
-      "type": "faq_item",
-      "name": "FAQ Question",
-      "settings": [
-        { "type": "text", "id": "category", "label": "Group label (e.g. Fabric & Care, Shipping)", "default": "Fabrics & Care" },
-        { "type": "text", "id": "question", "label": "Question", "default": "How do I find the exact length, fabric and blouse details of a saree?" },
-        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Each saree page displays its verified specifications — including fabric, weave, length, blouse piece details and care notes — directly below the purchase options. If you would like additional photographs of the pallu or border, please reach out before ordering.</p>" },
-        {
-          "type": "select",
-          "id": "policy_link",
-          "label": "Attach Shopify policy link",
-          "options": [
-            { "value": "none", "label": "None" },
-            { "value": "shipping", "label": "Shipping Policy" },
-            { "value": "refund", "label": "Returns & Refund Policy" }
-          ],
-          "default": "none"
-        }
-      ]
-    }
-  ],
-  "default": {
-    "blocks": [
-      {
-        "type": "faq_item",
-        "settings": {
-          "category": "Saree Details",
-          "question": "Where can I check fabric, length and blouse piece details?",
-          "answer": "<p>Every saree lists its verified specifications directly on the product page. Because handloom and curated textiles vary by weave, we list details per saree rather than assuming one universal specification.</p>"
-        }
-      },
-      {
-        "type": "faq_item",
-        "settings": {
-          "category": "Fabric Care",
-          "question": "How should I care for Cotton, Silk, Chiffon and Georgette sarees?",
-          "answer": "<p>Care depends on the individual fabric and zari or print finish. Please follow the care instructions shown on each saree page, and air silk and zari weaves in shade before folding in breathable cotton cloth.</p>"
-        }
-      },
-      {
-        "type": "faq_item",
-        "settings": {
-          "category": "Shipping",
-          "question": "How are shipping rates and delivery timelines calculated?",
-          "answer": "<p>Available delivery options and shipping charges for your PIN code are shown transparently at checkout before you confirm payment.</p>",
-          "policy_link": "shipping"
-        }
-      },
-      {
-        "type": "faq_item",
-        "settings": {
-          "category": "Returns",
-          "question": "What is your returns and exchange policy?",
-          "answer": "<p>Please review our published Returns &amp; Refund Policy for eligibility, timelines and assistance with damaged or incorrect items.</p>",
-          "policy_link": "refund"
-        }
-      }
-    ]
-  }
+  ]
 }
 {% endschema %}
