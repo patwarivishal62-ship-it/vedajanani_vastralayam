@@ -1,221 +1,446 @@
-{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign product_form_id = 'ProductForm-' | append: section.id
+  assign wa_digits = settings.whatsapp_number | strip | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')'
+  assign wa_greeting = settings.whatsapp_greeting | default: 'Hello Vedajanani Vastralayam, I would like to enquire about this saree:'
+  assign product_full_url = request.origin | append: product.url
+-%}
 
 {% style %}
-  #shopify-section-{{ section.id }} .vv-prod-sec {
-    {% if section.settings.bg_color != blank and section.settings.bg_color != 'rgba(0,0,0,0)' %}
-      background: {{ section.settings.bg_color }};
-    {% endif %}
+  #shopify-section-{{ section.id }} .vv-pdp-sec {
     padding-top: {{ section.settings.padding_top }}px;
     padding-bottom: {{ section.settings.padding_bottom }}px;
   }
-  #shopify-section-{{ section.id }} .product-layout {
-    grid-template-columns: {{ section.settings.gallery_width }}fr {{ 100 | minus: section.settings.gallery_width }}fr;
+  #shopify-section-{{ section.id }} .pdp-grid {
     gap: {{ section.settings.column_gap }}px;
-  }
-  #shopify-section-{{ section.id }} .product-gallery-col {
-    {% if section.settings.sticky_gallery %}
-      position: sticky;
-      top: 110px;
+    {% if section.settings.media_width == 'narrow' %}
+      grid-template-columns: 0.9fr 1.1fr;
+    {% elsif section.settings.media_width == 'wide' %}
+      grid-template-columns: 1.35fr 0.85fr;
+    {% else %}
+      grid-template-columns: 1.15fr 1fr;
     {% endif %}
   }
-  #shopify-section-{{ section.id }} .product-gallery-main {
-    aspect-ratio: {{ section.settings.image_ratio }};
-    border-radius: {{ section.settings.image_radius }}px;
+  #shopify-section-{{ section.id }} .pdp-main {
+    aspect-ratio: {{ section.settings.media_ratio }};
+    border-radius: {{ section.settings.media_radius }}px;
   }
-  #shopify-section-{{ section.id }} .product-title-h1 {
-    font-size: {{ section.settings.title_size_desktop }}px;
-    color: {{ section.settings.title_color }};
-    margin: 0;
+  #shopify-section-{{ section.id }} .pdp-thumbs img {
+    border-radius: {{ section.settings.thumb_radius }}px;
   }
   @media (max-width: 900px) {
-    #shopify-section-{{ section.id }} .product-gallery-col { position: static; }
-    #shopify-section-{{ section.id }} .product-title-h1 {
-      font-size: {{ section.settings.title_size_mobile }}px;
+    #shopify-section-{{ section.id }} .pdp-grid {
+      grid-template-columns: 1fr;
+      gap: 28px;
     }
   }
 {% endstyle %}
 
-<section class="vv-prod-sec" data-product-section>
+<section
+  class="vv-pdp-sec"
+  data-product-section
+  data-product-title="{{ product.title | escape }}"
+  data-product-url="{{ product_full_url | escape }}"
+  data-wa-digits="{{ wa_digits | escape }}"
+  data-wa-greeting="{{ wa_greeting | escape }}"
+>
   <div class="wrap">
-    <div class="product-layout">
-      <div class="product-gallery-col">
-        <div class="product-gallery-main">
+    {% if section.settings.show_breadcrumbs %}
+      {% render 'breadcrumbs' %}
+    {% endif %}
+
+    <div class="pdp-grid{% if section.settings.media_position == 'right' %} pdp-grid--media-right{% endif %}">
+      <div class="pdp-gallery{% if section.settings.sticky_gallery %} pdp-gallery--sticky{% endif %}" data-pdp-gallery>
+        <div class="pdp-main" data-pdp-main-stage>
           {% if product.featured_image %}
             <img
-              id="ProductMainImg-{{ section.id }}"
+              id="pdpMainImg-{{ section.id }}"
+              data-pdp-main
+              data-current-index="0"
               src="{{ product.featured_image | image_url: width: 1400 }}"
+              srcset="{{ product.featured_image | image_url: width: 600 }} 600w, {{ product.featured_image | image_url: width: 1000 }} 1000w, {{ product.featured_image | image_url: width: 1400 }} 1400w"
+              sizes="(max-width: 900px) 100vw, 52vw"
               alt="{{ product.featured_image.alt | default: product.title | escape }}"
               width="1000"
               height="1333"
               loading="eager"
+              fetchpriority="high"
             >
+            {% if section.settings.enable_zoom %}
+              <button type="button" class="pdp-zoom-trigger" data-pdp-zoom-open aria-label="Zoom saree image">
+                {% render 'icons', icon: 'zoom' %}
+              </button>
+            {% endif %}
+            {% if product.images.size > 1 %}
+              <button type="button" class="pdp-slide-nav pdp-slide-nav--prev" data-pdp-prev aria-label="Previous image">
+                {% render 'icons', icon: 'chevron-left' %}
+              </button>
+              <button type="button" class="pdp-slide-nav pdp-slide-nav--next" data-pdp-next aria-label="Next image">
+                {% render 'icons', icon: 'chevron-right' %}
+              </button>
+              <span class="pdp-slide-counter" data-pdp-counter>1 / {{ product.images.size }}</span>
+            {% endif %}
           {% else %}
             {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
           {% endif %}
         </div>
 
         {% if product.images.size > 1 %}
-          <div class="product-thumbs">
-            {% for image in product.images %}
+          <div class="pdp-thumbs" role="list">
+            {% for img in product.images %}
               <button
                 type="button"
-                class="product-thumb-btn{% if forloop.first %} is-active{% endif %}"
-                data-thumb-target="ProductMainImg-{{ section.id }}"
-                data-thumb-src="{{ image | image_url: width: 1400 }}"
-                aria-label="View image {{ forloop.index }}"
+                class="pdp-thumb-btn{% if forloop.first %} is-active{% endif %}"
+                data-pdp-thumb
+                data-index="{{ forloop.index0 }}"
+                data-src="{{ img | image_url: width: 1400 }}"
+                data-zoom-src="{{ img | image_url: width: 2000 }}"
+                data-alt="{{ img.alt | default: product.title | escape }}"
+                aria-label="View saree photo {{ forloop.index }} of {{ product.images.size }}"
+                aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
               >
-                <img src="{{ image | image_url: width: 240 }}" alt="{{ image.alt | default: product.title | escape }}" width="160" height="213" loading="lazy">
+                <img
+                  src="{{ img | image_url: width: 220 }}"
+                  alt="{{ img.alt | default: product.title | escape }}"
+                  width="120"
+                  height="160"
+                  loading="lazy"
+                >
               </button>
             {% endfor %}
           </div>
         {% endif %}
       </div>
 
-      <div class="product-info-stack">
-        {% form 'product', product, class: 'js-ajax-cart-form product-form-wrap' %}
-          <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id-input>
+      <div class="pdp-info">
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'vendor' %}
+              {% if product.vendor != blank %}
+                <span class="eyebrow" style="margin-bottom: 8px;" {{ block.shopify_attributes }}>{{ product.vendor }}</span>
+              {% endif %}
 
-          {% if section.blocks.size > 0 %}
-            {% for block in section.blocks %}
-              <div {{ block.shopify_attributes }} style="margin-bottom: {{ block.settings.spacing_bottom | default: 14 }}px;">
-                {% case block.type %}
-                  {% when 'vendor' %}
-                    {% if product.vendor != blank %}
-                      <span class="eyebrow">{{ product.vendor }}</span>
-                    {% endif %}
+            {% when 'title' %}
+              <h1 style="font-size: {{ block.settings.title_size }}px; margin-bottom: 10px;" {{ block.shopify_attributes }}>
+                {{ product.title }}
+              </h1>
 
-                  {% when 'title' %}
-                    <h1 class="product-title-h1">{{ product.title }}</h1>
-
-                  {% when 'price' %}
-                    <div style="font-size: {{ block.settings.price_size }}px;">
-                      {% render 'price', product: product, variant: current_variant %}
-                    </div>
-                    {% if block.settings.tax_note != blank %}
-                      <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">{{ block.settings.tax_note }}</p>
-                    {% endif %}
-
-                  {% when 'variant_picker' %}
-                    {% unless product.has_only_default_variant %}
-                      <label style="display:block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;">
-                        {{ block.settings.label | default: 'Select Option' }}
-                      </label>
-                      {% if block.settings.picker_type == 'pills' %}
-                        <div class="variant-pills" data-variant-pills>
-                          {% for variant in product.variants %}
-                            <button
-                              type="button"
-                              class="variant-pill{% if variant.id == current_variant.id %} is-selected{% endif %}"
-                              data-variant-id="{{ variant.id }}"
-                              {% unless variant.available %}disabled style="opacity:0.45; cursor:not-allowed;"{% endunless %}
-                            >
-                              {{ variant.title }}
-                            </button>
-                          {% endfor %}
-                        </div>
-                      {% else %}
-                        <select data-variant-select aria-label="Select variant">
-                          {% for variant in product.variants %}
-                            <option
-                              value="{{ variant.id }}"
-                              {% if variant.id == current_variant.id %}selected{% endif %}
-                              {% unless variant.available %}disabled{% endunless %}
-                            >
-                              {{ variant.title }} — {{ variant.price | money }}{% unless variant.available %} (Sold Out){% endunless %}
-                            </option>
-                          {% endfor %}
-                        </select>
-                      {% endif %}
-                    {% endunless %}
-
-                  {% when 'quantity' %}
-                    <label for="Qty-{{ section.id }}" style="display:block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;">Quantity</label>
-                    <input id="Qty-{{ section.id }}" type="number" name="quantity" value="1" min="1" style="max-width: 110px;">
-
-                  {% when 'buy_buttons' %}
-                    <div style="display: flex; flex-direction: column; gap: 10px;">
-                      <button
-                        type="submit"
-                        class="btn full"
-                        {% unless current_variant.available %}disabled{% endunless %}
-                      >
-                        {% if current_variant.available %}
-                          {{ block.settings.add_label | default: 'Add to Bag' }}
-                        {% else %}
-                          Sold Out
-                        {% endif %}
-                      </button>
-                      {% if block.settings.show_dynamic_checkout %}
-                        {{ form | payment_button }}
-                      {% endif %}
-                    </div>
-
-                  {% when 'description' %}
-                    {% if product.description != blank %}
-                      <div class="product-description" style="line-height: 1.7;">{{ product.description }}</div>
-                    {% endif %}
-
-                  {% when 'collapsible_tab' %}
-                    <details class="vv-accordion"{% if block.settings.open_default %} open{% endif %}>
-                      <summary>
-                        <span>{{ block.settings.heading }}</span>
-                        <span>+</span>
-                      </summary>
-                      <div class="vv-accordion-body">{{ block.settings.content }}</div>
-                    </details>
-
-                  {% when 'custom_text' %}
-                    <div style="font-size: 13px; color: var(--text-muted);">{{ block.settings.text }}</div>
-                {% endcase %}
+            {% when 'price' %}
+              <div class="pdp-price-wrap" style="margin-bottom: 18px;" {{ block.shopify_attributes }}>
+                <div class="price" style="font-size: {{ block.settings.price_size }}px;" data-pdp-price-container>
+                  {% if current_variant.compare_at_price > current_variant.price %}
+                    <span class="sale" data-pdp-price>{{ current_variant.price | money }}</span>
+                    <s class="compare" data-pdp-compare>{{ current_variant.compare_at_price | money }}</s>
+                  {% else %}
+                    <span data-pdp-price>{{ current_variant.price | money }}</span>
+                    <s class="compare" data-pdp-compare hidden></s>
+                  {% endif %}
+                </div>
+                {% if block.settings.show_tax_note %}
+                  <p class="pdp-tax-note">{{ block.settings.tax_note }}</p>
+                {% endif %}
+                <p class="pdp-sku" data-pdp-sku{% if current_variant.sku == blank %} hidden{% endif %}>
+                  SKU: <span data-pdp-sku-val>{{ current_variant.sku }}</span>
+                </p>
               </div>
-            {% endfor %}
-          {% else %}
-            <h1 class="product-title-h1">{{ product.title }}</h1>
-            <div style="margin: 12px 0;">{% render 'price', product: product, variant: current_variant %}</div>
-            <button type="submit" class="btn full">Add to Bag</button>
-            {% if product.description != blank %}
-              <div style="margin-top: 20px;">{{ product.description }}</div>
-            {% endif %}
-          {% endif %}
-        {% endform %}
+
+            {% when 'variant_picker' %}
+              {% unless product.has_only_default_variant %}
+                <div class="pdp-variants" style="margin-bottom: 18px;" {{ block.shopify_attributes }}>
+                  <label for="VariantSelect-{{ section.id }}" style="display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px;">
+                    {{ block.settings.label }}
+                  </label>
+                  <select id="VariantSelect-{{ section.id }}" data-variant-select>
+                    {% for v in product.variants %}
+                      <option
+                        value="{{ v.id }}"
+                        {% if v.id == current_variant.id %}selected{% endif %}
+                        {% unless v.available %}disabled{% endunless %}
+                      >
+                        {{ v.title }} — {{ v.price | money }}{% unless v.available %} (Sold Out){% endunless %}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              {% endunless %}
+
+            {% when 'quantity' %}
+              <div class="pdp-qty-wrap" style="margin-bottom: 18px;" {{ block.shopify_attributes }}>
+                <label for="PdpQty-{{ section.id }}" style="display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px;">Quantity</label>
+                <div class="pdp-qty-control">
+                  <button type="button" data-qty-step="-1" aria-label="Decrease quantity">−</button>
+                  <input id="PdpQty-{{ section.id }}" type="number" name="quantity" value="1" min="1" form="{{ product_form_id }}" data-pdp-qty-input aria-label="Quantity">
+                  <button type="button" data-qty-step="1" aria-label="Increase quantity">+</button>
+                </div>
+              </div>
+
+            {% when 'buy_buttons' %}
+              <div style="margin-bottom: 20px;" data-pdp-buy-sentinel {{ block.shopify_attributes }}>
+                {% form 'product', product, id: product_form_id, class: 'js-ajax-cart-form pdp-form' %}
+                  <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id-input>
+                  <div class="pdp-form-error" data-pdp-error role="alert" hidden></div>
+                  <button
+                    type="submit"
+                    class="btn pdp-atc"
+                    data-pdp-submit
+                    {% unless current_variant.available %}disabled{% endunless %}
+                    style="width: 100%; background: {{ block.settings.btn_bg }}; border-color: {{ block.settings.btn_bg }}; color: {{ block.settings.btn_text }};"
+                  >
+                    {% if current_variant.available %}
+                      {{ block.settings.add_label }}
+                    {% else %}
+                      Sold Out
+                    {% endif %}
+                  </button>
+                  {% if block.settings.show_dynamic_checkout %}
+                    <div style="margin-top: 10px;">
+                      {{ form | payment_button }}
+                    </div>
+                  {% endif %}
+                {% endform %}
+              </div>
+
+            {% when 'enquiry_share' %}
+              {%- liquid
+                assign wa_text = wa_greeting | append: ' ' | append: product.title
+                unless product.has_only_default_variant
+                  assign wa_text = wa_text | append: ' (' | append: current_variant.title | append: ')'
+                endunless
+                if current_variant.sku != blank
+                  assign wa_text = wa_text | append: ' [SKU: ' | append: current_variant.sku | append: ']'
+                endif
+                assign wa_text = wa_text | append: ' ' | append: product_full_url
+              -%}
+              <div class="pdp-assist-row" {{ block.shopify_attributes }}>
+                {% if wa_digits != blank %}
+                  <a
+                    class="btn outline pdp-wa-btn"
+                    data-pdp-wa-link
+                    href="https://wa.me/{{ wa_digits }}?text={{ wa_text | url_encode }}"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    {% render 'icons', icon: 'whatsapp' %}
+                    <span>{{ block.settings.whatsapp_label }}</span>
+                  </a>
+                {% endif %}
+                {% if block.settings.show_share %}
+                  <button
+                    type="button"
+                    class="btn outline pdp-share-btn"
+                    data-pdp-share
+                    data-share-title="{{ product.title | escape }}"
+                    data-share-url="{{ product_full_url | escape }}"
+                  >
+                    {% render 'icons', icon: 'share' %}
+                    <span data-share-label>{{ block.settings.share_label }}</span>
+                  </button>
+                {% endif %}
+              </div>
+
+            {% when 'pincode_check' %}
+              <div
+                class="pdp-pincode-box"
+                data-pincode-widget
+                data-serviceable-prefixes="{{ block.settings.serviceable_prefixes | escape }}"
+                data-msg-valid="{{ block.settings.valid_message | escape }}"
+                data-msg-outside="{{ block.settings.outside_message | escape }}"
+                {{ block.shopify_attributes }}
+              >
+                <div class="pdp-pincode-head">
+                  {% render 'icons', icon: 'truck' %}
+                  <span>{{ block.settings.heading }}</span>
+                </div>
+                <div class="pdp-pincode-form">
+                  <label for="PincodeInput-{{ section.id }}" class="visually-hidden">Enter 6-digit Indian PIN code</label>
+                  <input
+                    id="PincodeInput-{{ section.id }}"
+                    type="text"
+                    inputmode="numeric"
+                    maxlength="6"
+                    pattern="[1-9][0-9]{5}"
+                    placeholder="{{ block.settings.placeholder }}"
+                    data-pincode-input
+                  >
+                  <button type="button" class="btn outline" data-pincode-btn>{{ block.settings.button_label }}</button>
+                </div>
+                <p class="pdp-pincode-result" data-pincode-result role="status" aria-live="polite" hidden></p>
+              </div>
+
+            {% when 'saree_specs' %}
+              {%- liquid
+                assign mf = product.metafields.custom
+                assign has_any_spec = false
+                if mf.fabric != blank or mf.weave != blank or mf.saree_length != blank or mf.blouse_piece != blank or mf.border_type != blank or mf.occasion != blank or mf.weight != blank or mf.care_instructions != blank
+                  assign has_any_spec = true
+                endif
+              -%}
+              {% if has_any_spec %}
+                <div class="pdp-specs" {{ block.shopify_attributes }}>
+                  <h2 class="pdp-specs-heading">{{ block.settings.heading }}</h2>
+                  <dl class="pdp-specs-grid">
+                    {% if mf.fabric != blank %}
+                      <div><dt>Fabric</dt><dd>{{ mf.fabric }}</dd></div>
+                    {% endif %}
+                    {% if mf.weave != blank %}
+                      <div><dt>Weave / Style</dt><dd>{{ mf.weave }}</dd></div>
+                    {% endif %}
+                    {% if mf.saree_length != blank %}
+                      <div><dt>Saree Length</dt><dd>{{ mf.saree_length }}</dd></div>
+                    {% endif %}
+                    {% if mf.blouse_piece != blank %}
+                      <div><dt>Blouse Piece</dt><dd>{{ mf.blouse_piece }}</dd></div>
+                    {% endif %}
+                    {% if mf.border_type != blank %}
+                      <div><dt>Border &amp; Pallu</dt><dd>{{ mf.border_type }}</dd></div>
+                    {% endif %}
+                    {% if mf.occasion != blank %}
+                      <div><dt>Occasion</dt><dd>{{ mf.occasion }}</dd></div>
+                    {% endif %}
+                    {% if mf.weight != blank %}
+                      <div><dt>Weight / Drape</dt><dd>{{ mf.weight }}</dd></div>
+                    {% endif %}
+                    {% if mf.care_instructions != blank %}
+                      <div><dt>Care</dt><dd>{{ mf.care_instructions }}</dd></div>
+                    {% endif %}
+                  </dl>
+                </div>
+              {% elsif request.design_mode %}
+                <div class="pdp-specs pdp-specs--editor-hint" {{ block.shopify_attributes }}>
+                  <p><strong>Saree Specifications (Metafield-driven):</strong> Populate product metafields under <code>custom.*</code> (<code>fabric</code>, <code>weave</code>, <code>saree_length</code>, <code>blouse_piece</code>, <code>border_type</code>, <code>occasion</code>, <code>weight</code>, <code>care_instructions</code>) in Shopify Admin to show verified specs for each saree.</p>
+                </div>
+              {% endif %}
+
+            {% when 'description' %}
+              {% if product.description != blank %}
+                <div class="pdp-desc rte" style="margin: 22px 0;" {{ block.shopify_attributes }}>
+                  {{ product.description }}
+                </div>
+              {% endif %}
+
+            {% when 'collapsible_tab' %}
+              {%- liquid
+                assign tab_content = block.settings.content
+                assign policy_link_url = blank
+                assign policy_link_label = blank
+                if block.settings.policy_source == 'shipping' and shop.shipping_policy != blank
+                  assign policy_link_url = shop.shipping_policy.url
+                  assign policy_link_label = 'Read full Shipping Policy'
+                elsif block.settings.policy_source == 'refund' and shop.refund_policy != blank
+                  assign policy_link_url = shop.refund_policy.url
+                  assign policy_link_label = 'Read full Returns & Refund Policy'
+                endif
+              -%}
+              {% if tab_content != blank or policy_link_url != blank %}
+                <details class="pdp-accordion" {% if block.settings.open_default %}open{% endif %} {{ block.shopify_attributes }}>
+                  <summary>{{ block.settings.heading }}</summary>
+                  <div class="pdp-accordion-body">
+                    {% if tab_content != blank %}{{ tab_content }}{% endif %}
+                    {% if policy_link_url != blank %}
+                      <p style="margin-top: 10px;"><a href="{{ policy_link_url }}" class="link-cta">{{ policy_link_label }} →</a></p>
+                    {% endif %}
+                  </div>
+                </details>
+              {% endif %}
+
+            {% when 'color_disclaimer' %}
+              {% if block.settings.text != blank %}
+                <p class="pdp-disclaimer" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+              {% endif %}
+
+            {% when 'custom_text' %}
+              {% if block.settings.text != blank %}
+                <div class="pdp-trust-note" style="margin: 14px 0; font-size: 13px; color: var(--text-muted);" {{ block.shopify_attributes }}>
+                  {{ block.settings.text }}
+                </div>
+              {% endif %}
+          {% endcase %}
+        {% endfor %}
       </div>
     </div>
   </div>
+
+  {% if section.settings.enable_sticky_mobile_atc %}
+    <div class="pdp-sticky-bar" data-pdp-sticky-bar aria-hidden="true">
+      <div class="pdp-sticky-meta">
+        <span class="pdp-sticky-title">{{ product.title | truncate: 38 }}</span>
+        <strong class="pdp-sticky-price" data-pdp-sticky-price>{{ current_variant.price | money }}</strong>
+      </div>
+      <button
+        type="button"
+        class="btn pdp-sticky-btn"
+        data-pdp-sticky-submit
+        {% unless current_variant.available %}disabled{% endunless %}
+      >
+        {% if current_variant.available %}Add to Bag{% else %}Sold Out{% endif %}
+      </button>
+    </div>
+  {% endif %}
+
+  {% if section.settings.enable_zoom and product.images.size > 0 %}
+    <div class="pdp-lightbox" data-pdp-lightbox role="dialog" aria-modal="true" aria-label="Saree image zoom" aria-hidden="true" hidden>
+      <button type="button" class="pdp-lightbox-close" data-pdp-zoom-close aria-label="Close zoom">
+        {% render 'icons', icon: 'close' %}
+      </button>
+      {% if product.images.size > 1 %}
+        <button type="button" class="pdp-lightbox-nav pdp-lightbox-nav--prev" data-pdp-zoom-prev aria-label="Previous image">
+          {% render 'icons', icon: 'chevron-left' %}
+        </button>
+        <button type="button" class="pdp-lightbox-nav pdp-lightbox-nav--next" data-pdp-zoom-next aria-label="Next image">
+          {% render 'icons', icon: 'chevron-right' %}
+        </button>
+      {% endif %}
+      <img class="pdp-lightbox-img" data-pdp-lightbox-img src="{{ product.featured_image | image_url: width: 2000 }}" alt="{{ product.title | escape }}" width="1600" height="2133" loading="lazy">
+    </div>
+  {% endif %}
+
+  <script type="application/json" data-pdp-variants>
+    [
+      {% for v in product.variants %}
+        {
+          "id": {{ v.id }},
+          "title": {{ v.title | json }},
+          "available": {{ v.available | json }},
+          "price_formatted": {{ v.price | money | json }},
+          "compare_formatted": {% if v.compare_at_price > v.price %}{{ v.compare_at_price | money | json }}{% else %}null{% endif %},
+          "sku": {{ v.sku | json }},
+          "image_src": {% if v.featured_image %}{{ v.featured_image | image_url: width: 1400 | json }}{% else %}null{% endif %}
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]
+  </script>
 </section>
 
 {% schema %}
 {
   "name": "Main Product",
   "settings": [
+    { "type": "header", "content": "Layout & Gallery" },
+    { "type": "checkbox", "id": "show_breadcrumbs", "label": "Show breadcrumbs", "default": true },
     {
-      "type": "range",
-      "id": "gallery_width",
-      "label": "Gallery width share (desktop)",
-      "min": 40,
-      "max": 66,
-      "step": 2,
-      "unit": "%",
-      "default": 54
-    },
-    {
-      "type": "range",
-      "id": "column_gap",
-      "label": "Gap between gallery & info",
-      "min": 20,
-      "max": 80,
-      "step": 4,
-      "unit": "px",
-      "default": 44
-    },
-    {
-      "type": "checkbox",
-      "id": "sticky_gallery",
-      "label": "Sticky product gallery on desktop",
-      "default": true
+      "type": "select",
+      "id": "media_position",
+      "label": "Gallery position (desktop)",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
     },
     {
       "type": "select",
-      "id": "image_ratio",
+      "id": "media_width",
+      "label": "Gallery column width",
+      "options": [
+        { "value": "narrow", "label": "Narrow (45%)" },
+        { "value": "medium", "label": "Balanced (54%)" },
+        { "value": "wide", "label": "Wide (62%)" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "media_ratio",
       "label": "Main image aspect ratio",
       "options": [
         { "value": "3 / 4", "label": "Portrait (3:4)" },
@@ -225,93 +450,34 @@
       ],
       "default": "3 / 4"
     },
-    {
-      "type": "range",
-      "id": "image_radius",
-      "label": "Gallery corner radius",
-      "min": 0,
-      "max": 36,
-      "step": 2,
-      "unit": "px",
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "title_size_desktop",
-      "label": "Product title size (desktop)",
-      "min": 22,
-      "max": 56,
-      "step": 2,
-      "unit": "px",
-      "default": 36
-    },
-    {
-      "type": "range",
-      "id": "title_size_mobile",
-      "label": "Product title size (mobile)",
-      "min": 20,
-      "max": 40,
-      "step": 2,
-      "unit": "px",
-      "default": 28
-    },
-    {
-      "type": "color",
-      "id": "title_color",
-      "label": "Product title color",
-      "default": "#1C1C1C"
-    },
-    {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Section background (optional)"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "label": "Top padding",
-      "min": 16,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "default": 44
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "label": "Bottom padding",
-      "min": 16,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "default": 56
-    }
+    { "type": "checkbox", "id": "sticky_gallery", "label": "Keep gallery sticky while scrolling details", "default": true },
+    { "type": "checkbox", "id": "enable_zoom", "label": "Enable fullscreen image zoom lightbox", "default": true },
+    { "type": "checkbox", "id": "enable_sticky_mobile_atc", "label": "Show sticky Add-to-Bag bar on mobile", "default": true },
+    { "type": "range", "id": "media_radius", "label": "Main image corner radius", "min": 0, "max": 36, "step": 2, "unit": "px", "default": 8 },
+    { "type": "range", "id": "thumb_radius", "label": "Thumbnail corner radius", "min": 0, "max": 24, "step": 2, "unit": "px", "default": 6 },
+    { "type": "range", "id": "column_gap", "label": "Gap between gallery & info", "min": 20, "max": 80, "step": 4, "unit": "px", "default": 48 },
+    { "type": "header", "content": "Section Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 16, "max": 100, "step": 4, "unit": "px", "default": 32 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 24, "max": 120, "step": 4, "unit": "px", "default": 72 }
   ],
   "blocks": [
-    {
-      "type": "vendor",
-      "name": "Vendor / Label",
-      "limit": 1,
-      "settings": [
-        { "type": "range", "id": "spacing_bottom", "label": "Bottom spacing", "min": 0, "max": 36, "step": 2, "unit": "px", "default": 8 }
-      ]
-    },
+    { "type": "vendor", "name": "Vendor / Label", "limit": 1 },
     {
       "type": "title",
       "name": "Product Title",
       "limit": 1,
       "settings": [
-        { "type": "range", "id": "spacing_bottom", "label": "Bottom spacing", "min": 0, "max": 36, "step": 2, "unit": "px", "default": 12 }
+        { "type": "range", "id": "title_size", "label": "Title font size", "min": 22, "max": 52, "step": 2, "unit": "px", "default": 34 }
       ]
     },
     {
       "type": "price",
-      "name": "Price",
+      "name": "Price & SKU",
       "limit": 1,
       "settings": [
-        { "type": "range", "id": "price_size", "label": "Price font size", "min": 14, "max": 32, "step": 1, "unit": "px", "default": 20 },
-        { "type": "text", "id": "tax_note", "label": "Tax / shipping note", "default": "Inclusive of all taxes. Free shipping above ₹999." },
-        { "type": "range", "id": "spacing_bottom", "label": "Bottom spacing", "min": 0, "max": 36, "step": 2, "unit": "px", "default": 18 }
+        { "type": "range", "id": "price_size", "label": "Price font size", "min": 16, "max": 32, "step": 1, "unit": "px", "default": 21 },
+        { "type": "checkbox", "id": "show_tax_note", "label": "Show tax note", "default": true },
+        { "type": "text", "id": "tax_note", "label": "Tax note", "default": "Inclusive of applicable taxes. Shipping calculated at checkout." }
       ]
     },
     {
@@ -319,62 +485,88 @@
       "name": "Variant Picker",
       "limit": 1,
       "settings": [
-        { "type": "text", "id": "label", "label": "Label", "default": "Select Variant" },
-        {
-          "type": "select",
-          "id": "picker_type",
-          "label": "Picker style",
-          "options": [
-            { "value": "pills", "label": "Rounded Pills" },
-            { "value": "dropdown", "label": "Dropdown" }
-          ],
-          "default": "pills"
-        },
-        { "type": "range", "id": "spacing_bottom", "label": "Bottom spacing", "min": 0, "max": 36, "step": 2, "unit": "px", "default": 16 }
+        { "type": "text", "id": "label", "label": "Label", "default": "Select Option" }
       ]
     },
-    {
-      "type": "quantity",
-      "name": "Quantity Selector",
-      "limit": 1,
-      "settings": [
-        { "type": "range", "id": "spacing_bottom", "label": "Bottom spacing", "min": 0, "max": 36, "step": 2, "unit": "px", "default": 16 }
-      ]
-    },
+    { "type": "quantity", "name": "Quantity Selector", "limit": 1 },
     {
       "type": "buy_buttons",
-      "name": "Buy Buttons",
+      "name": "Add to Bag Button",
       "limit": 1,
       "settings": [
-        { "type": "text", "id": "add_label", "label": "Add to bag text", "default": "Add to Bag" },
-        { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show Buy It Now button", "default": true },
-        { "type": "range", "id": "spacing_bottom", "label": "Bottom spacing", "min": 0, "max": 36, "step": 2, "unit": "px", "default": 22 }
+        { "type": "text", "id": "add_label", "label": "Add to bag label", "default": "Add to Bag" },
+        { "type": "color", "id": "btn_bg", "label": "Button background", "default": "#244737" },
+        { "type": "color", "id": "btn_text", "label": "Button text color", "default": "#FFFFFF" },
+        { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show dynamic Buy Now button", "default": true }
       ]
     },
     {
-      "type": "description",
-      "name": "Product Description",
+      "type": "enquiry_share",
+      "name": "WhatsApp & Share",
       "limit": 1,
       "settings": [
-        { "type": "range", "id": "spacing_bottom", "label": "Bottom spacing", "min": 0, "max": 36, "step": 2, "unit": "px", "default": 18 }
+        { "type": "text", "id": "whatsapp_label", "label": "WhatsApp enquiry button label", "default": "Enquire on WhatsApp" },
+        { "type": "checkbox", "id": "show_share", "label": "Show Share Saree button", "default": true },
+        { "type": "text", "id": "share_label", "label": "Share button label", "default": "Share Saree" }
       ]
     },
+    {
+      "type": "pincode_check",
+      "name": "Delivery PIN Check",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Check Delivery Availability" },
+        { "type": "text", "id": "placeholder", "label": "Input placeholder", "default": "Enter 6-digit PIN code" },
+        { "type": "text", "id": "button_label", "label": "Button label", "default": "Check" },
+        { "type": "text", "id": "serviceable_prefixes", "label": "Serviceable PIN prefixes (optional)", "info": "Comma-separated prefixes (e.g. 51, 50, 56). Leave blank to accept all valid 6-digit Indian PINs." },
+        { "type": "text", "id": "valid_message", "label": "Valid PIN message", "default": "Valid Indian PIN code. Final shipping options and delivery estimate are shown at checkout." },
+        { "type": "text", "id": "outside_message", "label": "Unserviceable PIN message", "default": "Standard delivery may not cover this PIN code yet — please enquire with us on WhatsApp." }
+      ]
+    },
+    {
+      "type": "saree_specs",
+      "name": "Saree Specifications",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Section heading", "default": "Saree Specifications" }
+      ]
+    },
+    { "type": "description", "name": "Product Description", "limit": 1 },
     {
       "type": "collapsible_tab",
-      "name": "Collapsible Details",
+      "name": "Collapsible Tab",
+      "limit": 6,
       "settings": [
-        { "type": "text", "id": "heading", "label": "Tab heading", "default": "Saree Details & Care" },
-        { "type": "richtext", "id": "content", "label": "Tab content", "default": "<p>Length: 5.5 metres saree with 0.8 metre unstitched blouse piece. Dry clean recommended for silk weaves.</p>" },
-        { "type": "checkbox", "id": "open_default", "label": "Open by default", "default": false },
-        { "type": "range", "id": "spacing_bottom", "label": "Bottom spacing", "min": 0, "max": 28, "step": 2, "unit": "px", "default": 6 }
+        { "type": "text", "id": "heading", "label": "Tab heading", "default": "Fabric Care" },
+        { "type": "richtext", "id": "content", "label": "Tab content", "default": "<p>Care instructions vary by fabric. Please follow the care details listed in this saree's specifications or enquire with our team before washing.</p>" },
+        {
+          "type": "select",
+          "id": "policy_source",
+          "label": "Append Shopify store policy link",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "shipping", "label": "Link to Shipping Policy" },
+            { "value": "refund", "label": "Link to Refund & Returns Policy" }
+          ],
+          "default": "none"
+        },
+        { "type": "checkbox", "id": "open_default", "label": "Open by default", "default": false }
+      ]
+    },
+    {
+      "type": "color_disclaimer",
+      "name": "Colour Note",
+      "limit": 1,
+      "settings": [
+        { "type": "textarea", "id": "text", "label": "Disclaimer text", "default": "Note: Actual saree colours may vary slightly due to studio lighting and device display settings." }
       ]
     },
     {
       "type": "custom_text",
-      "name": "Trust / Note Text",
+      "name": "Custom Note",
+      "limit": 3,
       "settings": [
-        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>✓ Handpicked from master weavers · ✓ Cash on Delivery Available</p>" },
-        { "type": "range", "id": "spacing_bottom", "label": "Bottom spacing", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 14 }
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Need closer photos of the pallu or blouse piece? Reach out to our team before ordering.</p>" }
       ]
     }
   ]

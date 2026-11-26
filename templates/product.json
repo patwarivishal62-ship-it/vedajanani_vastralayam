@@ -21,25 +21,36 @@
         "buy_buttons": {
           "type": "buy_buttons"
         },
+        "enquiry_share": {
+          "type": "enquiry_share"
+        },
+        "pincode_check": {
+          "type": "pincode_check"
+        },
+        "saree_specs": {
+          "type": "saree_specs"
+        },
         "description": {
           "type": "description"
         },
         "care_tab": {
           "type": "collapsible_tab",
           "settings": {
-            "heading": "Saree Details & Care",
-            "content": "<p>Length: 5.5 metres saree with 0.8 metre unstitched blouse piece. Dry clean recommended for silk &amp; zari weaves; gentle hand wash for pure cottons.</p>"
+            "heading": "Fabric Care",
+            "content": "<p>Care instructions vary by weave and fibre. Please review the saree specifications above or enquire with our team for guidance on washing and storage.</p>",
+            "policy_source": "none"
           }
         },
         "shipping_tab": {
           "type": "collapsible_tab",
           "settings": {
             "heading": "Shipping & Returns",
-            "content": "<p>Free shipping across India on orders above ₹999. Cash on Delivery available. Dispatched within 24–48 hours from Anantapur, Andhra Pradesh.</p>"
+            "content": "<p>Shipping charges and delivery estimates are calculated at checkout based on your delivery PIN code.</p>",
+            "policy_source": "shipping"
           }
         },
-        "trust": {
-          "type": "custom_text"
+        "color_disclaimer": {
+          "type": "color_disclaimer"
         }
       },
       "block_order": [
@@ -49,15 +60,18 @@
         "variant_picker",
         "quantity",
         "buy_buttons",
+        "enquiry_share",
+        "pincode_check",
+        "saree_specs",
         "description",
         "care_tab",
         "shipping_tab",
-        "trust"
+        "color_disclaimer"
       ],
       "settings": {}
     },
     "related": {
-      "type": "featured-products",
+      "type": "product-recommendations",
       "settings": {
         "eyebrow": "Complete Your Wardrobe",
         "heading": "You May Also Like"

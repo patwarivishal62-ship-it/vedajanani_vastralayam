@@ -6,25 +6,34 @@
         "kicker": {
           "type": "kicker",
           "settings": {
-            "text": "Vedajanani Vastralayam · Festive 2026"
+            "text": "Vedajanani Vastralayam · Anantapur",
+            "color": "#E2CFA8"
           }
         },
         "heading": {
           "type": "heading",
           "settings": {
-            "text": "Drape the story you carry."
+            "text": "Drape the story you carry.",
+            "color": "#FAF2E3"
           }
         },
         "subheading": {
           "type": "subheading",
           "settings": {
-            "text": "Cotton, Silk, Chiffon & Georgette — handpicked from master weavers."
+            "text": "Cotton, Silk, Chiffon & Georgette sarees curated for everyday comfort and timeless celebrations.",
+            "color": "#EFE5D2"
           }
         },
         "buttons": {
           "type": "buttons",
           "settings": {
-            "cta_label": "Shop New Arrivals"
+            "cta_label": "Explore New Arrivals",
+            "cta_style": "solid",
+            "cta_color": "#FFFFFF",
+            "cta_bg": "#A8492D",
+            "cta2_label": "Shop All Sarees",
+            "cta2_style": "outline",
+            "cta2_color": "#FAF2E3"
           }
         }
       },
@@ -34,155 +43,9 @@
         "subheading",
         "buttons"
       ],
-      "settings": {}
-    },
-    "category": {
-      "type": "category-tabs",
-      "blocks": {
-        "tab_women": {
-          "type": "tab",
-          "settings": {
-            "label": "Women",
-            "filter_key": "women"
-          }
-        },
-        "tab_men": {
-          "type": "tab",
-          "settings": {
-            "label": "Men",
-            "filter_key": "men"
-          }
-        },
-        "tab_all": {
-          "type": "tab",
-          "settings": {
-            "label": "Shop All",
-            "filter_key": "all"
-          }
-        },
-        "card_cotton": {
-          "type": "card",
-          "settings": {
-            "tab_group": "women",
-            "badge": "9 Weaves",
-            "title": "Cotton",
-            "subtitle": "Mul · Madurai · Kanchi · Jamdhani",
-            "fallback_path": "/collections/cotton"
-          }
-        },
-        "card_silk": {
-          "type": "card",
-          "settings": {
-            "tab_group": "women",
-            "badge": "8 Weaves",
-            "title": "Silk",
-            "subtitle": "Banarasi · Soft · Crepe · Kota",
-            "fallback_path": "/collections/silk"
-          }
-        },
-        "card_chiffon": {
-          "type": "card",
-          "settings": {
-            "tab_group": "women",
-            "badge": "5 Styles",
-            "title": "Chiffon",
-            "subtitle": "Printed · Embroidered · Bandhani",
-            "fallback_path": "/collections/chiffon"
-          }
-        },
-        "card_georgette": {
-          "type": "card",
-          "settings": {
-            "tab_group": "women",
-            "badge": "5 Styles",
-            "title": "Georgette",
-            "subtitle": "Satin · Printed · Floral",
-            "fallback_path": "/collections/georgette"
-          }
-        }
-      },
-      "block_order": [
-        "tab_women",
-        "tab_men",
-        "tab_all",
-        "card_cotton",
-        "card_silk",
-        "card_chiffon",
-        "card_georgette"
-      ],
-      "settings": {}
-    },
-    "campaigns": {
-      "type": "campaign-blocks",
-      "blocks": {
-        "festive": {
-          "type": "campaign",
-          "settings": {
-            "bg_gradient": "linear-gradient(160deg, #B9975B 0%, #8A6D3B 100%)",
-            "kicker": "Festive 2026",
-            "heading": "The Festive Edit",
-            "description": "Zari cottons, soft silks and Bandhani chiffons.",
-            "cta_label": "Shop Festive",
-            "fallback_path": "/collections/festive"
-          }
-        },
-        "wedding": {
-          "type": "campaign",
-          "settings": {
-            "bg_gradient": "linear-gradient(160deg, #7A2230 0%, #2B0E14 100%)",
-            "kicker": "Wedding Season",
-            "heading": "The Wedding Edit",
-            "description": "Brides, bridesmaids and guests.",
-            "cta_label": "Shop Wedding",
-            "fallback_path": "/collections/wedding"
-          }
-        }
-      },
-      "block_order": [
-        "festive",
-        "wedding"
-      ],
-      "settings": {}
-    },
-    "lookbook": {
-      "type": "lookbook-grid",
-      "blocks": {
-        "look_1": {
-          "type": "look",
-          "settings": {
-            "tag": "Look 01",
-            "title": "Morning Mul Cotton"
-          }
-        },
-        "look_2": {
-          "type": "look",
-          "settings": {
-            "tag": "Look 02",
-            "title": "Banarasi Heirloom"
-          }
-        },
-        "look_3": {
-          "type": "look",
-          "settings": {
-            "tag": "Look 03",
-            "title": "Bandhani Chiffon"
-          }
-        },
-        "look_4": {
-          "type": "look",
-          "settings": {
-            "tag": "Look 04",
-            "title": "Satin Georgette"
-          }
-        }
-      },
-      "block_order": [
-        "look_1",
-        "look_2",
-        "look_3",
-        "look_4"
-      ],
-      "settings": {}
+      "settings": {
+        "fallback_bg": "linear-gradient(145deg, #173125 0%, #244737 58%, #4A2B20 100%)"
+      }
     },
     "collections": {
       "type": "featured-collections",
@@ -190,16 +53,14 @@
         "col_cotton": {
           "type": "collection_card",
           "settings": {
-            "badge": "9 Weaves",
             "title": "Cotton",
-            "subtitle": "Mul, Madurai, Kanchi, Kota & Jamdhani",
+            "subtitle": "Mul, Madurai, Kanchi, Kota & Jamdani",
             "fallback_path": "/collections/cotton"
           }
         },
         "col_silk": {
           "type": "collection_card",
           "settings": {
-            "badge": "8 Weaves",
             "title": "Silk",
             "subtitle": "Banarasi, Soft, Crepe & Viscose Silk",
             "fallback_path": "/collections/silk"
@@ -208,7 +69,6 @@
         "col_chiffon": {
           "type": "collection_card",
           "settings": {
-            "badge": "5 Styles",
             "title": "Chiffon",
             "subtitle": "Printed, Embroidered, Bandhani & Floral",
             "fallback_path": "/collections/chiffon"
@@ -217,7 +77,6 @@
         "col_georgette": {
           "type": "collection_card",
           "settings": {
-            "badge": "5 Styles",
             "title": "Georgette",
             "subtitle": "Satin, Printed, Bandhani & Plain",
             "fallback_path": "/collections/georgette"
@@ -230,175 +89,258 @@
         "col_chiffon",
         "col_georgette"
       ],
-      "settings": {}
+      "settings": {
+        "eyebrow": "By Fabric",
+        "heading": "Shop by Fabric"
+      }
     },
-    "price": {
-      "type": "shop-by-price",
+    "new": {
+      "type": "featured-products",
+      "settings": {
+        "eyebrow": "Just Arrived",
+        "heading": "New Arrivals",
+        "collection": "new-arrivals",
+        "view_all_label": "View New Arrivals"
+      }
+    },
+    "campaigns": {
+      "type": "campaign-blocks",
       "blocks": {
-        "tier_1": {
-          "type": "tier",
+        "festive": {
+          "type": "campaign",
           "settings": {
-            "badge": "Daily Use",
-            "title": "Affordable",
-            "price_range": "₹500 – ₹1,500",
-            "description": "Breathable cottons & effortless everyday drapes.",
-            "fallback_path": "/collections/affordable"
+            "bg_gradient": "linear-gradient(155deg, #A8492D 0%, #6F2E1B 100%)",
+            "kicker": "Celebration Curations",
+            "heading": "The Festive Edit",
+            "description": "Zari cottons, luminous silks and graceful Bandhani drapes.",
+            "cta_label": "Shop Festive",
+            "fallback_path": "/collections/festive"
           }
         },
-        "tier_2": {
-          "type": "tier",
+        "wedding": {
+          "type": "campaign",
           "settings": {
-            "badge": "Most Loved",
-            "title": "Mid Range",
-            "price_range": "₹1,500 – ₹3,000",
-            "description": "Office-ready weaves, printed chiffons & soft silks.",
-            "fallback_path": "/collections/mid-range"
-          }
-        },
-        "tier_3": {
-          "type": "tier",
-          "settings": {
-            "badge": "Heirloom & Festive",
-            "title": "Premium",
-            "price_range": "₹3,000 – ₹5,000",
-            "description": "Banarasi, Kanchi & wedding celebration drapes.",
-            "fallback_path": "/collections/premium"
+            "bg_gradient": "linear-gradient(155deg, #244737 0%, #13281F 100%)",
+            "kicker": "Timeless Occasions",
+            "heading": "The Wedding Edit",
+            "description": "Statement weaves curated for brides, family and guests.",
+            "cta_label": "Shop Wedding",
+            "fallback_path": "/collections/wedding"
           }
         }
       },
       "block_order": [
-        "tier_1",
-        "tier_2",
-        "tier_3"
+        "festive",
+        "wedding"
       ],
       "settings": {}
     },
     "occasion": {
       "type": "shop-by-occasion",
       "blocks": {
-        "occ_1": {
+        "o_daily": {
           "type": "occasion",
           "settings": {
             "title": "Daily Use",
+            "subtitle": "Breathable cottons & light prints",
             "fallback_path": "/collections/daily-use"
           }
         },
-        "occ_2": {
+        "o_office": {
           "type": "occasion",
           "settings": {
             "title": "Office",
+            "subtitle": "Crisp drapes for workdays",
             "fallback_path": "/collections/office"
           }
         },
-        "occ_3": {
+        "o_festive": {
           "type": "occasion",
           "settings": {
             "title": "Festive",
+            "subtitle": "Zari borders & celebratory tones",
             "fallback_path": "/collections/festive"
           }
         },
-        "occ_4": {
+        "o_wedding": {
           "type": "occasion",
           "settings": {
-            "title": "Brides",
-            "fallback_path": "/collections/wedding"
-          }
-        },
-        "occ_5": {
-          "type": "occasion",
-          "settings": {
-            "title": "Bridesmaids",
-            "fallback_path": "/collections/wedding"
-          }
-        },
-        "occ_6": {
-          "type": "occasion",
-          "settings": {
-            "title": "Guests",
+            "title": "Wedding Edit",
+            "subtitle": "Brides, family & ceremony guests",
             "fallback_path": "/collections/wedding"
           }
         }
       },
       "block_order": [
-        "occ_1",
-        "occ_2",
-        "occ_3",
-        "occ_4",
-        "occ_5",
-        "occ_6"
+        "o_daily",
+        "o_office",
+        "o_festive",
+        "o_wedding"
       ],
-      "settings": {}
+      "settings": {
+        "eyebrow": "By Occasion",
+        "heading": "Where Will You Wear It?"
+      }
+    },
+    "price": {
+      "type": "shop-by-price",
+      "blocks": {
+        "p_aff": {
+          "type": "tier",
+          "settings": {
+            "eyebrow": "Affordable",
+            "price_range": "₹500 – ₹1,499",
+            "subtitle": "Everyday cottons, chiffons & light prints",
+            "fallback_path": "/collections/affordable"
+          }
+        },
+        "p_mid": {
+          "type": "tier",
+          "settings": {
+            "eyebrow": "Mid Range",
+            "price_range": "₹1,500 – ₹2,999",
+            "subtitle": "Festive weaves, silk blends & zari borders",
+            "fallback_path": "/collections/mid-range"
+          }
+        },
+        "p_pre": {
+          "type": "tier",
+          "settings": {
+            "eyebrow": "Premium",
+            "price_range": "₹3,000 & Above",
+            "subtitle": "Statement occasion & wedding drapes",
+            "fallback_path": "/collections/premium"
+          }
+        }
+      },
+      "block_order": [
+        "p_aff",
+        "p_mid",
+        "p_pre"
+      ],
+      "settings": {
+        "eyebrow": "By Price",
+        "heading": "Shop Every Budget"
+      }
+    },
+    "lookbook": {
+      "type": "lookbook-grid",
+      "blocks": {
+        "look_1": {
+          "type": "photo",
+          "settings": {
+            "caption": "Cotton Weaves",
+            "subcaption": "Everyday Grace"
+          }
+        },
+        "look_2": {
+          "type": "photo",
+          "settings": {
+            "caption": "Silk Drapes",
+            "subcaption": "Heirloom Craft"
+          }
+        },
+        "look_3": {
+          "type": "photo",
+          "settings": {
+            "caption": "Festive Chiffon",
+            "subcaption": "Light & Luminous"
+          }
+        },
+        "look_4": {
+          "type": "photo",
+          "settings": {
+            "caption": "Wedding Edit",
+            "subcaption": "Ceremony Statements"
+          }
+        }
+      },
+      "block_order": [
+        "look_1",
+        "look_2",
+        "look_3",
+        "look_4"
+      ],
+      "settings": {
+        "eyebrow": "Lookbook",
+        "heading": "Draped in Grace"
+      }
     },
     "bestsellers": {
       "type": "featured-products",
       "settings": {
-        "collection": "best-sellers",
         "eyebrow": "Most Loved",
-        "heading": "Best Sellers"
-      }
-    },
-    "new": {
-      "type": "featured-products",
-      "settings": {
-        "collection": "new-arrivals",
-        "eyebrow": "Fresh From The Loom",
-        "heading": "New Arrivals"
+        "heading": "Best Sellers",
+        "collection": "best-sellers",
+        "view_all_label": "View Best Sellers"
       }
     },
     "testimonials": {
       "type": "testimonials",
       "blocks": {
-        "t_1": {
-          "type": "testimonial",
+        "r1": {
+          "type": "review",
           "settings": {
-            "quote": "Beautiful drape and honest quality. The Banarasi silk felt like an heirloom the moment I opened the box.",
-            "author": "Padma Reddy",
-            "meta": "Hyderabad · Banarasi Silk"
+            "rating": 0,
+            "quote": "Verified customer notes on fabric feel, drape and finishing will appear here once orders are delivered.",
+            "author": "Verified Patron",
+            "meta": "Cotton Collection"
           }
         },
-        "t_2": {
-          "type": "testimonial",
+        "r2": {
+          "type": "review",
           "settings": {
-            "quote": "My Mul Cotton saree is my absolute favourite for workdays — breathable, graceful and holds its pleats all day.",
-            "author": "Meghana S.",
-            "meta": "Bengaluru · Mul Cotton"
+            "rating": 0,
+            "quote": "Replace this placeholder in Theme Editor with authentic feedback from your patrons.",
+            "author": "Verified Patron",
+            "meta": "Silk & Festive Edit"
           }
         },
-        "t_3": {
-          "type": "testimonial",
+        "r3": {
+          "type": "review",
           "settings": {
-            "quote": "Ordered three sarees for my sister's wedding and every single weave exceeded expectations.",
-            "author": "Kavitha Rao",
-            "meta": "Anantapur · Wedding Edit"
+            "rating": 0,
+            "quote": "Every story shared here comes directly from patrons wearing Vedajanani Vastralayam sarees.",
+            "author": "Verified Patron",
+            "meta": "Wedding Edit"
           }
         }
       },
       "block_order": [
-        "t_1",
-        "t_2",
-        "t_3"
+        "r1",
+        "r2",
+        "r3"
       ],
-      "settings": {}
+      "settings": {
+        "eyebrow": "Customer Reflections",
+        "heading": "Words From Our Patrons",
+        "show_stars": false
+      }
     },
     "blog": {
       "type": "blog-preview",
-      "settings": {}
+      "settings": {
+        "eyebrow": "The Journal",
+        "heading": "Stories & Style Notes"
+      }
     },
     "newsletter": {
       "type": "newsletter",
-      "settings": {}
+      "settings": {
+        "eyebrow": "The Vastralayam List",
+        "heading": "First Look at New Arrivals"
+      }
     }
   },
   "order": [
     "hero",
-    "category",
-    "campaigns",
-    "lookbook",
     "collections",
-    "price",
-    "occasion",
-    "bestsellers",
     "new",
+    "campaigns",
+    "occasion",
+    "price",
+    "lookbook",
+    "bestsellers",
     "testimonials",
     "blog",
     "newsletter"

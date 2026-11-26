@@ -1,3 +1,10 @@
+{%- liquid
+  assign has_socials = false
+  if settings.social_instagram != blank or settings.social_facebook != blank or settings.social_whatsapp != blank or settings.social_pinterest != blank or settings.social_youtube != blank
+    assign has_socials = true
+  endif
+-%}
+
 {% style %}
   #shopify-section-{{ section.id }} .site-footer {
     background: {{ section.settings.bg_color }};
@@ -17,7 +24,8 @@
     letter-spacing: {{ section.settings.heading_spacing }}px;
   }
   #shopify-section-{{ section.id }} .footer-col a:hover,
-  #shopify-section-{{ section.id }} .footer-socials a:hover {
+  #shopify-section-{{ section.id }} .footer-socials a:hover,
+  #shopify-section-{{ section.id }} .footer-policies a:hover {
     color: {{ section.settings.hover_color }};
   }
   #shopify-section-{{ section.id }} .footer-bottom {
@@ -104,12 +112,22 @@
       </div>
     {% endif %}
 
+    {% if section.settings.show_policies and shop.policies.size > 0 %}
+      <nav class="footer-policies" aria-label="Store policies">
+        {% for policy in shop.policies %}
+          {% if policy != blank %}
+            <a href="{{ policy.url }}">{{ policy.title }}</a>
+          {% endif %}
+        {% endfor %}
+      </nav>
+    {% endif %}
+
     <div class="footer-bottom">
       <p style="margin: 0;">
         © {{ 'now' | date: '%Y' }} {{ section.settings.copyright_text | default: shop.name }}
       </p>
 
-      {% if section.settings.show_social %}
+      {% if section.settings.show_social and has_socials %}
         <div class="footer-socials">
           {% if settings.social_instagram != blank %}<a href="{{ settings.social_instagram }}" target="_blank" rel="noopener">Instagram</a>{% endif %}
           {% if settings.social_facebook != blank %}<a href="{{ settings.social_facebook }}" target="_blank" rel="noopener">Facebook</a>{% endif %}
@@ -152,14 +170,8 @@
       "id": "columns_mobile",
       "label": "Columns (mobile)",
       "options": [
-        {
-          "value": "1",
-          "label": "1 column"
-        },
-        {
-          "value": "2",
-          "label": "2 columns"
-        }
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
       ],
       "default": "1"
     },
@@ -207,31 +219,31 @@
       "type": "color",
       "id": "bg_color",
       "label": "Background color",
-      "default": "#1C1C1C"
+      "default": "#1A3327"
     },
     {
       "type": "color",
       "id": "heading_color",
       "label": "Column heading color",
-      "default": "#FFFFFF"
+      "default": "#FAF2E3"
     },
     {
       "type": "color",
       "id": "text_color",
       "label": "Text & link color",
-      "default": "#BDBDBD"
+      "default": "#D9D2C5"
     },
     {
       "type": "color",
       "id": "hover_color",
       "label": "Link hover color",
-      "default": "#B9975B"
+      "default": "#C9AD6B"
     },
     {
       "type": "color",
       "id": "border_color",
       "label": "Divider color",
-      "default": "#333333"
+      "default": "#2D4D3D"
     },
     {
       "type": "header",
@@ -269,7 +281,14 @@
     },
     {
       "type": "header",
-      "content": "Bottom Bar"
+      "content": "Policies & Bottom Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_policies",
+      "label": "Automatically show Shopify store policies",
+      "default": true,
+      "info": "Displays Refund, Privacy, Shipping & Terms links once configured in Shopify Admin"
     },
     {
       "type": "text",
@@ -280,13 +299,13 @@
     {
       "type": "checkbox",
       "id": "show_social",
-      "label": "Show social links (configured in Theme Settings)",
+      "label": "Show social links (only when configured in Theme Settings)",
       "default": true
     },
     {
       "type": "checkbox",
       "id": "show_payment_icons",
-      "label": "Show payment method icons",
+      "label": "Show active Shopify payment icons",
       "default": true
     }
   ],
@@ -327,7 +346,7 @@
           "type": "richtext",
           "id": "description",
           "label": "Short description",
-          "default": "<p>Handpicked Cotton, Silk, Chiffon &amp; Georgette sarees curated in Anantapur, Andhra Pradesh.</p>"
+          "default": "<p>Curated Cotton, Silk, Chiffon &amp; Georgette sarees from Anantapur, Andhra Pradesh.</p>"
         }
       ]
     },
@@ -351,7 +370,7 @@
           "type": "textarea",
           "id": "links_list",
           "label": "Custom links (one per line: Label | /path)",
-          "default": "Cotton Sarees | /collections/cotton\nSilk Sarees | /collections/silk\nChiffon Sarees | /collections/chiffon\nGeorgette Sarees | /collections/georgette"
+          "default": "Shop All | /collections/all\nCotton Sarees | /collections/cotton\nSilk Sarees | /collections/silk\nChiffon Sarees | /collections/chiffon\nGeorgette Sarees | /collections/georgette"
         }
       ]
     },
@@ -385,8 +404,7 @@
         {
           "type": "text",
           "id": "hours",
-          "label": "Store hours",
-          "default": "Mon – Sat · 10:00 AM – 8:00 PM IST"
+          "label": "Store hours"
         }
       ]
     }
@@ -398,7 +416,7 @@
         "settings": {
           "heading": "Vedajanani Vastralayam",
           "tagline": "Woven with Grace, Worn with Pride",
-          "description": "<p>Handpicked Cotton, Silk, Chiffon &amp; Georgette sarees curated in Anantapur, Andhra Pradesh.</p>"
+          "description": "<p>Curated Cotton, Silk, Chiffon &amp; Georgette sarees from Anantapur, Andhra Pradesh.</p>"
         }
       },
       {
@@ -412,15 +430,14 @@
         "type": "link_column",
         "settings": {
           "heading": "Explore",
-          "links_list": "Festive Edit | /collections/festive\nWedding Edit | /collections/wedding\nAbout Us | /pages/about\nJournal | /blogs/journal\nContact | /pages/contact"
+          "links_list": "New Arrivals | /collections/new-arrivals\nFestive Edit | /collections/festive\nWedding Edit | /collections/wedding\nAbout Us | /pages/about\nJournal | /blogs/journal\nContact | /pages/contact"
         }
       },
       {
         "type": "contact_info",
         "settings": {
           "heading": "Visit & Connect",
-          "address": "Anantapur, Andhra Pradesh, India",
-          "hours": "Mon – Sat · 10:00 AM – 8:00 PM IST"
+          "address": "Anantapur, Andhra Pradesh, India"
         }
       }
     ]

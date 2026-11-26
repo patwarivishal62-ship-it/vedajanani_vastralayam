@@ -106,19 +106,19 @@
           </article>
         {% endfor %}
       {% else %}
-        <article class="campaign-card" style="background: linear-gradient(160deg, #B9975B, #8A6D3B); align-items: flex-end;">
+        <article class="campaign-card" style="background: linear-gradient(155deg, #A8492D, #6F2E1B); align-items: flex-end;">
           <div class="campaign-card-body">
-            <span class="kicker" style="color: #F3EDE3;">Festive 2026</span>
+            <span class="kicker" style="color: #F4E6CE;">Celebration Curations</span>
             <h3>The Festive Edit</h3>
-            <p>Zari cottons, soft silks and Bandhani chiffons.</p>
+            <p>Zari cottons, luminous silks and graceful Bandhani drapes.</p>
             <a class="link-cta" href="{{ routes.collections_url }}/festive">Shop Festive →</a>
           </div>
         </article>
-        <article class="campaign-card" style="background: linear-gradient(160deg, #7A2230, #2B0E14); align-items: flex-end;">
+        <article class="campaign-card" style="background: linear-gradient(155deg, #244737, #13281F); align-items: flex-end;">
           <div class="campaign-card-body">
-            <span class="kicker" style="color: #D9C7A5;">Wedding Season</span>
+            <span class="kicker" style="color: #DFC896;">Timeless Occasions</span>
             <h3>The Wedding Edit</h3>
-            <p>Brides, bridesmaids and guests.</p>
+            <p>Statement weaves curated for brides, family and guests.</p>
             <a class="link-cta" href="{{ routes.collections_url }}/wedding">Shop Wedding →</a>
           </div>
         </article>
@@ -240,7 +240,7 @@
       "max": 40,
       "step": 2,
       "unit": "px",
-      "default": 24
+      "default": 12
     },
     {
       "type": "range",
@@ -358,7 +358,7 @@
           "type": "color_background",
           "id": "bg_gradient",
           "label": "Fallback gradient (when no image)",
-          "default": "linear-gradient(160deg, #7A2230 0%, #2B0E14 100%)"
+          "default": "linear-gradient(155deg, #244737 0%, #13281F 100%)"
         },
         {
           "type": "color",
@@ -499,10 +499,10 @@
         {
           "type": "campaign",
           "settings": {
-            "bg_gradient": "linear-gradient(160deg, #B9975B 0%, #8A6D3B 100%)",
-            "kicker": "Festive 2026",
+            "bg_gradient": "linear-gradient(155deg, #A8492D 0%, #6F2E1B 100%)",
+            "kicker": "Celebration Curations",
             "heading": "The Festive Edit",
-            "description": "Zari cottons, soft silks and Bandhani chiffons.",
+            "description": "Zari cottons, luminous silks and graceful Bandhani drapes.",
             "cta_label": "Shop Festive",
             "fallback_path": "/collections/festive"
           }
@@ -510,10 +510,10 @@
         {
           "type": "campaign",
           "settings": {
-            "bg_gradient": "linear-gradient(160deg, #7A2230 0%, #2B0E14 100%)",
-            "kicker": "Wedding Season",
+            "bg_gradient": "linear-gradient(155deg, #244737 0%, #13281F 100%)",
+            "kicker": "Timeless Occasions",
             "heading": "The Wedding Edit",
-            "description": "Brides, bridesmaids and guests.",
+            "description": "Statement weaves curated for brides, family and guests.",
             "cta_label": "Shop Wedding",
             "fallback_path": "/collections/wedding"
           }

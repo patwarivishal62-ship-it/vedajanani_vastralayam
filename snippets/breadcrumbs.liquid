@@ -1,0 +1,39 @@
+{% comment %}
+  Accessible breadcrumb navigation matching BreadcrumbList structured data
+{% endcomment %}
+<nav class="vv-breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="{{ routes.root_url }}">Home</a></li>
+    {% if request.page_type == 'collection' %}
+      <li aria-hidden="true">/</li>
+      <li aria-current="page">{{ collection.title }}</li>
+    {% elsif request.page_type == 'list-collections' %}
+      <li aria-hidden="true">/</li>
+      <li aria-current="page">Collections</li>
+    {% elsif request.page_type == 'product' %}
+      {% if collection and collection.url != blank %}
+        <li aria-hidden="true">/</li>
+        <li><a href="{{ collection.url }}">{{ collection.title }}</a></li>
+      {% else %}
+        <li aria-hidden="true">/</li>
+        <li><a href="{{ routes.all_products_collection_url }}">Shop All</a></li>
+      {% endif %}
+      <li aria-hidden="true">/</li>
+      <li aria-current="page">{{ product.title }}</li>
+    {% elsif request.page_type == 'blog' %}
+      <li aria-hidden="true">/</li>
+      <li aria-current="page">{{ blog.title }}</li>
+    {% elsif request.page_type == 'article' %}
+      <li aria-hidden="true">/</li>
+      <li><a href="{{ blog.url }}">{{ blog.title }}</a></li>
+      <li aria-hidden="true">/</li>
+      <li aria-current="page">{{ article.title }}</li>
+    {% elsif request.page_type == 'page' %}
+      <li aria-hidden="true">/</li>
+      <li aria-current="page">{{ page.title }}</li>
+    {% elsif request.page_type == 'search' %}
+      <li aria-hidden="true">/</li>
+      <li aria-current="page">Search</li>
+    {% endif %}
+  </ol>
+</nav>
