@@ -1000,6 +1000,65 @@
     });
   }
 
+  function initAuthForms(root) {
+    var scope = root || document;
+
+    scope.querySelectorAll('[data-password-toggle]').forEach(function (btn) {
+      if (btn.dataset.bound) return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', function () {
+        var wrap = btn.closest('.vv-password-wrap');
+        var input = wrap && wrap.querySelector('input');
+        if (!input) return;
+        var reveal = input.type === 'password';
+        input.type = reveal ? 'text' : 'password';
+        btn.setAttribute('aria-pressed', reveal ? 'true' : 'false');
+        btn.setAttribute('aria-label', reveal ? 'Hide password' : 'Show password');
+        var showIcon = btn.querySelector('[data-eye-show]');
+        var hideIcon = btn.querySelector('[data-eye-hide]');
+        if (showIcon) showIcon.hidden = reveal;
+        if (hideIcon) hideIcon.hidden = !reveal;
+      });
+    });
+
+    scope.querySelectorAll('[data-auth-shell]').forEach(function (shell) {
+      if (shell.dataset.authBound) return;
+      shell.dataset.authBound = '1';
+
+      var recoverPanel = shell.querySelector('[data-auth-panel="recover"]');
+      var hasRecoverErrors = recoverPanel && recoverPanel.querySelector('.errors');
+
+      function setMode(mode, focusInput) {
+        var isRecover = mode === 'recover';
+        shell.classList.toggle('is-recover-active', isRecover);
+        if (focusInput) {
+          var targetPanel = shell.querySelector('[data-auth-panel="' + (isRecover ? 'recover' : 'login') + '"]');
+          var firstInput = targetPanel && targetPanel.querySelector('input');
+          if (firstInput) firstInput.focus();
+        }
+      }
+
+      if (window.location.hash === '#recover' || hasRecoverErrors) {
+        setMode('recover', false);
+      }
+
+      shell.querySelectorAll('[data-auth-switch]').forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          var target = link.getAttribute('data-auth-switch');
+          setMode(target, true);
+          try {
+            if (target === 'recover') {
+              window.history.replaceState(null, '', '#recover');
+            } else {
+              window.history.replaceState(null, '', window.location.pathname + window.location.search);
+            }
+          } catch (err) {}
+        });
+      });
+    });
+  }
+
   function bootAll(root) {
     initHeaderAndDrawers(root);
     initSearchClearButtons(root);
@@ -1012,6 +1071,7 @@
     initAjaxAddToCart(root);
     initProductRecommendations(root);
     initEditorialVideos(root);
+    initAuthForms(root);
   }
 
   document.addEventListener('DOMContentLoaded', function () {
