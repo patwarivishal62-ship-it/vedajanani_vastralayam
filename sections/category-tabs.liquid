@@ -285,8 +285,14 @@
       "id": "card_style",
       "label": "Card layout when image is set",
       "options": [
-        { "value": "overlay", "label": "Text overlaid on image" },
-        { "value": "below", "label": "Text below image" }
+        {
+          "value": "overlay",
+          "label": "Text overlaid on image"
+        },
+        {
+          "value": "below",
+          "label": "Text below image"
+        }
       ],
       "default": "overlay"
     },
@@ -295,10 +301,22 @@
       "id": "image_ratio",
       "label": "Image aspect ratio (text-below mode)",
       "options": [
-        { "value": "3 / 4", "label": "Portrait (3:4)" },
-        { "value": "4 / 5", "label": "Editorial (4:5)" },
-        { "value": "1 / 1", "label": "Square (1:1)" },
-        { "value": "4 / 3", "label": "Landscape (4:3)" }
+        {
+          "value": "3 / 4",
+          "label": "Portrait (3:4)"
+        },
+        {
+          "value": "4 / 5",
+          "label": "Editorial (4:5)"
+        },
+        {
+          "value": "1 / 1",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "4 / 3",
+          "label": "Landscape (4:3)"
+        }
       ],
       "default": "3 / 4"
     },
@@ -312,13 +330,24 @@
       "default": 4
     },
     {
-      "type": "range",
+      "type": "select",
       "id": "columns_mobile",
       "label": "Columns (mobile)",
-      "min": 1,
-      "max": 3,
-      "step": 1,
-      "default": 2
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        },
+        {
+          "value": "3",
+          "label": "3 columns"
+        }
+      ],
+      "default": "2"
     },
     {
       "type": "range",
@@ -472,9 +501,18 @@
           "id": "focal_point",
           "label": "Image focal point",
           "options": [
-            { "value": "center center", "label": "Center" },
-            { "value": "top center", "label": "Top" },
-            { "value": "bottom center", "label": "Bottom" }
+            {
+              "value": "center center",
+              "label": "Center"
+            },
+            {
+              "value": "top center",
+              "label": "Top"
+            },
+            {
+              "value": "bottom center",
+              "label": "Bottom"
+            }
           ],
           "default": "center center"
         },
@@ -522,13 +560,63 @@
     {
       "name": "Category Tabs",
       "blocks": [
-        { "type": "tab", "settings": { "label": "Women", "filter_key": "women" } },
-        { "type": "tab", "settings": { "label": "Men", "filter_key": "men" } },
-        { "type": "tab", "settings": { "label": "Shop All", "filter_key": "all" } },
-        { "type": "card", "settings": { "tab_group": "women", "title": "Cotton", "subtitle": "Mul · Madurai · Kanchi · Jamdhani", "fallback_path": "/collections/cotton" } },
-        { "type": "card", "settings": { "tab_group": "women", "title": "Silk", "subtitle": "Banarasi · Soft · Crepe · Kota", "fallback_path": "/collections/silk" } },
-        { "type": "card", "settings": { "tab_group": "women", "title": "Chiffon", "subtitle": "Printed · Embroidered · Bandhani", "fallback_path": "/collections/chiffon" } },
-        { "type": "card", "settings": { "tab_group": "women", "title": "Georgette", "subtitle": "Satin · Printed · Floral", "fallback_path": "/collections/georgette" } }
+        {
+          "type": "tab",
+          "settings": {
+            "label": "Women",
+            "filter_key": "women"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "label": "Men",
+            "filter_key": "men"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "label": "Shop All",
+            "filter_key": "all"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "tab_group": "women",
+            "title": "Cotton",
+            "subtitle": "Mul · Madurai · Kanchi · Jamdhani",
+            "fallback_path": "/collections/cotton"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "tab_group": "women",
+            "title": "Silk",
+            "subtitle": "Banarasi · Soft · Crepe · Kota",
+            "fallback_path": "/collections/silk"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "tab_group": "women",
+            "title": "Chiffon",
+            "subtitle": "Printed · Embroidered · Bandhani",
+            "fallback_path": "/collections/chiffon"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "tab_group": "women",
+            "title": "Georgette",
+            "subtitle": "Satin · Printed · Floral",
+            "fallback_path": "/collections/georgette"
+          }
+        }
       ]
     }
   ]

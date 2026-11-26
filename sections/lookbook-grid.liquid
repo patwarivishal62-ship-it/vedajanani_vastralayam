@@ -168,24 +168,50 @@
       "default": 4
     },
     {
-      "type": "range",
+      "type": "select",
       "id": "columns_mobile",
       "label": "Columns (mobile)",
-      "min": 1,
-      "max": 3,
-      "step": 1,
-      "default": 2
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        },
+        {
+          "value": "3",
+          "label": "3 columns"
+        }
+      ],
+      "default": "2"
     },
     {
       "type": "select",
       "id": "aspect_ratio",
       "label": "Tile aspect ratio / height",
       "options": [
-        { "value": "3 / 4", "label": "Portrait (3:4)" },
-        { "value": "4 / 5", "label": "Editorial (4:5)" },
-        { "value": "1 / 1", "label": "Square (1:1)" },
-        { "value": "4 / 3", "label": "Landscape (4:3)" },
-        { "value": "custom", "label": "Custom pixel height" }
+        {
+          "value": "3 / 4",
+          "label": "Portrait (3:4)"
+        },
+        {
+          "value": "4 / 5",
+          "label": "Editorial (4:5)"
+        },
+        {
+          "value": "1 / 1",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "4 / 3",
+          "label": "Landscape (4:3)"
+        },
+        {
+          "value": "custom",
+          "label": "Custom pixel height"
+        }
       ],
       "default": "custom"
     },
@@ -238,9 +264,18 @@
       "id": "caption_placement",
       "label": "Caption placement",
       "options": [
-        { "value": "overlay_bottom", "label": "Overlaid at bottom" },
-        { "value": "overlay_center", "label": "Overlaid in center" },
-        { "value": "below", "label": "Below image" }
+        {
+          "value": "overlay_bottom",
+          "label": "Overlaid at bottom"
+        },
+        {
+          "value": "overlay_center",
+          "label": "Overlaid in center"
+        },
+        {
+          "value": "below",
+          "label": "Below image"
+        }
       ],
       "default": "overlay_bottom"
     },
@@ -305,9 +340,18 @@
           "id": "focal_point",
           "label": "Image focal point",
           "options": [
-            { "value": "center center", "label": "Center" },
-            { "value": "top center", "label": "Top" },
-            { "value": "bottom center", "label": "Bottom" }
+            {
+              "value": "center center",
+              "label": "Center"
+            },
+            {
+              "value": "top center",
+              "label": "Top"
+            },
+            {
+              "value": "bottom center",
+              "label": "Bottom"
+            }
           ],
           "default": "center center"
         },
@@ -362,10 +406,34 @@
     {
       "name": "Lookbook Grid",
       "blocks": [
-        { "type": "look", "settings": { "tag": "Look 01", "title": "Morning Mul Cotton" } },
-        { "type": "look", "settings": { "tag": "Look 02", "title": "Banarasi Heirloom" } },
-        { "type": "look", "settings": { "tag": "Look 03", "title": "Bandhani Chiffon" } },
-        { "type": "look", "settings": { "tag": "Look 04", "title": "Satin Georgette" } }
+        {
+          "type": "look",
+          "settings": {
+            "tag": "Look 01",
+            "title": "Morning Mul Cotton"
+          }
+        },
+        {
+          "type": "look",
+          "settings": {
+            "tag": "Look 02",
+            "title": "Banarasi Heirloom"
+          }
+        },
+        {
+          "type": "look",
+          "settings": {
+            "tag": "Look 03",
+            "title": "Bandhani Chiffon"
+          }
+        },
+        {
+          "type": "look",
+          "settings": {
+            "tag": "Look 04",
+            "title": "Satin Georgette"
+          }
+        }
       ]
     }
   ]

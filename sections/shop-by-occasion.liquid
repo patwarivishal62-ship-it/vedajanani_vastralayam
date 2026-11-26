@@ -153,8 +153,14 @@
       "id": "card_style",
       "label": "Card layout when image is set",
       "options": [
-        { "value": "overlay", "label": "Text overlaid on image" },
-        { "value": "below", "label": "Text below image" }
+        {
+          "value": "overlay",
+          "label": "Text overlaid on image"
+        },
+        {
+          "value": "below",
+          "label": "Text below image"
+        }
       ],
       "default": "overlay"
     },
@@ -163,9 +169,18 @@
       "id": "image_ratio",
       "label": "Image aspect ratio (text-below mode)",
       "options": [
-        { "value": "3 / 4", "label": "Portrait (3:4)" },
-        { "value": "1 / 1", "label": "Square (1:1)" },
-        { "value": "4 / 3", "label": "Landscape (4:3)" }
+        {
+          "value": "3 / 4",
+          "label": "Portrait (3:4)"
+        },
+        {
+          "value": "1 / 1",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "4 / 3",
+          "label": "Landscape (4:3)"
+        }
       ],
       "default": "4 / 3"
     },
@@ -179,13 +194,24 @@
       "default": 3
     },
     {
-      "type": "range",
+      "type": "select",
       "id": "columns_mobile",
       "label": "Columns (mobile)",
-      "min": 1,
-      "max": 3,
-      "step": 1,
-      "default": 2
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        },
+        {
+          "value": "3",
+          "label": "3 columns"
+        }
+      ],
+      "default": "2"
     },
     {
       "type": "range",
@@ -310,9 +336,18 @@
           "id": "focal_point",
           "label": "Image focal point",
           "options": [
-            { "value": "center center", "label": "Center" },
-            { "value": "top center", "label": "Top" },
-            { "value": "bottom center", "label": "Bottom" }
+            {
+              "value": "center center",
+              "label": "Center"
+            },
+            {
+              "value": "top center",
+              "label": "Top"
+            },
+            {
+              "value": "bottom center",
+              "label": "Bottom"
+            }
           ],
           "default": "center center"
         },
@@ -370,12 +405,48 @@
     {
       "name": "Shop by Occasion",
       "blocks": [
-        { "type": "occasion", "settings": { "title": "Daily Use", "fallback_path": "/collections/daily-use" } },
-        { "type": "occasion", "settings": { "title": "Office", "fallback_path": "/collections/office" } },
-        { "type": "occasion", "settings": { "title": "Festive", "fallback_path": "/collections/festive" } },
-        { "type": "occasion", "settings": { "title": "Brides", "fallback_path": "/collections/wedding" } },
-        { "type": "occasion", "settings": { "title": "Bridesmaids", "fallback_path": "/collections/wedding" } },
-        { "type": "occasion", "settings": { "title": "Guests", "fallback_path": "/collections/wedding" } }
+        {
+          "type": "occasion",
+          "settings": {
+            "title": "Daily Use",
+            "fallback_path": "/collections/daily-use"
+          }
+        },
+        {
+          "type": "occasion",
+          "settings": {
+            "title": "Office",
+            "fallback_path": "/collections/office"
+          }
+        },
+        {
+          "type": "occasion",
+          "settings": {
+            "title": "Festive",
+            "fallback_path": "/collections/festive"
+          }
+        },
+        {
+          "type": "occasion",
+          "settings": {
+            "title": "Brides",
+            "fallback_path": "/collections/wedding"
+          }
+        },
+        {
+          "type": "occasion",
+          "settings": {
+            "title": "Bridesmaids",
+            "fallback_path": "/collections/wedding"
+          }
+        },
+        {
+          "type": "occasion",
+          "settings": {
+            "title": "Guests",
+            "fallback_path": "/collections/wedding"
+          }
+        }
       ]
     }
   ]
