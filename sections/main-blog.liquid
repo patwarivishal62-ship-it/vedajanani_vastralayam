@@ -1,1 +1,195 @@
-<h1>{{ blog.title }}</h1>{% for a in blog.articles %}<a href="{{ a.url }}">{{ a.title }}</a>{% endfor %}{% schema %}{"name":"Main Blog"}{% endschema %}
+{% style %}
+  #shopify-section-{{ section.id }} .vv-mainblog-sec {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  #shopify-section-{{ section.id }} .vv-grid {
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr));
+    gap: {{ section.settings.grid_gap }}px;
+  }
+  #shopify-section-{{ section.id }} .blog-card {
+    border-radius: {{ section.settings.card_radius }}px;
+  }
+  #shopify-section-{{ section.id }} .blog-card-media {
+    aspect-ratio: {{ section.settings.image_ratio }};
+  }
+  @media (max-width: 900px) {
+    #shopify-section-{{ section.id }} .vv-grid {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, minmax(0, 1fr));
+    }
+  }
+{% endstyle %}
+
+<section class="vv-mainblog-sec">
+  <div class="wrap">
+    <div class="section-head section-head--{{ section.settings.header_align }}">
+      <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+      <h1 style="font-size: {{ section.settings.heading_size }}px;">{{ blog.title }}</h1>
+    </div>
+
+    {% paginate blog.articles by section.settings.articles_per_page %}
+      <div class="vv-grid">
+        {% for article in blog.articles %}
+          <a class="blog-card" href="{{ article.url }}">
+            {% if section.settings.show_image and article.image %}
+              <div class="blog-card-media">
+                <img src="{{ article.image | image_url: width: 900 }}" alt="{{ article.image.alt | default: article.title | escape }}" width="600" height="450" loading="lazy">
+              </div>
+            {% endif %}
+            <div class="blog-card-body">
+              {% if section.settings.show_date or section.settings.show_author %}
+                <div class="blog-card-meta">
+                  {% if section.settings.show_date %}{{ article.published_at | date: '%b %d, %Y' }}{% endif %}
+                  {% if section.settings.show_date and section.settings.show_author %} · {% endif %}
+                  {% if section.settings.show_author %}{{ article.author }}{% endif %}
+                </div>
+              {% endif %}
+              <h2 class="blog-card-title" style="font-size: 22px;">{{ article.title }}</h2>
+              {% if section.settings.show_excerpt %}
+                <p class="blog-card-excerpt">{{ article.excerpt_or_content | strip_html | truncate: 130 }}</p>
+              {% endif %}
+              <span class="link-cta">Read Story →</span>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+
+      {% if paginate.pages > 1 %}
+        <nav class="pagination" aria-label="Pagination">{{ paginate | default_pagination }}</nav>
+      {% endif %}
+    {% endpaginate %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main Blog",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Vedajanani Journal"
+    },
+    {
+      "type": "text_alignment",
+      "id": "header_align",
+      "label": "Header alignment",
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "articles_per_page",
+      "label": "Articles per page",
+      "min": 3,
+      "max": 24,
+      "step": 3,
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns (desktop)",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "label": "Columns (mobile)",
+      "min": 1,
+      "max": 2,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid gap",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show article image",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image aspect ratio",
+      "options": [
+        { "value": "4 / 3", "label": "Landscape (4:3)" },
+        { "value": "16 / 10", "label": "Wide (16:10)" },
+        { "value": "1 / 1", "label": "Square (1:1)" },
+        { "value": "3 / 4", "label": "Portrait (3:4)" }
+      ],
+      "default": "4 / 3"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show author",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "label": "Show excerpt",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 16,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 16,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    }
+  ]
+}
+{% endschema %}

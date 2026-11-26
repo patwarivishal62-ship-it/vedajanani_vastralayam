@@ -1,1 +1,58 @@
-<div class="wrap" style="max-width:520px;padding:48px 20px"><h1>Sign In</h1>{% form 'customer_login' %}<input type="email" name="customer[email]" placeholder="Email" required><input type="password" name="customer[password]" placeholder="Password" required><button class="btn full">Sign In</button>{% endform %}<p><a href="{{ routes.account_register_url }}">Create account</a></p></div>{% schema %}{"name":"Main Login"}{% endschema %}
+<section style="padding: {{ section.settings.padding_y }}px 0;">
+  <div class="wrap" style="max-width: {{ section.settings.card_width }}px;">
+    <div style="background: {{ section.settings.card_bg }}; border-radius: var(--radius); padding: 36px; border: 1px solid var(--border-color);">
+      <div class="section-head section-head--center" style="margin-bottom: 24px;">
+        <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+        <h1 style="font-size: {{ section.settings.heading_size }}px;">{{ section.settings.heading }}</h1>
+        {% if section.settings.subheading != blank %}
+          <p class="section-sub">{{ section.settings.subheading }}</p>
+        {% endif %}
+      </div>
+
+      {% form 'customer_login', class: 'form-stack' %}
+        {% if form.errors %}
+          <div class="errors">{{ form.errors | default_errors }}</div>
+        {% endif %}
+        <input type="email" name="customer[email]" placeholder="Email" autocomplete="email" required>
+        <input type="password" name="customer[password]" placeholder="Password" autocomplete="current-password" required>
+        <button type="submit" class="btn full">{{ section.settings.button_label }}</button>
+      {% endform %}
+
+      <div style="margin-top: 20px; text-align: center; font-size: 13px;">
+        <p><a href="{{ routes.account_register_url }}">Create an account</a></p>
+      </div>
+
+      <details class="vv-accordion" style="margin-top: 20px;">
+        <summary><span>Forgot your password?</span><span>+</span></summary>
+        <div class="vv-accordion-body">
+          {% form 'recover_customer_password', class: 'form-stack' %}
+            {% if form.posted_successfully? %}
+              <div class="form-success">We have sent you an email with a link to reset your password.</div>
+            {% endif %}
+            {% if form.errors %}
+              <div class="errors">{{ form.errors | default_errors }}</div>
+            {% endif %}
+            <input type="email" name="email" placeholder="Enter your account email" required>
+            <button type="submit" class="btn outline full">Send Reset Link</button>
+          {% endform %}
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main Login",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Member Access" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Sign In" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Access your orders, saved addresses and wishlist." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Sign In" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 22, "max": 48, "step": 2, "unit": "px", "default": 34 },
+    { "type": "range", "id": "card_width", "label": "Form card max width", "min": 380, "max": 680, "step": 20, "unit": "px", "default": 500 },
+    { "type": "color", "id": "card_bg", "label": "Card background", "default": "#FFFFFF" },
+    { "type": "range", "id": "padding_y", "label": "Vertical padding", "min": 24, "max": 120, "step": 4, "unit": "px", "default": 64 }
+  ]
+}
+{% endschema %}

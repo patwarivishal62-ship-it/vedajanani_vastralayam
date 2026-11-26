@@ -1,1 +1,339 @@
-<section><h2>Stories & Style Notes</h2>{% for a in blogs.journal.articles limit: 3 %}<a href="{{ a.url }}">{{ a.title }}</a>{% endfor %}</section>{% schema %}{"name":"Blog Preview","presets":[{"name":"Blog Preview"}]}{% endschema %}
+{%- liquid
+  assign target_blog = section.settings.blog
+  if target_blog == blank
+    assign target_blog = blogs.journal
+  endif
+-%}
+
+{% style %}
+  #shopify-section-{{ section.id }} .vv-blog-sec {
+    {% if section.settings.bg_color != blank and section.settings.bg_color != 'rgba(0,0,0,0)' %}
+      background: {{ section.settings.bg_color }};
+    {% endif %}
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  #shopify-section-{{ section.id }} .vv-grid {
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr));
+    gap: {{ section.settings.grid_gap }}px;
+  }
+  #shopify-section-{{ section.id }} .blog-card {
+    background: {{ section.settings.card_bg }};
+    color: {{ section.settings.card_text }};
+    border-radius: {{ section.settings.card_radius }}px;
+    text-align: {{ section.settings.card_align }};
+  }
+  #shopify-section-{{ section.id }} .blog-card-media {
+    aspect-ratio: {{ section.settings.image_ratio }};
+  }
+  #shopify-section-{{ section.id }} .blog-card-title {
+    font-size: {{ section.settings.article_title_size }}px;
+  }
+  @media (max-width: 900px) {
+    #shopify-section-{{ section.id }} .vv-grid {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, minmax(0, 1fr));
+    }
+  }
+{% endstyle %}
+
+<section class="vv-blog-sec">
+  <div class="wrap">
+    {% if section.settings.eyebrow != blank or section.settings.heading != blank %}
+      <div class="section-head section-head--{{ section.settings.heading_align }}">
+        {% if section.settings.eyebrow != blank %}
+          <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+        {% endif %}
+        {% if section.settings.heading != blank %}
+          <h2 style="font-size: {{ section.settings.heading_size }}px; color: {{ section.settings.heading_color }};">
+            {{ section.settings.heading }}
+          </h2>
+        {% endif %}
+        {% if section.settings.subheading != blank %}
+          <p class="section-sub">{{ section.settings.subheading }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="vv-grid">
+      {% if target_blog != blank and target_blog.articles_count > 0 %}
+        {% for article in target_blog.articles limit: section.settings.articles_limit %}
+          <a class="blog-card" href="{{ article.url }}">
+            {% if section.settings.show_image %}
+              <div class="blog-card-media">
+                {% if article.image %}
+                  <img
+                    src="{{ article.image | image_url: width: 800 }}"
+                    alt="{{ article.image.alt | default: article.title | escape }}"
+                    width="600"
+                    height="450"
+                    loading="lazy"
+                  >
+                {% else %}
+                  {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+              </div>
+            {% endif %}
+            <div class="blog-card-body">
+              {% if section.settings.show_date or section.settings.show_author %}
+                <div class="blog-card-meta">
+                  {% if section.settings.show_date %}{{ article.published_at | date: '%b %d, %Y' }}{% endif %}
+                  {% if section.settings.show_date and section.settings.show_author %} · {% endif %}
+                  {% if section.settings.show_author %}{{ article.author }}{% endif %}
+                </div>
+              {% endif %}
+              <h3 class="blog-card-title">{{ article.title }}</h3>
+              {% if section.settings.show_excerpt %}
+                <p class="blog-card-excerpt">{{ article.excerpt_or_content | strip_html | truncate: 115 }}</p>
+              {% endif %}
+              {% if section.settings.read_more_label != blank %}
+                <span class="link-cta">{{ section.settings.read_more_label }} →</span>
+              {% endif %}
+            </div>
+          </a>
+        {% endfor %}
+      {% else %}
+        {% for i in (1..section.settings.articles_limit) %}
+          <article class="blog-card">
+            {% if section.settings.show_image %}
+              <div class="blog-card-media">
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+            {% endif %}
+            <div class="blog-card-body">
+              <div class="blog-card-meta">Journal · Style Note</div>
+              <h3 class="blog-card-title">How to Care for Handwoven Silk & Cotton Sarees</h3>
+              {% if section.settings.show_excerpt %}
+                <p class="blog-card-excerpt">Publish articles under your 'Journal' blog in Shopify Admin to showcase stories here.</p>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    {% if section.settings.show_view_all and target_blog != blank %}
+      <div style="margin-top: 32px; text-align: {{ section.settings.heading_align }};">
+        <a class="btn outline" href="{{ target_blog.url }}">{{ section.settings.view_all_label | default: 'Read the Journal' }}</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Blog Preview",
+  "settings": [
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog (defaults to 'journal')"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "The Journal"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Stories & Style Notes"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading (optional)"
+    },
+    {
+      "type": "text_alignment",
+      "id": "heading_align",
+      "label": "Header alignment",
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 34
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1C1C1C"
+    },
+    {
+      "type": "header",
+      "content": "Grid & Cards"
+    },
+    {
+      "type": "range",
+      "id": "articles_limit",
+      "label": "Articles to show",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns (desktop)",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "label": "Columns (mobile)",
+      "min": 1,
+      "max": 2,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid gap",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show featured image",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image aspect ratio",
+      "options": [
+        { "value": "4 / 3", "label": "Landscape (4:3)" },
+        { "value": "16 / 10", "label": "Wide (16:10)" },
+        { "value": "1 / 1", "label": "Square (1:1)" },
+        { "value": "3 / 4", "label": "Portrait (3:4)" }
+      ],
+      "default": "4 / 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show publish date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show author",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "label": "Show excerpt",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "read_more_label",
+      "label": "Read more label",
+      "default": "Read Story"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View All' button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View all button label",
+      "default": "Explore Journal"
+    },
+    {
+      "type": "range",
+      "id": "article_title_size",
+      "label": "Article title size",
+      "min": 16,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 21
+    },
+    {
+      "type": "text_alignment",
+      "id": "card_align",
+      "label": "Card alignment",
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_text",
+      "label": "Card text color",
+      "default": "#1C1C1C"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section background (optional)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog Preview"
+    }
+  ]
+}
+{% endschema %}

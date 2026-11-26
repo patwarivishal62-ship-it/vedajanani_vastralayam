@@ -1,5 +1,57 @@
-<div class="product-card">
-  <a href="{{ product.url }}"><img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.title }}" loading="lazy"></a>
-  <h3><a href="{{ product.url }}">{{ product.title }}</a></h3>
-  {% render 'price', product: product %}
-</div>
+{%- liquid
+  assign card_ratio = ratio | default: settings.product_aspect_ratio | default: '3 / 4'
+  assign card_align = align | default: settings.product_card_align | default: 'left'
+  assign show_vendor_flag = show_vendor
+  if show_vendor_flag == nil
+    assign show_vendor_flag = settings.product_show_vendor
+  endif
+  assign show_sale_flag = show_sale_badge
+  if show_sale_flag == nil
+    assign show_sale_flag = settings.product_show_sale_badge
+  endif
+  assign show_quick_add_flag = show_quick_add
+  if show_quick_add_flag == nil
+    assign show_quick_add_flag = settings.product_show_quick_add
+  endif
+-%}
+
+<article class="product-card" style="--product-ratio: {{ card_ratio }}; --product-align: {{ card_align }};">
+  <a class="product-card-media" href="{{ product.url }}">
+    {% if product.featured_image %}
+      <img
+        src="{{ product.featured_image | image_url: width: 720 }}"
+        alt="{{ product.featured_image.alt | default: product.title | escape }}"
+        width="600"
+        height="800"
+        loading="lazy"
+      >
+    {% else %}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {% endif %}
+
+    {% if show_sale_flag and product.compare_at_price > product.price %}
+      <span class="product-card-badge">Sale</span>
+    {% elsif product.available == false %}
+      <span class="product-card-badge" style="background: var(--char, #1C1C1C);">Sold Out</span>
+    {% endif %}
+  </a>
+
+  <div class="product-card-info">
+    {% if show_vendor_flag and product.vendor != blank %}
+      <div class="product-card-vendor">{{ product.vendor }}</div>
+    {% endif %}
+
+    <h3 class="product-card-title">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+
+    {% render 'price', product: product %}
+
+    {% if show_quick_add_flag and product.available %}
+      <form class="product-card-quickadd js-ajax-cart-form" method="post" action="{{ routes.cart_add_url }}">
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <button type="submit" class="btn">Add to Bag</button>
+      </form>
+    {% endif %}
+  </div>
+</article>

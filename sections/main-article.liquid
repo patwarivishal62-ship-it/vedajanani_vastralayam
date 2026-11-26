@@ -1,1 +1,163 @@
-<h1>{{ article.title }}</h1>{{ article.content }}{% schema %}{"name":"Main Article"}{% endschema %}
+{% style %}
+  #shopify-section-{{ section.id }} .vv-article-sec {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  #shopify-section-{{ section.id }} .vv-article-wrap {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+  }
+  #shopify-section-{{ section.id }} .article-hero-img {
+    width: 100%;
+    max-height: {{ section.settings.image_max_height }}px;
+    object-fit: cover;
+    border-radius: {{ section.settings.image_radius }}px;
+    margin: 24px 0 32px;
+  }
+{% endstyle %}
+
+<article class="vv-article-sec">
+  <div class="wrap">
+    <div class="vv-article-wrap">
+      <div class="section-head section-head--{{ section.settings.header_align }}">
+        {% if section.settings.show_date or section.settings.show_author %}
+          <span class="eyebrow">
+            {% if section.settings.show_date %}{{ article.published_at | date: '%B %d, %Y' }}{% endif %}
+            {% if section.settings.show_date and section.settings.show_author %} · {% endif %}
+            {% if section.settings.show_author %}{{ article.author }}{% endif %}
+          </span>
+        {% endif %}
+        <h1 style="font-size: {{ section.settings.heading_size }}px;">{{ article.title }}</h1>
+      </div>
+
+      {% if section.settings.show_image and article.image %}
+        <img
+          class="article-hero-img"
+          src="{{ article.image | image_url: width: 1400 }}"
+          alt="{{ article.image.alt | default: article.title | escape }}"
+          width="1200"
+          height="700"
+          loading="eager"
+        >
+      {% endif %}
+
+      <div class="rte" style="font-size: {{ section.settings.body_size }}px; line-height: 1.8;">
+        {{ article.content }}
+      </div>
+
+      {% if section.settings.show_back_link and blog != blank %}
+        <div style="margin-top: 40px; text-align: center;">
+          <a class="btn outline" href="{{ blog.url }}">← Back to {{ blog.title }}</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Main Article",
+  "settings": [
+    {
+      "type": "text_alignment",
+      "id": "header_align",
+      "label": "Header alignment",
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Title font size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Body font size",
+      "min": 14,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Reading width",
+      "min": 600,
+      "max": 1160,
+      "step": 20,
+      "unit": "px",
+      "default": 820
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show featured image",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "image_max_height",
+      "label": "Featured image max height",
+      "min": 240,
+      "max": 760,
+      "step": 20,
+      "unit": "px",
+      "default": 520
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Image corner radius",
+      "min": 0,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show publish date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show author",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_back_link",
+      "label": "Show back-to-blog button",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 16,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 16,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    }
+  ]
+}
+{% endschema %}

@@ -1,1 +1,13 @@
-<div class="price">{{ product.price | money }}{% if product.compare_at_price > product.price %}<s>{{ product.compare_at_price | money }}</s>{% endif %}</div>
+{%- liquid
+  assign target = variant | default: product
+  assign on_sale = false
+  if target.compare_at_price > target.price
+    assign on_sale = true
+  endif
+-%}
+<div class="price{% if on_sale %} price--on-sale{% endif %}">
+  <span class="price-current">{{ target.price | money }}</span>
+  {% if on_sale %}
+    <s>{{ target.compare_at_price | money }}</s>
+  {% endif %}
+</div>
