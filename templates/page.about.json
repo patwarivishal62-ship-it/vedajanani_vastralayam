@@ -15,7 +15,7 @@
         "kicker": {
           "type": "kicker",
           "settings": {
-            "text": "Our Story · Anantapur, Andhra Pradesh",
+            "text": "Our Story · Nagole, Hyderabad",
             "color": "#E5D4AE",
             "size": 12,
             "letter_spacing": 2
@@ -75,10 +75,10 @@
       "type": "founder-letter",
       "settings": {
         "image_placement": "right",
-        "eyebrow": "From Anantapur",
+        "eyebrow": "From Hyderabad",
         "heading": "A Personal Note From Vedajanani Vastralayam",
-        "body": "<p>Vedajanani Vastralayam began in Anantapur, Andhra Pradesh with a clear purpose: to make thoughtfully curated sarees accessible without sacrificing fabric honesty or respectful service.</p><p>Whether you are choosing a crisp daily cotton for workdays or a celebratory silk for a family wedding, every piece in our store is inspected and packed with personal care.</p>",
-        "signature": "— Vedajanani Vastralayam, Anantapur",
+        "body": "<p>Vedajanani Vastralayam in Nagole, Hyderabad began with a clear purpose: to make thoughtfully curated sarees accessible without sacrificing fabric honesty or respectful service.</p><p>Whether you are choosing a crisp daily cotton for workdays or a celebratory silk for a family wedding, every piece in our boutique is inspected and packed with personal care.</p>",
+        "signature": "— Vedajanani Vastralayam, Hyderabad",
         "cta_label": "Shop Sarees",
         "outer_bg": "#F2E7D3",
         "card_radius": 12,
