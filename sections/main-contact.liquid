@@ -1,7 +1,8 @@
 {%- liquid
-  assign wa_digits = settings.whatsapp_number | strip | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')'
+  assign raw_wa = section.settings.whatsapp_number | default: settings.whatsapp_number
+  assign wa_digits = raw_wa | strip | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')'
   assign has_contact_meta = false
-  if section.settings.address != blank or section.settings.phone != blank or section.settings.email != blank or section.settings.hours != blank or wa_digits != blank
+  if section.settings.address != blank or section.settings.phone != blank or section.settings.email != blank or section.settings.hours != blank or wa_digits != blank or section.settings.map_url != blank or settings.social_instagram != blank
     assign has_contact_meta = true
   endif
 -%}
@@ -10,6 +11,11 @@
   #shopify-section-{{ section.id }} .vv-contact-sec {
     padding-top: {{ section.settings.padding_top }}px;
     padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  #shopify-section-{{ section.id }} .contact-form-card,
+  #shopify-section-{{ section.id }} .contact-details-card,
+  #shopify-section-{{ section.id }} .contact-faq-card {
+    border-radius: {{ section.settings.card_radius }}px;
   }
   @media (max-width: 900px) {
     #shopify-section-{{ section.id }} .vv-contact-sec {
@@ -23,19 +29,25 @@
   <div class="wrap">
     {% render 'breadcrumbs' %}
 
-    <div class="section-head section-head--left" style="margin-bottom: 36px; max-width: 680px;">
-      {% if section.settings.eyebrow != blank %}
-        <span class="eyebrow">{{ section.settings.eyebrow }}</span>
-      {% endif %}
-      <h1 style="font-size: 38px; margin-bottom: 10px;">{{ section.settings.heading | default: page.title }}</h1>
-      {% if section.settings.intro != blank %}
-        <p class="section-sub" style="margin: 0;">{{ section.settings.intro }}</p>
-      {% endif %}
-    </div>
+    {% if section.settings.show_header %}
+      <div class="section-head section-head--left" style="margin-bottom: 36px; max-width: 680px;">
+        {% if section.settings.eyebrow != blank %}
+          <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+        {% endif %}
+        <h1 style="font-size: 38px; margin-bottom: 10px;">{{ section.settings.heading | default: page.title }}</h1>
+        {% if section.settings.intro != blank %}
+          <p class="section-sub" style="margin: 0;">{{ section.settings.intro }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
 
     <div class="contact-layout">
       <div class="contact-form-card">
+        <div class="vv-woven-accent" aria-hidden="true"></div>
         <h2>{{ section.settings.form_heading }}</h2>
+        {% if section.settings.form_subtext != blank %}
+          <p class="contact-form-subtext">{{ section.settings.form_subtext }}</p>
+        {% endif %}
 
         {% form 'contact', class: 'form-stack' %}
           {% if form.posted_successfully? %}
@@ -49,42 +61,58 @@
             </div>
           {% endif %}
 
-          <div class="field-group">
-            <label for="ContactName-{{ section.id }}">Full name</label>
-            <input
-              id="ContactName-{{ section.id }}"
-              type="text"
-              name="contact[name]"
-              autocomplete="name"
-              required
-              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
-              placeholder="Your name"
-            >
+          <div class="contact-form-row">
+            <div class="field-group">
+              <label for="ContactName-{{ section.id }}">Full name</label>
+              <input
+                id="ContactName-{{ section.id }}"
+                type="text"
+                name="contact[name]"
+                autocomplete="name"
+                required
+                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                placeholder="Your name"
+              >
+            </div>
+
+            <div class="field-group">
+              <label for="ContactEmail-{{ section.id }}">Email address</label>
+              <input
+                id="ContactEmail-{{ section.id }}"
+                type="email"
+                name="contact[email]"
+                autocomplete="email"
+                required
+                value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                placeholder="you@example.com"
+              >
+            </div>
           </div>
 
-          <div class="field-group">
-            <label for="ContactEmail-{{ section.id }}">Email address</label>
-            <input
-              id="ContactEmail-{{ section.id }}"
-              type="email"
-              name="contact[email]"
-              autocomplete="email"
-              required
-              value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
-              placeholder="you@example.com"
-            >
-          </div>
+          <div class="contact-form-row">
+            <div class="field-group">
+              <label for="ContactPhone-{{ section.id }}">Phone / WhatsApp (optional)</label>
+              <input
+                id="ContactPhone-{{ section.id }}"
+                type="tel"
+                name="contact[phone]"
+                autocomplete="tel"
+                value="{{ form.phone }}"
+                placeholder="+91"
+              >
+            </div>
 
-          <div class="field-group">
-            <label for="ContactPhone-{{ section.id }}">Phone / WhatsApp (optional)</label>
-            <input
-              id="ContactPhone-{{ section.id }}"
-              type="tel"
-              name="contact[phone]"
-              autocomplete="tel"
-              value="{{ form.phone }}"
-              placeholder="+91"
-            >
+            {% if section.settings.show_topic_field %}
+              <div class="field-group">
+                <label for="ContactTopic-{{ section.id }}">Inquiry topic</label>
+                <select id="ContactTopic-{{ section.id }}" name="contact[topic]">
+                  <option value="Saree or Fabric Inquiry">Saree or Fabric Inquiry</option>
+                  <option value="Order or Delivery Support">Order &amp; Delivery Support</option>
+                  <option value="Wedding or Bulk Gifting">Wedding / Bulk Gifting</option>
+                  <option value="Store Visit or General Question">Store Visit / General Question</option>
+                </select>
+              </div>
+            {% endif %}
           </div>
 
           <div class="field-group">
@@ -94,12 +122,15 @@
               name="contact[body]"
               rows="5"
               required
-              placeholder="Ask about a saree fabric, drape, order or bespoke request…"
+              placeholder="Ask about a saree fabric, pallu photograph, drape advice or order…"
             >{{ form.body }}</textarea>
           </div>
 
-          <div>
+          <div class="contact-form-submit">
             <button type="submit" class="btn">{{ section.settings.submit_label }}</button>
+            {% if section.settings.response_note != blank %}
+              <p class="contact-response-note">{{ section.settings.response_note }}</p>
+            {% endif %}
           </div>
         {% endform %}
       </div>
@@ -107,6 +138,7 @@
       <div class="contact-side">
         {% if has_contact_meta %}
           <div class="contact-details-card">
+            <div class="vv-woven-accent" aria-hidden="true"></div>
             <h2>{{ section.settings.details_heading }}</h2>
             <dl class="contact-details-list">
               {% if section.settings.address != blank %}
@@ -133,18 +165,32 @@
                   <dd>{{ section.settings.hours }}</dd>
                 </div>
               {% endif %}
+              {% if settings.social_instagram != blank %}
+                <div>
+                  <dt>Instagram</dt>
+                  <dd><a href="{{ settings.social_instagram }}" target="_blank" rel="noopener">Follow Vedajanani Vastralayam</a></dd>
+                </div>
+              {% endif %}
             </dl>
-            {% if wa_digits != blank %}
-              <div style="margin-top: 20px;">
-                <a
-                  class="btn outline"
-                  href="https://wa.me/{{ wa_digits }}?text={{ 'Hello Vedajanani Vastralayam, I have a question regarding sarees.' | url_encode }}"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  {% render 'icons', icon: 'whatsapp' %}
-                  <span>Message on WhatsApp</span>
-                </a>
+            {% if wa_digits != blank or section.settings.map_url != blank %}
+              <div class="contact-channel-actions">
+                {% if wa_digits != blank %}
+                  <a
+                    class="btn outline"
+                    href="https://wa.me/{{ wa_digits }}?text={{ 'Hello Vedajanani Vastralayam, I have a question regarding sarees.' | url_encode }}"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    {% render 'icons', icon: 'whatsapp' %}
+                    <span>Message on WhatsApp</span>
+                  </a>
+                {% endif %}
+                {% if section.settings.map_url != blank %}
+                  <a class="btn outline" href="{{ section.settings.map_url }}" target="_blank" rel="noopener">
+                    <span>Get Directions</span>
+                    {% render 'icons', icon: 'arrow-right' %}
+                  </a>
+                {% endif %}
               </div>
             {% endif %}
           </div>
@@ -186,21 +232,28 @@
 {
   "name": "Contact & FAQ",
   "settings": [
+    { "type": "checkbox", "id": "show_header", "label": "Show section page heading (hide if using Hero above)", "default": true },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Customer Care" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Contact & Frequently Asked Questions" },
     { "type": "textarea", "id": "intro", "label": "Intro copy", "default": "Have a question about a saree weave, fabric care or an existing order? Send us a note and our team in Anantapur will get back to you." },
     { "type": "header", "content": "Contact Form" },
     { "type": "text", "id": "form_heading", "label": "Form heading", "default": "Send Us a Message" },
+    { "type": "text", "id": "form_subtext", "label": "Form helper note", "default": "Need closer photos of a border or pallu, or guidance on choosing a drape? Write to us below." },
+    { "type": "checkbox", "id": "show_topic_field", "label": "Show inquiry topic dropdown", "default": true },
     { "type": "text", "id": "submit_label", "label": "Submit button label", "default": "Send Message" },
+    { "type": "text", "id": "response_note", "label": "Response time note", "default": "We typically reply within 1 business day." },
     { "type": "text", "id": "success_message", "label": "Success confirmation", "default": "Thank you for writing to Vedajanani Vastralayam. We have received your message and will reply shortly." },
     { "type": "header", "content": "Verified Store Details (Optional)" },
-    { "type": "text", "id": "details_heading", "label": "Details heading", "default": "Store Details" },
+    { "type": "text", "id": "details_heading", "label": "Details heading", "default": "Visit or Reach Us" },
     { "type": "text", "id": "address", "label": "Store location", "default": "Anantapur, Andhra Pradesh, India" },
     { "type": "text", "id": "phone", "label": "Phone number (leave blank to hide)" },
+    { "type": "text", "id": "whatsapp_number", "label": "WhatsApp number (optional override, e.g. 919876543210)" },
     { "type": "text", "id": "email", "label": "Support email (leave blank to hide)" },
     { "type": "text", "id": "hours", "label": "Store hours (leave blank to hide)" },
-    { "type": "header", "content": "FAQ Section" },
+    { "type": "url", "id": "map_url", "label": "Google Maps directions link (optional)" },
+    { "type": "header", "content": "FAQ & Layout" },
     { "type": "text", "id": "faq_heading", "label": "FAQ heading", "default": "Frequently Asked Questions" },
+    { "type": "range", "id": "card_radius", "label": "Card corner radius", "min": 0, "max": 24, "step": 2, "unit": "px", "default": 12 },
     { "type": "range", "id": "padding_top", "label": "Top padding", "min": 24, "max": 88, "step": 8, "unit": "px", "default": 40 },
     { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 32, "max": 96, "step": 8, "unit": "px", "default": 72 }
   ],
