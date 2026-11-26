@@ -40,7 +40,7 @@
           "announcement-bar-0": {
             "type": "announcement",
             "settings": {
-              "text": "Woven with Grace, Worn with Pride · Curated Sarees from Anantapur",
+              "text": "Woven with Grace, Worn with Pride · Curated Sarees from Hyderabad",
               "link": ""
             }
           }
@@ -168,7 +168,7 @@
               "logo_width": 150,
               "heading": "Vedajanani Vastralayam",
               "tagline": "Woven with Grace, Worn with Pride",
-              "description": "<p>Curated Cotton, Silk, Chiffon &amp; Georgette sarees from Anantapur, Andhra Pradesh.</p>"
+              "description": "<p>Curated Cotton, Silk, Chiffon &amp; Georgette sarees from Nagole, Hyderabad, Telangana.</p>"
             }
           },
           "footer-1": {
@@ -191,10 +191,10 @@
             "type": "contact_info",
             "settings": {
               "heading": "Contact",
-              "address": "Anantapur, Andhra Pradesh, India",
-              "phone": "",
+              "address": "2-3-926/2, 1st Floor, Nagole, Hyderabad, Telangana 500068, India",
+              "phone": "+91 89195 24995",
               "email": "",
-              "hours": ""
+              "hours": "Daily, 10:30 AM – 8:30 PM"
             }
           }
         },
