@@ -168,9 +168,10 @@
                     {{ block.shopify_attributes }}
                   >
                     {% if block.settings.cta_label != blank %}
+                      {%- assign cta_fallback = routes.collections_url | append: '/new-arrivals' -%}
                       <a
                         class="{% if block.settings.cta_style == 'underline' %}link-cta{% else %}btn{% endif %}"
-                        href="{{ block.settings.cta_url | default: routes.collections_url | append: '/new-arrivals' }}"
+                        href="{{ block.settings.cta_url | default: cta_fallback }}"
                         style="
                           font-size: {{ block.settings.font_size }}px;
                           letter-spacing: {{ block.settings.letter_spacing }}px;
