@@ -199,13 +199,20 @@
       "default": 4
     },
     {
-      "type": "range",
+      "type": "select",
       "id": "columns_mobile",
       "label": "Columns (mobile)",
-      "min": 1,
-      "max": 2,
-      "step": 1,
-      "default": 2
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
+      ],
+      "default": "2"
     },
     {
       "type": "range",
@@ -222,10 +229,22 @@
       "id": "image_ratio",
       "label": "Product image ratio",
       "options": [
-        { "value": "3 / 4", "label": "Portrait (3:4)" },
-        { "value": "4 / 5", "label": "Editorial (4:5)" },
-        { "value": "2 / 3", "label": "Tall (2:3)" },
-        { "value": "1 / 1", "label": "Square (1:1)" }
+        {
+          "value": "3 / 4",
+          "label": "Portrait (3:4)"
+        },
+        {
+          "value": "4 / 5",
+          "label": "Editorial (4:5)"
+        },
+        {
+          "value": "2 / 3",
+          "label": "Tall (2:3)"
+        },
+        {
+          "value": "1 / 1",
+          "label": "Square (1:1)"
+        }
       ],
       "default": "3 / 4"
     },

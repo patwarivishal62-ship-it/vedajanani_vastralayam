@@ -33,7 +33,8 @@
         "heading",
         "subheading",
         "buttons"
-      ]
+      ],
+      "settings": {}
     },
     "category": {
       "type": "category-tabs",
@@ -108,7 +109,8 @@
         "card_silk",
         "card_chiffon",
         "card_georgette"
-      ]
+      ],
+      "settings": {}
     },
     "campaigns": {
       "type": "campaign-blocks",
@@ -116,7 +118,7 @@
         "festive": {
           "type": "campaign",
           "settings": {
-            "bg_gradient": "linear-gradient(160deg, #B9975B, #8A6D3B)",
+            "bg_gradient": "linear-gradient(160deg, #B9975B 0%, #8A6D3B 100%)",
             "kicker": "Festive 2026",
             "heading": "The Festive Edit",
             "description": "Zari cottons, soft silks and Bandhani chiffons.",
@@ -127,7 +129,7 @@
         "wedding": {
           "type": "campaign",
           "settings": {
-            "bg_gradient": "linear-gradient(160deg, #7A2230, #2B0E14)",
+            "bg_gradient": "linear-gradient(160deg, #7A2230 0%, #2B0E14 100%)",
             "kicker": "Wedding Season",
             "heading": "The Wedding Edit",
             "description": "Brides, bridesmaids and guests.",
@@ -139,7 +141,8 @@
       "block_order": [
         "festive",
         "wedding"
-      ]
+      ],
+      "settings": {}
     },
     "lookbook": {
       "type": "lookbook-grid",
@@ -178,7 +181,8 @@
         "look_2",
         "look_3",
         "look_4"
-      ]
+      ],
+      "settings": {}
     },
     "collections": {
       "type": "featured-collections",
@@ -225,7 +229,8 @@
         "col_silk",
         "col_chiffon",
         "col_georgette"
-      ]
+      ],
+      "settings": {}
     },
     "price": {
       "type": "shop-by-price",
@@ -265,17 +270,54 @@
         "tier_1",
         "tier_2",
         "tier_3"
-      ]
+      ],
+      "settings": {}
     },
     "occasion": {
       "type": "shop-by-occasion",
       "blocks": {
-        "occ_1": { "type": "occasion", "settings": { "title": "Daily Use", "fallback_path": "/collections/daily-use" } },
-        "occ_2": { "type": "occasion", "settings": { "title": "Office", "fallback_path": "/collections/office" } },
-        "occ_3": { "type": "occasion", "settings": { "title": "Festive", "fallback_path": "/collections/festive" } },
-        "occ_4": { "type": "occasion", "settings": { "title": "Brides", "fallback_path": "/collections/wedding" } },
-        "occ_5": { "type": "occasion", "settings": { "title": "Bridesmaids", "fallback_path": "/collections/wedding" } },
-        "occ_6": { "type": "occasion", "settings": { "title": "Guests", "fallback_path": "/collections/wedding" } }
+        "occ_1": {
+          "type": "occasion",
+          "settings": {
+            "title": "Daily Use",
+            "fallback_path": "/collections/daily-use"
+          }
+        },
+        "occ_2": {
+          "type": "occasion",
+          "settings": {
+            "title": "Office",
+            "fallback_path": "/collections/office"
+          }
+        },
+        "occ_3": {
+          "type": "occasion",
+          "settings": {
+            "title": "Festive",
+            "fallback_path": "/collections/festive"
+          }
+        },
+        "occ_4": {
+          "type": "occasion",
+          "settings": {
+            "title": "Brides",
+            "fallback_path": "/collections/wedding"
+          }
+        },
+        "occ_5": {
+          "type": "occasion",
+          "settings": {
+            "title": "Bridesmaids",
+            "fallback_path": "/collections/wedding"
+          }
+        },
+        "occ_6": {
+          "type": "occasion",
+          "settings": {
+            "title": "Guests",
+            "fallback_path": "/collections/wedding"
+          }
+        }
       },
       "block_order": [
         "occ_1",
@@ -284,7 +326,8 @@
         "occ_4",
         "occ_5",
         "occ_6"
-      ]
+      ],
+      "settings": {}
     },
     "bestsellers": {
       "type": "featured-products",
@@ -334,13 +377,16 @@
         "t_1",
         "t_2",
         "t_3"
-      ]
+      ],
+      "settings": {}
     },
     "blog": {
-      "type": "blog-preview"
+      "type": "blog-preview",
+      "settings": {}
     },
     "newsletter": {
-      "type": "newsletter"
+      "type": "newsletter",
+      "settings": {}
     }
   },
   "order": [

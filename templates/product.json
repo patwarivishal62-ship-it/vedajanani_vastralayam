@@ -3,18 +3,32 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "vendor": { "type": "vendor" },
-        "title": { "type": "title" },
-        "price": { "type": "price" },
-        "variant_picker": { "type": "variant_picker" },
-        "quantity": { "type": "quantity" },
-        "buy_buttons": { "type": "buy_buttons" },
-        "description": { "type": "description" },
+        "vendor": {
+          "type": "vendor"
+        },
+        "title": {
+          "type": "title"
+        },
+        "price": {
+          "type": "price"
+        },
+        "variant_picker": {
+          "type": "variant_picker"
+        },
+        "quantity": {
+          "type": "quantity"
+        },
+        "buy_buttons": {
+          "type": "buy_buttons"
+        },
+        "description": {
+          "type": "description"
+        },
         "care_tab": {
           "type": "collapsible_tab",
           "settings": {
             "heading": "Saree Details & Care",
-            "content": "<p>Length: 5.5 metres saree with 0.8 metre unstitched blouse piece. Dry clean recommended for silk & zari weaves; gentle hand wash for pure cottons.</p>"
+            "content": "<p>Length: 5.5 metres saree with 0.8 metre unstitched blouse piece. Dry clean recommended for silk &amp; zari weaves; gentle hand wash for pure cottons.</p>"
           }
         },
         "shipping_tab": {
@@ -24,7 +38,9 @@
             "content": "<p>Free shipping across India on orders above ₹999. Cash on Delivery available. Dispatched within 24–48 hours from Anantapur, Andhra Pradesh.</p>"
           }
         },
-        "trust": { "type": "custom_text" }
+        "trust": {
+          "type": "custom_text"
+        }
       },
       "block_order": [
         "vendor",
@@ -37,7 +53,8 @@
         "care_tab",
         "shipping_tab",
         "trust"
-      ]
+      ],
+      "settings": {}
     },
     "related": {
       "type": "featured-products",

@@ -187,13 +187,20 @@
       "default": 2
     },
     {
-      "type": "range",
+      "type": "select",
       "id": "columns_mobile",
       "label": "Banners per row (mobile)",
-      "min": 1,
-      "max": 2,
-      "step": 1,
-      "default": 1
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
+      ],
+      "default": "1"
     },
     {
       "type": "range",
@@ -324,11 +331,26 @@
           "id": "focal_point",
           "label": "Image focal point",
           "options": [
-            { "value": "center center", "label": "Center" },
-            { "value": "top center", "label": "Top" },
-            { "value": "bottom center", "label": "Bottom" },
-            { "value": "center left", "label": "Left" },
-            { "value": "center right", "label": "Right" }
+            {
+              "value": "center center",
+              "label": "Center"
+            },
+            {
+              "value": "top center",
+              "label": "Top"
+            },
+            {
+              "value": "bottom center",
+              "label": "Bottom"
+            },
+            {
+              "value": "center left",
+              "label": "Left"
+            },
+            {
+              "value": "center right",
+              "label": "Right"
+            }
           ],
           "default": "center center"
         },
@@ -336,7 +358,7 @@
           "type": "color_background",
           "id": "bg_gradient",
           "label": "Fallback gradient (when no image)",
-          "default": "linear-gradient(160deg, #7A2230, #2B0E14)"
+          "default": "linear-gradient(160deg, #7A2230 0%, #2B0E14 100%)"
         },
         {
           "type": "color",
@@ -406,9 +428,18 @@
           "id": "cta_style",
           "label": "CTA style",
           "options": [
-            { "value": "underline", "label": "Editorial Underline" },
-            { "value": "solid", "label": "Solid Button" },
-            { "value": "outline", "label": "Outline Button" }
+            {
+              "value": "underline",
+              "label": "Editorial Underline"
+            },
+            {
+              "value": "solid",
+              "label": "Solid Button"
+            },
+            {
+              "value": "outline",
+              "label": "Outline Button"
+            }
           ],
           "default": "underline"
         },
@@ -417,9 +448,18 @@
           "id": "align_vertical",
           "label": "Vertical placement",
           "options": [
-            { "value": "flex-start", "label": "Top" },
-            { "value": "center", "label": "Middle" },
-            { "value": "flex-end", "label": "Bottom" }
+            {
+              "value": "flex-start",
+              "label": "Top"
+            },
+            {
+              "value": "center",
+              "label": "Middle"
+            },
+            {
+              "value": "flex-end",
+              "label": "Bottom"
+            }
           ],
           "default": "flex-end"
         },
@@ -428,9 +468,18 @@
           "id": "align_horizontal",
           "label": "Horizontal placement",
           "options": [
-            { "value": "flex-start", "label": "Left" },
-            { "value": "center", "label": "Center" },
-            { "value": "flex-end", "label": "Right" }
+            {
+              "value": "flex-start",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "flex-end",
+              "label": "Right"
+            }
           ],
           "default": "flex-start"
         },
@@ -450,7 +499,7 @@
         {
           "type": "campaign",
           "settings": {
-            "bg_gradient": "linear-gradient(160deg, #B9975B, #8A6D3B)",
+            "bg_gradient": "linear-gradient(160deg, #B9975B 0%, #8A6D3B 100%)",
             "kicker": "Festive 2026",
             "heading": "The Festive Edit",
             "description": "Zari cottons, soft silks and Bandhani chiffons.",
@@ -461,7 +510,7 @@
         {
           "type": "campaign",
           "settings": {
-            "bg_gradient": "linear-gradient(160deg, #7A2230, #2B0E14)",
+            "bg_gradient": "linear-gradient(160deg, #7A2230 0%, #2B0E14 100%)",
             "kicker": "Wedding Season",
             "heading": "The Wedding Edit",
             "description": "Brides, bridesmaids and guests.",

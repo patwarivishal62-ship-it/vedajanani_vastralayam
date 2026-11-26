@@ -149,19 +149,26 @@
       "type": "range",
       "id": "columns_desktop",
       "label": "Columns (desktop)",
-      "min": 2,
+      "min": 1,
       "max": 4,
       "step": 1,
       "default": 3
     },
     {
-      "type": "range",
+      "type": "select",
       "id": "columns_mobile",
       "label": "Columns (mobile)",
-      "min": 1,
-      "max": 2,
-      "step": 1,
-      "default": 1
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
+      ],
+      "default": "1"
     },
     {
       "type": "range",
@@ -346,9 +353,36 @@
     {
       "name": "Shop by Price",
       "blocks": [
-        { "type": "tier", "settings": { "badge": "Daily Use", "title": "Affordable", "price_range": "₹500 – ₹1,500", "description": "Breathable cottons & effortless everyday drapes.", "fallback_path": "/collections/affordable" } },
-        { "type": "tier", "settings": { "badge": "Most Loved", "title": "Mid Range", "price_range": "₹1,500 – ₹3,000", "description": "Office-ready weaves, printed chiffons & soft silks.", "fallback_path": "/collections/mid-range" } },
-        { "type": "tier", "settings": { "badge": "Heirloom & Festive", "title": "Premium", "price_range": "₹3,000 – ₹5,000", "description": "Banarasi, Kanchi & wedding celebration drapes.", "fallback_path": "/collections/premium" } }
+        {
+          "type": "tier",
+          "settings": {
+            "badge": "Daily Use",
+            "title": "Affordable",
+            "price_range": "₹500 – ₹1,500",
+            "description": "Breathable cottons & effortless everyday drapes.",
+            "fallback_path": "/collections/affordable"
+          }
+        },
+        {
+          "type": "tier",
+          "settings": {
+            "badge": "Most Loved",
+            "title": "Mid Range",
+            "price_range": "₹1,500 – ₹3,000",
+            "description": "Office-ready weaves, printed chiffons & soft silks.",
+            "fallback_path": "/collections/mid-range"
+          }
+        },
+        {
+          "type": "tier",
+          "settings": {
+            "badge": "Heirloom & Festive",
+            "title": "Premium",
+            "price_range": "₹3,000 – ₹5,000",
+            "description": "Banarasi, Kanchi & wedding celebration drapes.",
+            "fallback_path": "/collections/premium"
+          }
+        }
       ]
     }
   ]
