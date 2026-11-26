@@ -105,6 +105,14 @@
               "url": "",
               "fallback_path": "/pages/about"
             }
+          },
+          "header-5": {
+            "type": "nav_link",
+            "settings": {
+              "label": "Contact",
+              "url": "",
+              "fallback_path": "/pages/contact"
+            }
           }
         },
         "block_order": [
@@ -112,7 +120,8 @@
           "header-1",
           "header-2",
           "header-3",
-          "header-4"
+          "header-4",
+          "header-5"
         ],
         "settings": {
           "logo_image": "shopify://shop_images/458231660_2206920716360879_1869149726400012595_n.jpg",

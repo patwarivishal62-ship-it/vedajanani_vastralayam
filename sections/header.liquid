@@ -188,6 +188,7 @@
   {% else %}
     <a href="{{ routes.collections_url }}/new-arrivals">New Arrivals</a>
     <a href="/pages/about">Our Story</a>
+    <a href="/pages/contact">Contact</a>
   {% endif %}
 {%- endcapture -%}
 
@@ -307,21 +308,32 @@
         </button>
       {% endif %}
 
+      {%- assign has_contact_nav = false -%}
       {% if use_shopify_menu %}
         {% for link in section.settings.menu.links %}
+          {% if link.url contains '/pages/contact' %}
+            {% assign has_contact_nav = true %}
+          {% endif %}
           <a class="mm-link" href="{{ link.url }}">{{ link.title }}</a>
         {% endfor %}
       {% elsif nav_blocks.size > 0 %}
         {% for block in nav_blocks %}
           {% assign nav_href = block.settings.url | default: block.settings.fallback_path | default: routes.all_products_collection_url %}
+          {% if nav_href contains '/pages/contact' %}
+            {% assign has_contact_nav = true %}
+          {% endif %}
           <a class="mm-link" href="{{ nav_href }}">{{ block.settings.label }}</a>
         {% endfor %}
       {% else %}
         <a class="mm-link" href="{{ routes.collections_url }}/new-arrivals">New Arrivals</a>
         <a class="mm-link" href="/pages/about">Our Story</a>
+        <a class="mm-link" href="/pages/contact">Contact</a>
+        {% assign has_contact_nav = true %}
       {% endif %}
 
-      <a class="mm-link" href="/pages/contact">Contact &amp; FAQ</a>
+      {% unless has_contact_nav %}
+        <a class="mm-link" href="/pages/contact">Contact &amp; FAQ</a>
+      {% endunless %}
       {% if section.settings.show_account %}
         <a class="mm-link" href="{{ account_url }}">{% if customer %}My Account{% else %}Sign In / Account{% endif %}</a>
       {% endif %}
@@ -558,7 +570,8 @@
         }
       },
       { "type": "nav_link", "settings": { "label": "New Arrivals", "fallback_path": "/collections/new-arrivals" } },
-      { "type": "nav_link", "settings": { "label": "Our Story", "fallback_path": "/pages/about" } }
+      { "type": "nav_link", "settings": { "label": "Our Story", "fallback_path": "/pages/about" } },
+      { "type": "nav_link", "settings": { "label": "Contact", "fallback_path": "/pages/contact" } }
     ]
   }
 }
