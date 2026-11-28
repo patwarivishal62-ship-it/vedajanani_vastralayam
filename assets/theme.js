@@ -199,15 +199,11 @@
     var scope = root || document;
     var mOpen = $('menuDrawerOpen');
     var mClose = $('menuDrawerClose');
-    var sOpen = $('searchOpen');
-    var sClose = $('searchClose');
     var cOpen = $('cartOpen');
     var ov = $('drawerOverlay');
 
     if (mOpen) mOpen.onclick = function () { openDrawer($('mobileDrawer'), mOpen); };
     if (mClose) mClose.onclick = function () { closeAllDrawers(false); };
-    if (sOpen) sOpen.onclick = function () { openDrawer($('searchDrawer'), sOpen); };
-    if (sClose) sClose.onclick = function () { closeAllDrawers(false); };
     if (cOpen) cOpen.onclick = function () { openDrawer($('cartDrawer'), cOpen); };
     if (ov) ov.onclick = function () { closeAllDrawers(false); };
 
@@ -277,7 +273,7 @@
   }
 
   function initSearchClearButtons(root) {
-    (root || document).querySelectorAll('.search-input-wrap').forEach(function (wrap) {
+    (root || document).querySelectorAll('.search-input-wrap, .header-search-form').forEach(function (wrap) {
       var input = wrap.querySelector('input[type="search"]');
       var clearBtn = wrap.querySelector('[data-search-clear]');
       if (!input || !clearBtn || clearBtn.dataset.bound) return;
@@ -297,11 +293,92 @@
     });
   }
 
+  function closeInlineSearches() {
+    document.querySelectorAll('[data-inline-search].is-open').forEach(function (el) {
+      el.classList.remove('is-open');
+      var trigger = el.querySelector('[data-inline-search-trigger]');
+      if (trigger) trigger.setAttribute('aria-expanded', 'false');
+      var headerInner = el.closest('.header-inner');
+      if (headerInner) headerInner.classList.remove('is-search-active');
+      var pop = el.querySelector('[data-inline-search-popover]');
+      if (pop) pop.hidden = true;
+    });
+  }
+
+  function initInlineHeaderSearch(root) {
+    (root || document).querySelectorAll('[data-inline-search]').forEach(function (wrap) {
+      if (wrap.dataset.inlineSearchBound) return;
+      wrap.dataset.inlineSearchBound = '1';
+
+      var form = wrap.querySelector('form');
+      var trigger = wrap.querySelector('[data-inline-search-trigger]');
+      var closeBtn = wrap.querySelector('[data-inline-search-close]');
+      var input = wrap.querySelector('[data-predictive-search-input]');
+      var pop = wrap.querySelector('[data-inline-search-popover]');
+      var headerInner = wrap.closest('.header-inner');
+      if (!form || !input) return;
+
+      function openInline(shouldFocus) {
+        wrap.classList.add('is-open');
+        if (headerInner) headerInner.classList.add('is-search-active');
+        if (trigger) trigger.setAttribute('aria-expanded', 'true');
+        if (shouldFocus) {
+          setTimeout(function () { input.focus(); }, 40);
+        }
+      }
+
+      function closeInline() {
+        wrap.classList.remove('is-open');
+        if (headerInner) headerInner.classList.remove('is-search-active');
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+        if (pop) pop.hidden = true;
+        if (document.activeElement === input) input.blur();
+      }
+
+      if (trigger) {
+        trigger.addEventListener('click', function () {
+          if (wrap.classList.contains('is-open') && input.value.trim().length > 0) {
+            form.submit();
+            return;
+          }
+          openInline(true);
+        });
+      }
+
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function () {
+          input.value = '';
+          input.dispatchEvent(new Event('input', { bubbles: true }));
+          closeInline();
+        });
+      }
+
+      input.addEventListener('focus', function () {
+        openInline(false);
+        var res = wrap.querySelector('#predictiveSearchResults');
+        if (pop && res && !res.hidden && input.value.trim().length >= 2) {
+          pop.hidden = false;
+        }
+      });
+
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          closeInline();
+          if (trigger) trigger.focus();
+        }
+      });
+    });
+  }
+
   function initPredictiveSearch(root) {
     var scope = root || document;
     var input = scope.querySelector('[data-predictive-search-input]');
     var container = $('predictiveSearchResults');
     var loader = $('predictiveSearchLoading');
+    var popover = input && input.closest('[data-inline-search]')
+      ? input.closest('[data-inline-search]').querySelector('[data-inline-search-popover]')
+      : null;
     if (!input || !container || input.dataset.bound) return;
     input.dataset.bound = '1';
 
@@ -310,8 +387,15 @@
     var debounceTimer = null;
     var activeIndex = -1;
 
+    function syncPopover() {
+      if (!popover) return;
+      var show = (loader && !loader.hidden) || !container.hidden;
+      popover.hidden = !show;
+    }
+
     function setLoading(flag) {
       if (loader) loader.hidden = !flag;
+      syncPopover();
     }
 
     function clearResults() {
@@ -319,10 +403,11 @@
       container.innerHTML = '';
       container.hidden = true;
       activeIndex = -1;
+      syncPopover();
     }
 
     function renderResults(query, products, collections) {
-      setLoading(false);
+      if (loader) loader.hidden = true;
       if (!query) {
         clearResults();
         return;
@@ -335,6 +420,7 @@
           '<div class="predictive-empty">No matching sarees or collections for “' + escapeHtml(query) + '”. Press Enter for full search or browse Cotton, Silk, Chiffon, or Festive.</div>';
         container.hidden = false;
         activeIndex = -1;
+        syncPopover();
         return;
       }
 
@@ -380,6 +466,7 @@
       container.innerHTML = html;
       container.hidden = false;
       activeIndex = -1;
+      syncPopover();
     }
 
     input.addEventListener('input', function () {
@@ -1062,6 +1149,7 @@
   function bootAll(root) {
     initHeaderAndDrawers(root);
     initSearchClearButtons(root);
+    initInlineHeaderSearch(root);
     initPredictiveSearch(root);
     initAnnouncementBars(root);
     initFooterAccordions(root);
@@ -1079,8 +1167,12 @@
 
     document.addEventListener('keydown', function (e) {
       trapFocus(e);
-      if (e.key === 'Escape' && activeDialogEl && !activeDialogEl.hasAttribute('data-pdp-lightbox')) {
-        closeAllDrawers(false);
+      if (e.key === 'Escape') {
+        if (activeDialogEl && !activeDialogEl.hasAttribute('data-pdp-lightbox')) {
+          closeAllDrawers(false);
+        } else {
+          closeInlineSearches();
+        }
       }
     });
 
@@ -1091,6 +1183,9 @@
           var a = w.querySelector('[data-mega-trigger]');
           if (a) a.setAttribute('aria-expanded', 'false');
         });
+      }
+      if (!e.target.closest('[data-inline-search]')) {
+        closeInlineSearches();
       }
     });
   });
