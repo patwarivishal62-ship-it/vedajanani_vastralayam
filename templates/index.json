@@ -16,58 +16,90 @@
           "type": "kicker",
           "settings": {
             "text": "Vedajanani Vastralayam · Hyderabad",
-            "color": "#E5D4AE",
+            "color": "#e5d4ae",
             "size": 12,
-            "letter_spacing": 2
+            "letter_spacing": 2,
+            "gap_bottom": 12
           }
         },
         "heading": {
           "type": "heading",
           "settings": {
             "text": "Woven with Grace, Worn with Pride.",
-            "color": "#FAF2E3",
+            "font_family": "heading",
+            "color": "#faf2e3",
             "size_desktop": 56,
             "size_mobile": 36,
-            "line_height": 110
+            "line_height": 110,
+            "letter_spacing": 0,
+            "transform": "none",
+            "gap_bottom": 14
           }
         },
         "subheading": {
           "type": "subheading",
           "settings": {
             "text": "Curated Cotton, Silk, Chiffon & Georgette sarees for everyday elegance and quiet celebrations.",
-            "color": "#F2E9D8",
+            "color": "#f2e9d8",
             "size_desktop": 16,
-            "size_mobile": 15
+            "size_mobile": 15,
+            "line_height": 155,
+            "gap_bottom": 24
           }
         },
         "buttons": {
           "type": "buttons",
           "settings": {
             "cta_label": "Shop Sarees",
+            "cta_url": "",
             "cta_style": "solid",
-            "cta_color": "#FFFFFF",
+            "cta_color": "#ffffff",
             "cta_bg": "#244737",
             "cta2_label": "New Arrivals",
+            "cta2_url": "",
             "cta2_style": "outline",
-            "cta2_color": "#FAF2E3",
+            "cta2_color": "#faf2e3",
+            "cta2_bg": "#202521",
             "font_size": 13,
-            "letter_spacing": 1
+            "letter_spacing": 1,
+            "gap_top": 0,
+            "gap_bottom": 0
           }
         }
       },
-      "block_order": ["kicker", "heading", "subheading", "buttons"],
+      "block_order": [
+        "kicker",
+        "heading",
+        "subheading",
+        "buttons"
+      ],
       "settings": {
         "banner_width": "full",
         "height_mode": "ratio",
+        "height_vh_desktop": 72,
+        "height_px_desktop": 600,
+        "height_vh_mobile": 66,
+        "height_px_mobile": 480,
+        "image_fit": "cover",
+        "image_position_desktop": "top center",
+        "image_position_mobile": "top center",
+        "banner_radius": 0,
         "fallback_bg": "#1C382B",
-        "overlay_color": "#111A14",
+        "overlay_color": "#111a14",
         "overlay_opacity": 55,
-        "align_vertical": "flex-end",
+        "align_vertical": "center",
         "align_horizontal": "flex-start",
         "text_align": "left",
         "content_max_width": 620,
         "content_pad_y": 56,
-        "content_pad_x": 48
+        "content_pad_x": 48,
+        "content_bg_color": "#16241d",
+        "content_bg_opacity": 0,
+        "content_box_pad": 28,
+        "content_box_radius": 12,
+        "outer_bg": "",
+        "margin_top": 0,
+        "margin_bottom": 0
       }
     },
     "collections": {
@@ -76,47 +108,92 @@
         "cotton": {
           "type": "collection_card",
           "settings": {
+            "collection": "",
+            "focal_point": "center center",
+            "overlay_opacity": 35,
+            "badge": "",
             "title": "Cotton",
             "subtitle": "Mul, Madurai, Kanchi, Kota & Jamdani",
-            "fallback_path": "/collections/cotton"
+            "url": "",
+            "fallback_path": "/collections/cotton",
+            "card_bg": "",
+            "text_color": ""
           }
         },
         "silk": {
           "type": "collection_card",
           "settings": {
+            "collection": "",
+            "focal_point": "center center",
+            "overlay_opacity": 35,
+            "badge": "",
             "title": "Silk",
             "subtitle": "Banarasi, Soft, Crepe & Viscose Silk",
-            "fallback_path": "/collections/silk"
+            "url": "",
+            "fallback_path": "/collections/silk",
+            "card_bg": "",
+            "text_color": ""
           }
         },
         "chiffon": {
           "type": "collection_card",
           "settings": {
+            "collection": "",
+            "focal_point": "center center",
+            "overlay_opacity": 35,
+            "badge": "",
             "title": "Chiffon",
             "subtitle": "Printed, Embroidered, Bandhani & Floral",
-            "fallback_path": "/collections/chiffon"
+            "url": "",
+            "fallback_path": "/collections/chiffon",
+            "card_bg": "",
+            "text_color": ""
           }
         },
         "georgette": {
           "type": "collection_card",
           "settings": {
+            "collection": "",
+            "focal_point": "center center",
+            "overlay_opacity": 35,
+            "badge": "",
             "title": "Georgette",
             "subtitle": "Satin, Printed, Bandhani & Plain",
-            "fallback_path": "/collections/georgette"
+            "url": "",
+            "fallback_path": "/collections/georgette",
+            "card_bg": "",
+            "text_color": ""
           }
         }
       },
-      "block_order": ["cotton", "silk", "chiffon", "georgette"],
+      "block_order": [
+        "cotton",
+        "silk",
+        "chiffon",
+        "georgette"
+      ],
       "settings": {
         "eyebrow": "By Fabric",
         "heading": "Shop by Fabric",
+        "subheading": "",
+        "heading_align": "center",
+        "heading_size": 36,
+        "heading_color": "#202521",
+        "collections": [],
         "card_style": "below",
         "image_ratio": "4 / 5",
         "columns_desktop": 4,
         "columns_mobile": "2",
         "grid_gap": 24,
+        "card_height_desktop": 280,
+        "card_height_mobile": 200,
         "card_radius": 12,
+        "card_pad": 18,
+        "card_title_size": 20,
         "card_align": "left",
+        "card_bg": "#ffffff",
+        "card_text": "#202521",
+        "bg_color": "",
         "padding_top": 72,
         "padding_bottom": 56
       }
@@ -128,16 +205,24 @@
         "hide_when_empty": false,
         "eyebrow": "Just Arrived",
         "heading": "New Arrivals",
+        "subheading": "",
+        "heading_align": "center",
+        "heading_size": 36,
+        "heading_color": "#202521",
         "products_limit": 4,
         "columns_desktop": 4,
         "columns_mobile": "2",
         "grid_gap": 24,
         "image_ratio": "3 / 4",
         "card_align": "left",
+        "show_vendor": false,
+        "show_sale_badge": true,
         "show_quick_add": false,
         "show_view_all": true,
         "view_all_label": "View All New Arrivals",
+        "view_all_url": "",
         "view_all_style": "outline",
+        "bg_color": "",
         "padding_top": 56,
         "padding_bottom": 56
       }
@@ -152,11 +237,16 @@
         "heading": "The Festive & Wedding Edit",
         "body": "<p>Thoughtfully selected silks, zari-bordered cottons and celebratory drapes chosen for their graceful fall, rich colour and lasting comfort across family gatherings and ceremonies.</p>",
         "cta_label": "Explore Festive Edit",
+        "cta_url": "",
         "fallback_path": "/collections/festive",
         "cta_style": "solid",
-        "bg_color": "#F2E7D3",
-        "panel_bg": "#FFFFFF",
+        "bg_color": "#f2e7d3",
+        "panel_bg": "#ffffff",
+        "heading_color": "#202521",
+        "text_color": "#545a55",
+        "heading_size": 36,
         "radius": 12,
+        "gap": 32,
         "padding_top": 72,
         "padding_bottom": 72
       }
@@ -164,18 +254,28 @@
     "video": {
       "type": "editorial-video",
       "settings": {
+        "video_url": "",
+        "video_alt": "Vedajanani Vastralayam Saree Drape Film",
+        "autoplay_muted": false,
+        "loop_video": true,
+        "play_label": "Watch Film",
         "layout": "cinematic",
+        "video_position": "left",
         "video_ratio": "16 / 9",
         "video_radius": 12,
         "eyebrow": "In Motion",
         "heading": "See the Fall & Drape Up Close",
         "subheading": "<p>Experience the weave, lustre and effortless movement of our Cotton, Silk, Chiffon &amp; Georgette sarees in natural light.</p>",
-        "play_label": "Watch Film",
+        "caption": "",
         "cta_label": "Explore Sarees",
+        "cta_url": "",
         "fallback_path": "/collections/all",
         "heading_align": "center",
         "heading_size": 36,
-        "poster_bg": "#1C382B",
+        "placeholder_title": "Saree Drape & Weave Film",
+        "placeholder_note": "Add a Shopify MP4 video or YouTube / Vimeo link in Theme Editor to showcase your sarees in motion.",
+        "bg_color": "",
+        "poster_bg": "#1c382b",
         "heading_color": "#202521",
         "padding_top": 72,
         "padding_bottom": 56
@@ -187,45 +287,79 @@
         "daily": {
           "type": "occasion",
           "settings": {
+            "collection": "",
+            "overlay_opacity": 40,
             "title": "Everyday",
             "subtitle": "Breathable cottons & light prints",
-            "fallback_path": "/collections/daily-use"
+            "url": "",
+            "fallback_path": "/collections/daily-use",
+            "card_bg": "",
+            "text_color": ""
           }
         },
         "office": {
           "type": "occasion",
           "settings": {
+            "collection": "",
+            "overlay_opacity": 40,
             "title": "Office",
             "subtitle": "Crisp drapes for workdays",
-            "fallback_path": "/collections/office"
+            "url": "",
+            "fallback_path": "/collections/office",
+            "card_bg": "",
+            "text_color": ""
           }
         },
         "festive": {
           "type": "occasion",
           "settings": {
+            "collection": "",
+            "overlay_opacity": 40,
             "title": "Festive",
             "subtitle": "Zari borders & celebratory tones",
-            "fallback_path": "/collections/festive"
+            "url": "",
+            "fallback_path": "/collections/festive",
+            "card_bg": "",
+            "text_color": ""
           }
         },
         "wedding": {
           "type": "occasion",
           "settings": {
+            "collection": "",
+            "overlay_opacity": 40,
             "title": "Wedding",
             "subtitle": "Brides, family & ceremony guests",
-            "fallback_path": "/collections/wedding"
+            "url": "",
+            "fallback_path": "/collections/wedding",
+            "card_bg": "",
+            "text_color": ""
           }
         }
       },
-      "block_order": ["daily", "office", "festive", "wedding"],
+      "block_order": [
+        "daily",
+        "office",
+        "festive",
+        "wedding"
+      ],
       "settings": {
         "eyebrow": "By Occasion",
         "heading": "Shop by Occasion",
+        "heading_align": "center",
+        "heading_size": 36,
+        "heading_color": "#202521",
         "columns_desktop": 4,
         "columns_mobile": "2",
         "grid_gap": 24,
+        "card_height_desktop": 180,
+        "card_height_mobile": 140,
         "card_radius": 12,
+        "title_size": 20,
         "card_align": "left",
+        "card_bg": "#ffffff",
+        "card_text": "#202521",
+        "bg_color": "",
         "padding_top": 56,
         "padding_bottom": 56
       }
@@ -240,7 +374,11 @@
             "price_range": "₹500 – ₹1,499",
             "subtitle": "Everyday cottons, chiffons & light prints",
             "cta_label": "Shop Range",
-            "fallback_path": "/collections/affordable"
+            "collection": "",
+            "url": "",
+            "fallback_path": "/collections/affordable",
+            "card_bg": "",
+            "text_color": ""
           }
         },
         "mid": {
@@ -250,7 +388,11 @@
             "price_range": "₹1,500 – ₹2,999",
             "subtitle": "Festive weaves, silk blends & zari borders",
             "cta_label": "Shop Range",
-            "fallback_path": "/collections/mid-range"
+            "collection": "",
+            "url": "",
+            "fallback_path": "/collections/mid-range",
+            "card_bg": "",
+            "text_color": ""
           }
         },
         "premium": {
@@ -260,20 +402,39 @@
             "price_range": "₹3,000 & Above",
             "subtitle": "Statement occasion & wedding drapes",
             "cta_label": "Shop Range",
-            "fallback_path": "/collections/premium"
+            "collection": "",
+            "url": "",
+            "fallback_path": "/collections/premium",
+            "card_bg": "",
+            "text_color": ""
           }
         }
       },
-      "block_order": ["affordable", "mid", "premium"],
+      "block_order": [
+        "affordable",
+        "mid",
+        "premium"
+      ],
       "settings": {
         "eyebrow": "By Price",
         "heading": "Shop by Price",
+        "heading_align": "center",
+        "heading_size": 36,
+        "heading_color": "#202521",
         "columns_desktop": 3,
         "columns_mobile": "1",
         "grid_gap": 24,
-        "card_radius": 12,
         "card_align": "left",
-        "bg_color": "#F2E7D3",
+        "card_pad_y": 32,
+        "card_pad_x": 28,
+        "card_radius": 12,
+        "card_border_w": 1,
+        "card_border_color": "#e3d8c5",
+        "card_bg": "#ffffff",
+        "card_text": "#202521",
+        "range_font_size": 26,
+        "range_color": "#244737",
+        "bg_color": "#f2e7d3",
         "padding_top": 64,
         "padding_bottom": 64
       }
@@ -284,38 +445,69 @@
         "look1": {
           "type": "photo",
           "settings": {
+            "product": "",
+            "alt_text": "",
+            "focal_point": "center center",
+            "overlay_opacity": 65,
             "caption": "Silk Occasion Drapes",
             "subcaption": "Festive & Wedding Edit",
             "cta_label": "Shop the Look",
-            "url": "/collections/silk"
+            "url": "/collections/silk",
+            "bg_color": "#244737",
+            "text_color": "#faf2e3"
           }
         },
         "look2": {
           "type": "photo",
           "settings": {
+            "product": "",
+            "alt_text": "",
+            "focal_point": "center center",
+            "overlay_opacity": 65,
             "caption": "Everyday Cotton Weaves",
             "subcaption": "Breathable Comfort",
             "cta_label": "Shop the Look",
-            "url": "/collections/cotton"
+            "url": "/collections/cotton",
+            "bg_color": "#244737",
+            "text_color": "#faf2e3"
           }
         },
         "look3": {
           "type": "photo",
           "settings": {
+            "product": "",
+            "alt_text": "",
+            "focal_point": "center center",
+            "overlay_opacity": 65,
             "caption": "Chiffon & Georgette",
             "subcaption": "Light & Luminous",
             "cta_label": "Shop the Look",
-            "url": "/collections/chiffon"
+            "url": "/collections/chiffon",
+            "bg_color": "#244737",
+            "text_color": "#faf2e3"
           }
         }
       },
-      "block_order": ["look1", "look2", "look3"],
+      "block_order": [
+        "look1",
+        "look2",
+        "look3"
+      ],
       "settings": {
         "eyebrow": "Lookbook",
         "heading": "Draped in Grace",
+        "subheading": "",
+        "heading_align": "center",
+        "heading_size": 36,
+        "heading_color": "#202521",
         "layout_style": "editorial",
+        "full_width": false,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
         "grid_gap": 20,
+        "image_ratio": "4 / 5",
         "card_radius": 12,
+        "bg_color": "",
         "padding_top": 72,
         "padding_bottom": 56
       }
@@ -327,16 +519,24 @@
         "hide_when_empty": false,
         "eyebrow": "Most Loved",
         "heading": "Best Sellers",
+        "subheading": "",
+        "heading_align": "center",
+        "heading_size": 36,
+        "heading_color": "#202521",
         "products_limit": 4,
         "columns_desktop": 4,
         "columns_mobile": "2",
         "grid_gap": 24,
         "image_ratio": "3 / 4",
         "card_align": "left",
+        "show_vendor": false,
+        "show_sale_badge": true,
         "show_quick_add": false,
         "show_view_all": true,
         "view_all_label": "View All Sarees",
+        "view_all_url": "",
         "view_all_style": "outline",
+        "bg_color": "",
         "padding_top": 48,
         "padding_bottom": 56
       }
@@ -372,14 +572,31 @@
           }
         }
       },
-      "block_order": ["r1", "r2", "r3"],
+      "block_order": [
+        "r1",
+        "r2",
+        "r3"
+      ],
       "settings": {
         "hide_when_empty": false,
         "eyebrow": "Customer Reflections",
         "heading": "Words From Our Patrons",
+        "subheading": "Verified reviews from customers who have worn Vedajanani Vastralayam.",
+        "heading_align": "center",
+        "heading_size": 36,
+        "heading_color": "#202521",
+        "columns_desktop": 3,
+        "columns_mobile": "1",
+        "grid_gap": 24,
         "show_stars": false,
+        "star_color": "#a88a48",
+        "quote_size": 18,
+        "card_align": "left",
+        "card_pad": 28,
         "card_radius": 12,
-        "bg_color": "#F2E7D3",
+        "card_bg": "#ffffff",
+        "card_text": "#202521",
+        "bg_color": "#f2e7d3",
         "padding_top": 64,
         "padding_bottom": 64
       }
@@ -387,11 +604,32 @@
     "blog": {
       "type": "blog-preview",
       "settings": {
+        "blog": "",
         "hide_when_empty": false,
         "eyebrow": "The Journal",
         "heading": "Stories & Care Notes",
+        "subheading": "",
+        "heading_align": "center",
+        "heading_size": 36,
+        "heading_color": "#202521",
         "articles_limit": 3,
+        "columns_desktop": 3,
+        "columns_mobile": "1",
+        "grid_gap": 24,
+        "show_image": true,
+        "image_ratio": "4 / 3",
+        "show_date": true,
+        "show_author": false,
+        "show_excerpt": true,
+        "read_more_label": "Read Story",
+        "show_view_all": true,
+        "view_all_label": "Explore Journal",
+        "article_title_size": 20,
+        "card_align": "left",
         "card_radius": 12,
+        "card_bg": "#ffffff",
+        "card_text": "#202521",
+        "bg_color": "",
         "padding_top": 64,
         "padding_bottom": 48
       }
@@ -402,6 +640,22 @@
         "eyebrow": "The Vastralayam List",
         "heading": "First Look at New Arrivals",
         "subheading": "Receive notes on new saree arrivals, festive curations and weave stories.",
+        "placeholder": "you@example.com",
+        "button_label": "Subscribe",
+        "success_message": "Thank you for joining the Vedajanani Vastralayam list.",
+        "consent_note": "By subscribing, you agree to receive email updates from Vedajanani Vastralayam. Unsubscribe anytime.",
+        "outer_bg": "",
+        "box_bg": "#244737",
+        "eyebrow_color": "#e5d4ae",
+        "heading_color": "#faf2e3",
+        "text_color": "#ede5d7",
+        "btn_bg": "#a8492d",
+        "btn_text": "#ffffff",
+        "text_align": "center",
+        "heading_size": 36,
+        "max_width": 1240,
+        "box_pad_y": 56,
+        "box_pad_x": 40,
         "box_radius": 12,
         "padding_top": 32,
         "padding_bottom": 72
