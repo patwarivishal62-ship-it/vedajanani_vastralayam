@@ -192,6 +192,51 @@
   {% endif %}
 {%- endcapture -%}
 
+{%- capture header_search_markup -%}
+  {% if section.settings.show_search %}
+    <div class="header-search" data-inline-search>
+      <form action="{{ routes.search_url }}" method="get" role="search" class="header-search-form" data-predictive-search-form>
+        <input type="hidden" name="type" value="product">
+        <button
+          type="button"
+          class="header-search-trigger"
+          data-inline-search-trigger
+          aria-label="Search store"
+          aria-expanded="false"
+        >
+          {% render 'icons', icon: 'search' %}
+        </button>
+        <label for="HeaderSearchInput-{{ section.id }}" class="visually-hidden">Search sarees</label>
+        <input
+          id="HeaderSearchInput-{{ section.id }}"
+          class="header-search-input"
+          type="search"
+          name="q"
+          autocomplete="off"
+          data-predictive-search-input
+          placeholder="{{ section.settings.search_placeholder | default: 'Search sarees…' }}"
+          aria-controls="predictiveSearchResults"
+          aria-autocomplete="list"
+        >
+        <button type="button" class="header-search-clear" data-search-clear aria-label="Clear search" hidden>
+          {% render 'icons', icon: 'close' %}
+        </button>
+        <button type="button" class="header-search-close" data-inline-search-close aria-label="Close search">
+          {% render 'icons', icon: 'close' %}
+        </button>
+      </form>
+
+      <div class="header-search-popover" data-inline-search-popover hidden>
+        <div class="predictive-loading" id="predictiveSearchLoading" hidden>
+          <span class="vv-spinner" aria-hidden="true"></span>
+          <span>Searching sarees…</span>
+        </div>
+        <div class="predictive-results" id="predictiveSearchResults" role="listbox" aria-live="polite" hidden></div>
+      </div>
+    </div>
+  {% endif %}
+{%- endcapture -%}
+
 <header class="site-header{% if section.settings.sticky_header %} is-sticky{% endif %}" id="siteHeader">
   {% if section.settings.logo_position == 'center' %}
     <div class="header-inner wrap header-inner--logo-center">
@@ -217,11 +262,7 @@
       </a>
 
       <div class="header-actions">
-        {% if section.settings.show_search %}
-          <button class="icon-btn" id="searchOpen" type="button" aria-label="Search store" aria-controls="searchDrawer" aria-expanded="false">
-            {% render 'icons', icon: 'search' %}
-          </button>
-        {% endif %}
+        {{ header_search_markup }}
         {% if section.settings.show_account %}
           <a class="icon-btn" href="{{ account_url }}" aria-label="{% if customer %}My account{% else %}Sign in to account{% endif %}">
             {% render 'icons', icon: 'account' %}
@@ -266,11 +307,7 @@
       </nav>
 
       <div class="header-actions">
-        {% if section.settings.show_search %}
-          <button class="icon-btn" id="searchOpen" type="button" aria-label="Search store" aria-controls="searchDrawer" aria-expanded="false">
-            {% render 'icons', icon: 'search' %}
-          </button>
-        {% endif %}
+        {{ header_search_markup }}
         {% if section.settings.show_account %}
           <a class="icon-btn" href="{{ account_url }}" aria-label="{% if customer %}My account{% else %}Sign in to account{% endif %}">
             {% render 'icons', icon: 'account' %}
@@ -406,54 +443,6 @@
     {% endif %}
   </div>
 </aside>
-
-{% if section.settings.show_search %}
-  <div class="search-drawer" id="searchDrawer" role="dialog" aria-modal="true" aria-label="Search store" aria-hidden="true">
-    <div class="wrap">
-      <div class="drawer-head">
-        <span class="eyebrow" style="margin: 0;">Search {{ section.settings.logo_text | default: shop.name }}</span>
-        <button id="searchClose" class="drawer-close-btn" type="button" aria-label="Close search">{% render 'icons', icon: 'close' %}</button>
-      </div>
-      <form action="{{ routes.search_url }}" method="get" role="search" class="search-form" data-predictive-search-form>
-        <input type="hidden" name="type" value="product">
-        <div class="search-input-wrap">
-          <label for="HeaderSearchInput" class="visually-hidden">Search sarees</label>
-          <input
-            id="HeaderSearchInput"
-            type="search"
-            name="q"
-            autocomplete="off"
-            data-predictive-search-input
-            placeholder="{{ section.settings.search_placeholder | default: "Search by fabric, weave or occasion (e.g. Cotton, Silk, Jamdani)…" }}"
-            aria-controls="predictiveSearchResults"
-            aria-autocomplete="list"
-          >
-          <button type="button" class="search-clear-btn" data-search-clear aria-label="Clear search" hidden>
-            {% render 'icons', icon: 'close' %}
-          </button>
-        </div>
-        <button type="submit" class="btn">Search</button>
-      </form>
-      <div class="predictive-loading" id="predictiveSearchLoading" hidden>
-        <span class="vv-spinner" aria-hidden="true"></span>
-        <span>Searching sarees…</span>
-      </div>
-      <div class="predictive-results" id="predictiveSearchResults" role="listbox" aria-live="polite" hidden></div>
-      {% if section.settings.popular_searches != blank %}
-        {% assign terms = section.settings.popular_searches | split: ',' %}
-        <div class="search-hints">
-          <span>Browse:</span>
-          {% for term in terms %}
-            {% assign clean_term = term | strip %}
-            {% if clean_term != blank %}
-              <a href="{{ routes.search_url }}?type=product&amp;q={{ clean_term | url_encode }}">{{ clean_term }}</a>{% unless forloop.last %} · {% endunless %}
-            {% endif %}
-          {% endfor %}
-        </div>
-      {% endif %}
-    </div>
-  </div>
-{% endif %}
 
 {% schema %}
 {
