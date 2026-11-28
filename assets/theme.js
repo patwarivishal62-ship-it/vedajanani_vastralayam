@@ -337,8 +337,12 @@
 
       if (trigger) {
         trigger.addEventListener('click', function () {
-          if (wrap.classList.contains('is-open') && input.value.trim().length > 0) {
-            form.submit();
+          if (wrap.classList.contains('is-open')) {
+            if (input.value.trim().length > 0) {
+              form.submit();
+            } else {
+              closeInline();
+            }
             return;
           }
           openInline(true);
