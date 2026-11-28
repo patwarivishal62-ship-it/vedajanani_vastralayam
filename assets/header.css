@@ -536,7 +536,7 @@
   padding: 4px 0;
 }
 
-/* Inline Expanding Header Search (No Separate Popup) */
+/* Inline Expanding Header Search (Click-Only, No Separate Popup) */
 .header-search {
   position: relative;
   display: flex;
@@ -546,16 +546,9 @@
   width: 44px;
   min-width: 44px;
   max-width: 340px;
-  transition: flex-basis 260ms cubic-bezier(0.22, 1, 0.36, 1), width 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: flex-basis 240ms cubic-bezier(0.22, 1, 0.36, 1), width 240ms cubic-bezier(0.22, 1, 0.36, 1);
 }
-@media (hover: hover) and (min-width: 1101px) {
-  .header-search:hover {
-    flex: 1 1 340px;
-    width: 340px;
-  }
-}
-.header-search.is-open,
-.header-search:focus-within {
+.header-search.is-open {
   flex: 1 1 340px;
   width: 340px;
 }
@@ -578,14 +571,7 @@
   overflow: hidden;
   transition: background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
 }
-@media (hover: hover) and (min-width: 1101px) {
-  .header-search:hover .header-search-form {
-    background: var(--surface, #FFFFFF);
-    border-color: var(--border-color, #E3D8C5);
-  }
-}
-.header-search.is-open .header-search-form,
-.header-search:focus-within .header-search-form {
+.header-search.is-open .header-search-form {
   background: var(--surface, #FFFFFF);
   border-color: var(--maroon, #244737);
   box-shadow: 0 0 0 2px rgba(36, 71, 55, 0.12);
@@ -608,6 +594,10 @@
 }
 .header-search-trigger:hover {
   color: var(--header-hover, var(--maroon, #244737));
+  background: rgba(36, 71, 55, 0.06);
+}
+.header-search.is-open .header-search-trigger:hover {
+  background: transparent;
 }
 .header-search-trigger .vv-icon {
   width: 21px;
@@ -645,16 +635,7 @@
 .header-search-input::placeholder {
   color: var(--text-muted, #545A55);
 }
-@media (hover: hover) and (min-width: 1101px) {
-  .header-search:hover .header-search-input {
-    width: 100%;
-    padding: 0 8px 0 2px;
-    opacity: 1;
-    pointer-events: auto;
-  }
-}
-.header-search.is-open .header-search-input,
-.header-search:focus-within .header-search-input {
+.header-search.is-open .header-search-input {
   width: 100%;
   padding: 0 8px 0 2px;
   opacity: 1;
